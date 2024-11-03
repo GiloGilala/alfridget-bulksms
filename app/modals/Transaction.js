@@ -1,0 +1,60 @@
+import mongoose from "mongoose";
+
+const TransactionSchema = new mongoose.Schema(
+  {
+    id: {
+      type: Number,
+      unique: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    clientId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Client",
+      required: true,
+    },
+    firstName: {
+      type: String,
+      trim: true,
+    },
+    middleName: {
+      type: String,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+    },
+    settlementAc: {
+      type: String,
+      trim: true,
+    },
+
+    transactionType: {
+      type: String,
+      enum: ["Deposit", "Withdrawal", "Payment", "Other"],
+      trim: true,
+    },
+    transID: {
+      type: String,
+      unique: true,
+      trim: true,
+    },
+    transTime: {
+      type: Date,
+      trim: true,
+    },
+    transAmount: {
+      type: Number,
+      min: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model("Transaction", TransactionSchema);
