@@ -30,6 +30,10 @@ const serviceTypeSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    isActive: {
+      type: Boolean,
+      required: false,
+    },
   },
   { timestamps: true }
 );

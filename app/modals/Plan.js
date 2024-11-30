@@ -47,6 +47,10 @@ const planSchema = new mongoose.Schema(
     endDate: {
       type: Date,
     },
+    isActive: {
+      type: Boolean,
+      required: false,
+    },
   },
   { timestamps: true }
 );

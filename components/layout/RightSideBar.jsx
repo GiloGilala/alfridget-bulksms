@@ -19,7 +19,7 @@ const RightSideBar = () => {
 
   return (
     // <div className="bg-gray-100 h-screen w-20 md:w-64 p-4 fixed top-0 right-0 hidden md:block">
-    <div className="bg-gray-50  h-screen w-20 md:w-64 p-4 top-0 right-0 hidden md:block">
+    <div className="bg-gray-50 min-h-screen w-20 md:w-64 p-4 top-0 right-0 hidden md:block">
       <h2 className="text-gray-600 text-2xl mb-4">SMS Control Panel</h2>
 
       {/* Select Contact */}

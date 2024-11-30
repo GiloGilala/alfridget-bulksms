@@ -1,4 +1,3 @@
-import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 
 const HomePage = () => {

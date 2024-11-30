@@ -1,17 +1,28 @@
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
-import React from "react";
 import Link from "next/link";
-
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { AuthLogin } from "@/components/AuthForm";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Icons } from "@/components/Icons";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
-export const metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
-};
+const ResetPassword = () => {
+  const [rememberMe, setRememberMe] = useState(false);
 
-const Login = () => {
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe);
+  };
   return (
     <>
       {/* <div className="md:hidden">
@@ -40,15 +51,23 @@ const Login = () => {
         >
           Login
         </Link>
-        <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-          <div className="absolute inset-0 bg-zinc-900" />
-          <div className="relative z-20 flex items-center text-lg font-medium">
+        <div
+          className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"
+          style={{
+            backgroundImage: `url('/bgLogin.png')`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute inset-0 bg-zinc-900/30" />
+          <div className="relative z-20 flex items-center text-2xl font-medium">
             <Image
               src="/Alfridget-Logo.jpeg"
               alt="Alfridget company logo"
               width={100}
-              height={60}
-              className="mr-2 h-7 w-20"
+              height={100}
+              className="mr-2 h-10 w-10"
             />
             Alfridget
           </div>
@@ -64,33 +83,110 @@ const Login = () => {
           </div>
         </div>
         <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <div className="flex flex-col space-y-2 text-center">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
+            {/* <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
                 Create an account
               </h1>
               <p className="text-sm text-muted-foreground">
                 Enter your email below to create your account
               </p>
-            </div>
-            <AuthLogin />
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking continue, you agree to our
-              <Link
-                href="/terms"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Terms of Service
+            </div> */}
+            <Card>
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl">Create an account</CardTitle>
+                <CardDescription>
+                  Enter your email below to create your account
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" type="email" placeholder="m@example.com" />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input id="password" type="password" />
+                </div>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="remember-me"
+                      checked={rememberMe}
+                      onChange={handleRememberMe}
+                    />
+                    <Label htmlFor="remember-me">Remember Me</Label>
+                  </div>
+                  <p className=" text-center text-sm ">
+                    <Link
+                      href="/terms"
+                      className="underline underline-offset-4 hover:text-primary"
+                    >
+                      Forgot Password
+                    </Link>
+                    .
+                  </p>
+                </div>
+              </CardContent>
+              <Link href="/clients">
+                <CardFooter>
+                  <Button className="w-full">Login</Button>
+                </CardFooter>
               </Link>
-              and
-              <Link
-                href="/privacy"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Privacy Policy
-              </Link>
-              .
-            </p>
+
+              <CardFooter className="flex-col">
+                {/* <div className="space-y-4 pb-3">
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-background px-2 text-muted-foreground">
+                        Or continue with
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <Button variant="outline">
+                      <Icons.gitHub className="mr-2 h-4 w-4" />
+                      Github
+                    </Button>
+                    <Button variant="outline">
+                      <Icons.google className="mr-2 h-4 w-4" />
+                      Google
+                    </Button>
+                  </div>
+                </div> */}
+
+                <p className="px-8 text-center text-sm text-muted-foreground">
+                  By clicking continue, you agree to our
+                  <Link
+                    href="/terms"
+                    className="underline underline-offset-4 hover:text-primary"
+                  >
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/privacy"
+                    className="underline underline-offset-4 hover:text-primary"
+                  >
+                    Privacy Policy
+                  </Link>
+                  .
+                </p>
+                <p className="text-center text-sm mt-4">
+                  Already a Member?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-blue-600 hover:underline"
+                  >
+                    SignUp
+                  </Link>
+                </p>
+              </CardFooter>
+            </Card>
           </div>
         </div>
       </div>
@@ -98,4 +194,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

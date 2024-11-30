@@ -51,7 +51,12 @@ const TransactionSchema = new mongoose.Schema(
       type: Number,
       min: 0,
     },
+    isActive: {
+      type: Boolean,
+      required: false,
+    },
   },
+
   {
     timestamps: true,
   }

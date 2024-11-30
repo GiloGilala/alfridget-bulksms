@@ -10,7 +10,7 @@ const FooterBar = () => {
         <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-0">
           <h5 className="text-lg font-bold mb-2">About Us</h5>
           <p className="text-sm">
-            SMS App is a messaging platform designed to simplify communication.
+            Alfridge is a messaging platform designed to simplify communication.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ const FooterBar = () => {
             </a>
           </div>
           <p className="text-sm">
-            &copy; {currentYear} SMS App. All rights reserved.
+            &copy; {currentYear} Alfridge. All rights reserved.
           </p>
         </div>
       </div>

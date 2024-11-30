@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import Group from "@/models/Group";
 import { auth } from "next-auth"; // Ensure to import auth
+import Group from "@/app/modals/Group ";
 
 // Function to check if a user has the necessary authorization
 const isAuthorized = (user, roles) => {

@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }) => {
   };
 
   return (
-    <div className="h-screen w-full flex">
+    <div className="min-h-screen w-full flex">
       <SideNavBar />
       <div className="flex flex-1 flex-col">
         <Topbar onToggleSidebar={toggleRightSidebar} />

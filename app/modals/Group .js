@@ -21,6 +21,10 @@ const groupSchema = new mongoose.Schema(
         ref: "Contact",
       },
     ],
+    isActive: {
+      type: Boolean,
+      required: false,
+    },
   },
   { timestamps: true }
 );

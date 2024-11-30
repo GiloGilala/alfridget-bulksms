@@ -1,44 +1,77 @@
-import DataTable from "@/components/Data-table";
-import Container from "@/components/layout/Container";
-import React from "react";
-import { columns } from "./columns";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/ui/page-header";
+import { CardDetails } from "@/components/ui/card";
+import {
+  Hourglass,
+  MailCheck,
+  MailWarning,
+  MailX,
+  MessageSquare,
+} from "lucide-react";
+import DataTable from "@/components/tables/DataTable";
+import { users } from "@/components/tables/data";
+import { UsersColumns } from "@/components/tables/UsersColumns";
 
-const Users = () => {
-  const data = [
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      amount: 100,
-      status: "pending",
-    },
-    {
-      id: "2",
-      name: "Jane Doe",
-      email: "jane.doe@example.com",
-      amount: 200,
-      status: "success",
-    },
-    {
-      id: "3",
-      name: "Bob Smith",
-      email: "bob.smith@example.com",
-      amount: 50,
-      status: "processing",
-    },
-    {
-      id: "4",
-      name: "Alice Johnson",
-      email: "alice.johnson@example.com",
-      amount: 150,
-      status: "failed",
-    },
-  ];
-  return (
-    <section className="py-24">
-      <h1 className="mb-6 text-3xl font-bold "> All Users</h1>
-      <DataTable columns={columns} data={data} />
-    </section>
-  );
+export const metadata = {
+  title: "Dashboard",
+  description: "Check out some examples app built using the components.",
 };
-export default Users;
+
+const cardData = [
+  {
+    title: "Total Messages",
+    icon: MessageSquare,
+    value: "335",
+    percentage: "+20.1%",
+    description: "from last month",
+  },
+  {
+    title: "Sent Messages",
+    icon: MailCheck,
+    value: "255",
+    percentage: "+15.6%",
+    description: "from last quarter",
+  },
+  {
+    title: "Pending",
+    icon: Hourglass,
+    value: "161",
+    percentage: "+30.8%",
+    description: "from last year",
+  },
+  {
+    title: "Failed Messages",
+    icon: MailX,
+    value: "54",
+    percentage: "+25.9%",
+    description: "from last month",
+  },
+];
+
+export default function UserDashboard() {
+  return (
+    <div className=" relative">
+      <PageHeader
+        heading="User Dashboard"
+        className=""
+        // description={
+        //   "Dashboard, cards, authentication. Some examples built using the components. Use this as a guide to build your own"
+        // }
+      ></PageHeader>
+      <section className="space-y-6">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {cardData.map((data, index) => (
+            <CardDetails key={index} title={data.title} icon={data.icon}>
+              <div className="text-2xl font-bold">{data.value}</div>
+              <p className="text-xs text-muted-foreground">
+                {data.percentage} {data.description}
+              </p>
+            </CardDetails>
+          ))}
+        </div>
+        <DataTable columns={UsersColumns} data={users} />
+      </section>
+    </div>
+  );
+}

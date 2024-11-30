@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {
   MessagesSquare,
@@ -24,59 +22,46 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { SideNavItem } from "@/lib/constants";
 
 const SideNavBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [activeMenuItems, setActiveMenuItems] = useState({});
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const links = [
-    {
-      title: "Dashboard",
-      href: "/clients",
-      icon: LayoutDashboard,
-      variant: "default",
-    },
-    {
-      title: "Users",
-      href: "/clients/users",
-      icon: UsersRound,
-      variant: "ghost",
-      label: "4",
-    },
-    {
-      title: "Ordrs",
-      href: "/orders",
-      icon: ShoppingCart,
-      variant: "ghost",
-      label: "22",
-    },
-    {
-      title: "Settings",
-      href: "/settings",
-      icon: Settings,
-      variant: "ghost",
-    },
-  ];
+  const toggleSubmenu = (title) => {
+    setActiveMenuItems((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }));
+  };
 
   return (
     <div
-      className={`flex-col items-center relative border-r pb-10 hidden md:block p-4 top-0 left-0 md:transition-width duration-500 ease-out ${
+      className={cn(
+        "flex-col items-center relative border-r pb-10 hidden md:block p-4 top-0 left-0 md:transition-width duration-500 ease-out",
         isCollapsed ? "w-22" : "w-64"
-      }`}
+      )}
     >
-      <div className="absolute right-[-20px] top-7">
-        <Button
+      {/* Toggle button */}
+      <div className="absolute right-[-20px] top-7 rounded-full p-1 bg-slate-100">
+        {/* <Button
           onClick={toggleSidebar}
           variant="secondary"
-          className=" rounded-full p-2"
+          className="rounded-full px-2 bg-red-500"
         >
-          <ChevronRight />
-        </Button>
+          <ChevronRight className={isCollapsed ? "" : "  rotate-180"} />
+        </Button> */}
+        <ChevronRight
+          className={isCollapsed ? "" : "  rotate-180"}
+          onClick={toggleSidebar}
+        />
       </div>
 
+      {/* Profile */}
       <div
         className={cn(
           "flex h-[52px] items-center justify-center",
@@ -100,12 +85,14 @@ const SideNavBar = () => {
           )}
         </Button>
       </div>
+
       <Separator className="my-2" />
-      <Nav isCollapsed={isCollapsed} links={links} />
+
+      <Nav isCollapsed={isCollapsed} links={SideNavItem} />
 
       {!isCollapsed && (
         <div className="flex justify-center absolute bottom-0 left-0 right-0 m-4">
-          <Card className=" pb-3 md:block">
+          <Card className="pb-3 md:block">
             <CardHeader>
               <CardTitle>Upgrade to Pro</CardTitle>
               <CardDescription>
