@@ -21,8 +21,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema } from "@/lib/ValidationZod";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
+import { Separator } from "../ui/separator";
 
 const UserForm = ({ defaultValues = {} }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -30,39 +34,66 @@ const UserForm = ({ defaultValues = {} }) => {
       firstName: "",
       middleName: "",
       lastName: "",
-      companyName: "",
       email: "",
       password: "",
       phone: "",
-      surname: "",
       gender: "",
-      createdBy: "",
+      age: "",
       Credits: 0,
+      companyName: "",
+      companyEmail: "",
+      companyPhone: "",
+      companyCategory: "",
+      companyWebsite: "",
       verified: false,
       isDisabled: false,
       disableDate: null,
-      disabledBy: "",
       isActive: true,
       role: "user",
-      googleId: null,
       profileImage: null,
     },
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setIsSubmitting(true);
+    try {
+      console.log("Form Data Submitted:", data);
+      // Simulate async API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const companyCategories = [
+    { value: "technology", label: "Technology" },
+    { value: "finance", label: "Finance" },
+    { value: "healthcare", label: "Healthcare" },
+    { value: "education", label: "Education" },
+    { value: "non-profit", label: "Non-Profit" },
+    { value: "retail", label: "Retail" },
+    { value: "hospitality", label: "Hospitality" },
+    { value: "energy", label: "Energy" },
+    { value: "manufacturing", label: "Manufacturing" },
+    { value: "other", label: "Other" },
+  ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create User</CardTitle>
-        <CardDescription>Fill in user details</CardDescription>
+        <CardTitle className="text-2xl font-bold">Create User</CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Fill in user details
+        </CardDescription>
+        <Separator className="my-4" />{" "}
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
             <FormFieldWrapper
+              className="lg:col-span-6"
               control={form.control}
               name="username"
               label="Username"
@@ -71,6 +102,7 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
+              className="lg:col-span-2"
               control={form.control}
               name="firstName"
               label="First Name"
@@ -79,6 +111,7 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
+              className="lg:col-span-2"
               control={form.control}
               name="middleName"
               label="Middle Name"
@@ -87,6 +120,7 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
+              className="lg:col-span-2"
               control={form.control}
               name="lastName"
               label="Last Name"
@@ -95,14 +129,16 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
-              name="companyName"
-              label="Company Name"
-              placeholder="Enter company name"
+              name="age"
+              label="Age"
+              placeholder="Enter Age"
               renderInput={(field) => <Input {...field} />}
             />
 
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="email"
               label="Email"
@@ -111,14 +147,7 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
-              control={form.control}
-              name="password"
-              label="Password"
-              placeholder="Enter password"
-              renderInput={(field) => <Input {...field} type="password" />}
-            />
-
-            <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="phone"
               label="Phone Number"
@@ -127,14 +156,16 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
-              name="surname"
-              label="Surname"
-              placeholder="Enter surname"
-              renderInput={(field) => <Input {...field} />}
+              name="password"
+              label="Password"
+              placeholder="Enter password"
+              renderInput={(field) => <Input {...field} type="password" />}
             />
 
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="gender"
               label="Gender"
@@ -156,14 +187,7 @@ const UserForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
-              control={form.control}
-              name="createdBy"
-              label="Created By"
-              placeholder="Enter created by"
-              renderInput={(field) => <Input {...field} />}
-            />
-
-            <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="Credits"
               label="Credits"
@@ -171,31 +195,51 @@ const UserForm = ({ defaultValues = {} }) => {
               renderInput={(field) => <Input {...field} type="number" />}
             />
 
+            {/* Active Status */}
             <FormFieldWrapper
+              className="lg:col-span-2 flex flex-col space-y-4"
+              control={form.control}
+              name="isActive"
+              label="Active Status"
+              renderInput={(field) => (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={(value) => field.onChange(value)}
+                />
+              )}
+              description="Enable or disable this contact"
+            />
+
+            <FormFieldWrapper
+              className="lg:col-span-2 flex flex-col space-y-4"
               control={form.control}
               name="verified"
               label="Verified"
               renderInput={(field) => (
                 <Switch
                   checked={field.value}
-                  onCheckedChange={field.onChange}
+                  onCheckedChange={(value) => field.onChange(value)}
                 />
               )}
+              description="Enable or disable this Verified"
             />
 
             <FormFieldWrapper
+              className="lg:col-span-2 flex flex-col space-y-4"
               control={form.control}
               name="isDisabled"
               label="Disabled"
               renderInput={(field) => (
                 <Switch
                   checked={field.value}
-                  onCheckedChange={field.onChange}
+                  onCheckedChange={(value) => field.onChange(value)}
                 />
               )}
+              description="Enable or disable this Disabled"
             />
 
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="role"
               label="Role"
@@ -210,36 +254,105 @@ const UserForm = ({ defaultValues = {} }) => {
                   <SelectContent>
                     <SelectItem value="user">User</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="publisher">Publisher</SelectItem>
                     <SelectItem value="superAdmin">Super Admin</SelectItem>
                   </SelectContent>
                 </Select>
               )}
             />
 
+            <CardHeader className="col-span-6">
+              <CardTitle className="text-2xl font-bold">
+                Company Details
+              </CardTitle>
+              <CardDescription className="text-muted-foreground mb-6">
+                Fill in company details
+              </CardDescription>
+              <Separator className="" />
+            </CardHeader>
+
             <FormFieldWrapper
+              className="lg:col-span-6"
               control={form.control}
-              name="isActive"
-              label="Active Status"
+              name="companyName"
+              label="Company Name"
+              placeholder="Enter company name"
+              renderInput={(field) => <Input {...field} />}
+            />
+
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="companyEmail"
+              label="Company Email"
+              placeholder="Enter email"
+              renderInput={(field) => <Input {...field} type="email" />}
+            />
+
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="companyPhone"
+              label="Company Phone Number"
+              placeholder="Enter phone number"
+              renderInput={(field) => <Input {...field} type="tel" />}
+            />
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="companyWebsite"
+              label="Company Website"
+              placeholder="Company Website"
+              renderInput={(field) => <Input {...field} />}
+            />
+
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="category"
+              label="Category"
               renderInput={(field) => (
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => field.onChange(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {companyCategories.map((category) => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               )}
             />
           </CardContent>
+
+          {/* Form Footer */}
+          <CardFooter className="flex justify-end space-x-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => form.reset()}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button className="w-32" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Create User"
+              )}
+            </Button>
+          </CardFooter>
         </form>
       </Form>
-
-      <CardFooter className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => form.reset()}>
-          Cancel
-        </Button>
-        <Button className="w-full" type="submit">
-          Create User
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

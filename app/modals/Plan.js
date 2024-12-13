@@ -55,7 +55,9 @@ const planSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Plan", planSchema);
+const Plan = mongoose.models?.Plan || mongoose.model("Plan", planSchema);
+
+export default Plan;
 // Email Credit: Unlimited / Unlimited Per Day
 
 // SMS Credit Unlimited / Unlimited Per Day

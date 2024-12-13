@@ -7,25 +7,26 @@ const settingSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     messageSetting: {
-      messageLength: { type: String, required: true },
-      messageLength: { type: String, required: true },
+      maxLength: { type: String, required: true }, // Adjusted field name
+      minLength: { type: String, required: true },
     },
     smsSetting: {
-      messageLength: { type: String, required: true },
-      messageLength: { type: String, required: true },
+      maxLength: { type: String, required: true }, // Adjusted field name
+      minLength: { type: String, required: true },
     },
     emailSetting: {
-      messageLength: { type: String, required: true },
-      messageLength: { type: String, required: true },
+      maxLength: { type: String, required: true }, // Adjusted field name
+      minLength: { type: String, required: true },
     },
     whatsappSetting: {
-      messageLength: { type: String, required: true },
-      messageLength: { type: String, required: true },
+      maxLength: { type: String, required: true }, // Adjusted field name
+      minLength: { type: String, required: true },
     },
-    notifications: { type: String, required: true },
-
+    notifications: {
+      type: String,
+      required: true,
+    },
     campaignTypes: [
       {
         name: { type: String, required: true },
@@ -37,4 +38,7 @@ const settingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Setting", settingSchema);
+const Setting =
+  mongoose.models?.Setting || mongoose.model("Setting", settingSchema);
+
+export default Setting;

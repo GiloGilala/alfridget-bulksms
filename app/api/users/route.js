@@ -1,30 +1,24 @@
-// GET /api/users
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import User from "@/models/User";
-import { auth } from "next-auth"; // Ensure to import auth
+import { auth } from "@/auth";
+import User from "@/app/modals/User";
 
-// GET all users
-export const GET = async (request) => {
+export const GET = async (req, res) => {
   await dbConnect();
+
+  const session = await auth();
+
+  console.log("User get: ", session);
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const users = await User.find();
-
-    const userData = users.map((user) => ({
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      Credits: user.Credits,
-      verified: user.verified,
-    }));
-
-    return NextResponse.json(userData, { status: 200 });
+    return NextResponse.json(users, { status: 200 });
   } catch (error) {
     console.error("Error fetching users:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 };

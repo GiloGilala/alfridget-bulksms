@@ -407,10 +407,10 @@ export const campaignsData = [
 
 export const contactsData = [
   {
-    id: "1", // Reference to User model
+    id: 1,
     name: "John Doe",
     phone: "+1234567890",
-    groupId: "63f20f77b4c13c3c50f8f222", // Reference to Group model
+    groupId: "63f20f77b4c13c3c50f8f222",
     email: "johndoe@example.com",
     location: "New York",
     country: "USA",
@@ -418,7 +418,7 @@ export const contactsData = [
     notes: "Friend from college",
   },
   {
-    id: "2",
+    id: 2,
     name: "Jane Smith",
     phone: "+9876543210",
     groupId: "63f20f77b4c13c3c50f8f444",
@@ -428,7 +428,7 @@ export const contactsData = [
     state: "California",
   },
   {
-    id: "3",
+    id: 3,
     name: "Bob Johnson",
     phone: "+5551234567",
     groupId: "63f20f77b4c13c3c50f8f666",
@@ -439,7 +439,7 @@ export const contactsData = [
     notes: "Business partner",
   },
   {
-    id: "4",
+    id: 4,
     name: "Alice Williams",
     phone: "+7654321098",
     groupId: "63f20f77b4c13c3c50f8f888",
@@ -449,7 +449,7 @@ export const contactsData = [
     state: "Texas",
   },
   {
-    id: "5",
+    id: 5,
     name: "Mike Davis",
     phone: "+9012345678",
     groupId: "63f20f77b4c13c3c50f8f000",
@@ -460,7 +460,7 @@ export const contactsData = [
     notes: "Old friend",
   },
   {
-    id: "6",
+    id: 6,
     name: "Emily Chen",
     phone: "+1234567890",
     groupId: "63f20f77b4c13c3c50f8f222",
@@ -470,7 +470,7 @@ export const contactsData = [
     state: "California",
   },
   {
-    id: "7",
+    id: 7,
     name: "David Lee",
     phone: "+9876543210",
     groupId: "63f20f77b4c13c3c50f8f444",
@@ -480,7 +480,7 @@ export const contactsData = [
     state: "Washington",
   },
   {
-    id: "8",
+    id: 8,
     name: "Sophia Patel",
     phone: "+5551234567",
     groupId: "63f20f77b4c13c3c50f8f666",
@@ -491,7 +491,7 @@ export const contactsData = [
     notes: "Colleague",
   },
   {
-    id: "9",
+    id: 9,
     name: "Ava White",
     phone: "+9012345678",
     groupId: "63f20f77b4c13c3c50f8f000",
@@ -1138,8 +1138,9 @@ export const transactionsData = [
   },
 ];
 
-export const users = [
+export const usersData = [
   {
+    id: 1,
     username: "johnDoe",
     firstName: "John",
     lastName: "Doe",
@@ -1153,6 +1154,7 @@ export const users = [
     role: "user",
   },
   {
+    id: 2,
     username: "janeDoe",
     firstName: "Jane",
     middleName: "Anne",
@@ -1167,6 +1169,7 @@ export const users = [
     role: "admin",
   },
   {
+    id: 3,
     username: "bobSmith",
     firstName: "Bob",
     lastName: "Smith",
@@ -1180,6 +1183,7 @@ export const users = [
     role: "publisher",
   },
   {
+    id: 4,
     username: "aliceJohnson",
     firstName: "Alice",
     middleName: "Mary",
@@ -1194,6 +1198,7 @@ export const users = [
     role: "user",
   },
   {
+    id: 5,
     username: "mikeBrown",
     firstName: "Mike",
     lastName: "Brown",
@@ -1207,6 +1212,7 @@ export const users = [
     role: "admin",
   },
   {
+    id: 6,
     username: "emmaDavis",
     firstName: "Emma",
     middleName: "Taylor",
@@ -1221,6 +1227,7 @@ export const users = [
     role: "publisher",
   },
   {
+    id: 7,
     username: "davidMiller",
     firstName: "David",
     lastName: "Miller",
@@ -1234,6 +1241,7 @@ export const users = [
     role: "user",
   },
   {
+    id: 8,
     username: "sarahTaylor",
     firstName: "Sarah",
     middleName: "Jessica",
@@ -1248,6 +1256,7 @@ export const users = [
     role: "admin",
   },
   {
+    id: 9,
     username: "kevinWhite",
     firstName: "Kevin",
     lastName: "White",
@@ -1261,6 +1270,7 @@ export const users = [
     role: "publisher",
   },
   {
+    id: 10,
     username: "oliviaMartin",
     firstName: "Olivia",
     middleName: "Sophia",

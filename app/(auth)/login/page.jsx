@@ -16,13 +16,71 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import toast from "react-hot-toast";
+import myAxios from "@/lib/axiosConfig";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
-const ResetPassword = () => {
-  const [rememberMe, setRememberMe] = useState(false);
+const Login = () => {
+  const [formData, setFormData] = useState({
+    email: "john1@gmail.com",
+    password: "12345678",
+    rememberMe: "",
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleRememberMe = () => {
-    setRememberMe(!rememberMe);
+  const router = useRouter();
+
+  // password: "12345678",
+  // email: "john1@gmail.com",
+  // phone: "09030904384",
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await myAxios.post("/authentication/login", formData);
+  //     console.log("res.data :", res.data);
+  //     if (res.data.success) {
+  //       toast.success(res.data.message);
+  //       // Optionally, you can reset the form here:
+  //       router.push("/clients/sms");
+  //     }
+  //   } catch (error) {
+  //     console.error("Unexpected error:", error);
+  //     toast.error("An error occurred while creating the user.");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.password,
+      });
+      console.log(res);
+
+      if (res.ok) {
+        setLoading(false);
+        router.push("/clients/sms");
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      toast.error("An error occurred while logging in.");
+    }
+  };
+
   return (
     <>
       {/* <div className="md:hidden">
@@ -43,13 +101,13 @@ const ResetPassword = () => {
       </div> */}
       <div className="container relative hidden h-svh flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
-          href="/examples/authentication"
+          href="/signup"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
-          Login
+          Signup
         </Link>
         <div
           className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"
@@ -102,20 +160,35 @@ const ResetPassword = () => {
               <CardContent className="grid gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="m@example.com" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="me@example.com"
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-2">
                     <Checkbox
-                      id="remember-me"
-                      checked={rememberMe}
-                      onChange={handleRememberMe}
+                      id="rememberMe"
+                      checked={formData.rememberMe}
+                      onCheckedChange={(checked) =>
+                        setFormData({ ...formData, terms: checked })
+                      }
                     />
-                    <Label htmlFor="remember-me">Remember Me</Label>
+                    <Label htmlFor="rememberMe">Remember Me</Label>
                   </div>
                   <p className=" text-center text-sm ">
                     <Link
@@ -130,7 +203,9 @@ const ResetPassword = () => {
               </CardContent>
               <Link href="/clients">
                 <CardFooter>
-                  <Button className="w-full">Login</Button>
+                  <Button onClick={handleSubmit} className="w-full">
+                    Login
+                  </Button>
                 </CardFooter>
               </Link>
 
@@ -182,7 +257,7 @@ const ResetPassword = () => {
                     href="/signup"
                     className="text-blue-600 hover:underline"
                   >
-                    SignUp
+                    Login
                   </Link>
                 </p>
               </CardFooter>
@@ -194,4 +269,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default Login;

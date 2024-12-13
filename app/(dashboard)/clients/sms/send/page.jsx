@@ -1,18 +1,28 @@
 "use client";
 import { PageHeader } from "@/components/ui/page-header";
-import ContactForm from "@/components/contact/ContactForm";
 import toast from "react-hot-toast";
-import { campaignsData, groupsData } from "@/components/tables/data";
+import { groupsData } from "@/components/tables/data";
 import CampaignForm from "@/components/campaign/CampaignForm";
+import { useSession } from "next-auth/react";
+import { createCampaign } from "@/actions/campaign";
 
 export default function AddContact() {
+  const { data: session } = useSession();
+
+  // if (!session) {
+  //   return <div>You are not signed in</div>;
+  // }
+
   const handleSubmit = async (data) => {
     try {
-      toast.success("Dashborad created successfully!");
-      console.log("Response:", data);
-      // Optionally: refresh data or update local state
+      const campaign = await createCampaign({
+        ...data,
+        userId: session?.user?.id,
+      });
+      console.log("Campaign created:", campaign);
+      toast.success("Campaign created successfully!");
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
       toast.error("Failed to create the group. Please try again.");
     }
   };
@@ -27,7 +37,7 @@ export default function AddContact() {
       <section className="space-y-6">
         <div>
           {/* <h1>Create/Update Group</h1> */}
-          <CampaignForm handleSubmit={handleSubmit} groups={campaignsData} />
+          <CampaignForm handleSubmit={handleSubmit} groups={groupsData} />
         </div>
       </section>
     </div>

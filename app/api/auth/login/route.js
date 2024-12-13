@@ -1,14 +1,19 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConn";
-import User from "@/models/User";
+import User from "@/app/modals/User";
 
 // POST /api/auth/login
-export const POST = async (request) => {
+export const POST = async (req) => {
   await dbConnect();
 
   try {
-    const { identifier, password } = await request.json();
+    const { email, password, phone } = await req.json();
+
+    let identifier = email || phone;
+    // console.log("identifier :", identifier);
+    // console.log("email :", email);
+    // console.log("password :", password);
 
     // Validate required fields
     if (!identifier || !password) {
@@ -44,14 +49,14 @@ export const POST = async (request) => {
       email: user.email,
       phone: user.phone,
       role: user.role,
-      Credits: user.Credits,
+      credits: user.credits,
       verified: user.verified,
     };
 
     // Optionally, you could generate a JWT here for session management
 
     return NextResponse.json(
-      { message: "Login successful", user: userData },
+      { message: "Login successful", success: true, user: userData },
       { status: 200 }
     );
   } catch (error) {

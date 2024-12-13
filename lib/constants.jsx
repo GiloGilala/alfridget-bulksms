@@ -11,7 +11,7 @@ import {
 export const SideNavItem = [
   {
     title: "Dashboard",
-    href: "/clients",
+    href: "/",
     icon: LayoutDashboard,
     visible: ["superAdmin", "admin", "user"],
     variant: "default",
@@ -22,29 +22,58 @@ export const SideNavItem = [
     href: "#",
     icon: UsersRound,
     variant: "ghost",
-    visible: ["superAdmin", "admin"],
-    label: "43",
+    visible: ["superAdmin", "admin", "user"],
+    // label: "43",
     submenu: true,
     subMenuItems: [
-      { title: "Users", href: "/clients/users" },
-      { title: "Add", href: "/clients/users/add" },
-      { title: "Active", href: "/users/active" },
-      { title: "Inactive", href: "/users/inactive" },
+      {
+        title: "Users",
+        href: "/clients/users",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Add",
+        href: "/clients/users/add",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      // { title: "Active", href: "/users/active",visible: ["superAdmin", "admin"] },
+      // { title: "Inactive", href: "/users/inactive" },
     ],
   },
+
   {
     title: "Contacts",
     href: "#",
     icon: UserPlus,
     visible: ["superAdmin", "user"],
     submenu: true,
-    label: "23",
+    // label: "23",
     subMenuItems: [
-      { title: "Contacts", href: "/clients/contacts/" },
-      { title: "Add Contact", href: "/clients/contacts/add" },
-      { title: "Groups", href: "/clients/contacts/groups" },
-      { title: "Add Group", href: "/clients/contacts/groups/add" }, // Updated for uniqueness
-      { title: "Import Contacts", href: "/clients/contacts/import" },
+      {
+        title: "Contacts",
+        href: "/clients/contacts",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Add Contact",
+        href: "/clients/contacts/add",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Groups",
+        href: "/clients/contacts/groups",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Add Group",
+        href: "/clients/contacts/groups/add",
+        visible: ["superAdmin", "admin", "user"],
+      }, // Updated for uniqueness
+      {
+        title: "Import Contacts",
+        href: "/clients/contacts/import",
+        visible: ["superAdmin", "admin", "user"],
+      },
     ],
   },
   // {
@@ -81,15 +110,23 @@ export const SideNavItem = [
   // },
   {
     title: "SMS",
-    href: "/sms",
+    href: "#",
     icon: Smartphone,
     visible: ["superAdmin", "user"],
     submenu: true,
     subMenuItems: [
-      { title: "Send SMS", href: "/clients/sms/send" },
-      { title: "SMS History", href: "/clients//sms/history" },
-      { title: "SMS Templates", href: "/sms/templates" },
-      { title: "SMS Settings", href: "/sms/settings" },
+      {
+        title: "Send SMS",
+        href: "/clients/sms/send",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "SMS History",
+        href: "/clients/sms",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      // { title: "SMS Templates", href: "/sms/templates" },
+      // { title: "SMS Settings", href: "/sms/settings" },
     ],
   },
   // {
@@ -121,28 +158,83 @@ export const SideNavItem = [
   //   ],
   // },
   {
-    title: "Settings",
-    href: "/settings",
-    icon: Settings,
-    visible: ["superAdmin", "admin", "user"],
-    submenu: true,
-    subMenuItems: [
-      { title: "Account", href: "/settings/account" },
-      { title: "Privacy", href: "/settings/privacy" },
-      { title: "Security", href: "/settings/security" },
-    ],
-  },
-  {
     title: "Plans",
-    href: "/plans",
+    href: "#",
     icon: DollarSign,
     visible: ["superAdmin", "admin", "user"],
     submenu: true,
     subMenuItems: [
-      { title: "Plans", href: "/plans" },
+      {
+        title: "Plans",
+        href: "/plans",
+        visible: ["superAdmin", "admin", "user"],
+      },
       { title: "Add Plan", href: "/plans/add" },
     ],
   },
+  {
+    title: "Billing",
+    href: "#",
+    icon: UsersRound,
+    variant: "ghost",
+    visible: ["superAdmin", "admin", "user"],
+    // label: "43",
+    submenu: true,
+    subMenuItems: [
+      {
+        title: "Billing History",
+        href: "/billing/topup",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Billing History",
+        href: "/billing/History",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Payment Methods",
+        href: "/billing/paymentMethods",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      // { title: "Active", href: "/users/active",visible: ["superAdmin", "admin"] },
+      // { title: "Inactive", href: "/users/inactive" },
+    ],
+  },
+  {
+    title: "Settings",
+    href: "#",
+    icon: Settings,
+    visible: ["superAdmin", "admin", "user"],
+    submenu: true,
+    subMenuItems: [
+      {
+        title: "Account",
+        href: "/settings/account",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Service Providers",
+        href: "/admin/providers",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Add Provider",
+        href: "/admin/accounts/add",
+        visible: ["superAdmin", "admin"],
+      },
+      {
+        title: "Privacy",
+        href: "/settings/privacy",
+        visible: ["superAdmin", "admin", "user"],
+      },
+      {
+        title: "Security",
+        href: "/settings/security",
+        visible: ["superAdmin", "admin", "user"],
+      },
+    ],
+  },
+
   {
     title: "Help",
     href: "/help",

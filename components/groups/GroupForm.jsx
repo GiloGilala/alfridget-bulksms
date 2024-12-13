@@ -3,8 +3,7 @@
 import React, { useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { groupSchema } from "@/lib/ValidationZod";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,6 +21,8 @@ import { Combobox } from "@/components/ui/combobox"; // Import the reusable Comb
 
 const GroupForm = ({ handleSubmit, contacts = [] }) => {
   const [selectedContacts, setSelectedContacts] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -32,6 +33,8 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true);
+
     try {
       const formData = {
         ...data,
@@ -40,6 +43,8 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
       await handleSubmit(formData);
     } catch (error) {
       console.error("Form submission error:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -50,11 +55,18 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
 
   return (
     <Card>
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Create Group</CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Fill in contact details
+        </CardDescription>
+      </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <CardContent className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
             {/* Group Name */}
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="name"
               label="Group Name"
@@ -62,33 +74,9 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
               renderInput={(field) => <Input {...field} />}
             />
 
-            {/* Description */}
-            <FormFieldWrapper
-              control={form.control}
-              name="description"
-              label="Description"
-              placeholder="Enter group description"
-              renderInput={(field) => (
-                <Textarea {...field} className="min-h-[100px]" />
-              )}
-            />
-
-            {/* Active Status */}
-            <FormFieldWrapper
-              control={form.control}
-              name="isActive"
-              label="Active Status"
-              renderInput={(field) => (
-                <Switch
-                  checked={field.value}
-                  onChange={(checked) => field.onChange(checked)}
-                />
-              )}
-              description="Enable or disable this group"
-            />
-
             {/* Group Members */}
             <FormFieldWrapper
+              className="lg:col-span-3 sm:col-span-2"
               control={form.control}
               name="contactIds"
               label="Group Members"
@@ -102,22 +90,56 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
               )}
               description="Select members for this group"
             />
-          </div>
 
-          {/* Form Actions */}
-          <div className="flex justify-end space-x-4">
+            {/* Description */}
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="description"
+              label="Description"
+              placeholder="Enter group description"
+              renderInput={(field) => (
+                <Textarea {...field} className="min-h-[100px]" />
+              )}
+            />
+
+            {/* Active Status */}
+            <FormFieldWrapper
+              className="lg:col-span-3 flex flex-col space-y-4"
+              control={form.control}
+              name="isActive"
+              label="Active Status"
+              renderInput={(field) => (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={(value) => field.onChange(value)}
+                />
+              )}
+              description="Enable or disable this group"
+            />
+          </CardContent>
+
+          {/* Form Footer */}
+          <CardFooter className="flex justify-end space-x-4">
             <Button
               type="button"
               variant="outline"
-              onClick={() => {
-                form.reset();
-                setSelectedContacts([]);
-              }}
+              onClick={() => form.reset()}
+              disabled={isSubmitting}
             >
               Cancel
             </Button>
-            <Button type="submit">Create Group</Button>
-          </div>
+            <Button className="w-32" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Create Group"
+              )}
+            </Button>
+          </CardFooter>
         </form>
       </Form>
     </Card>

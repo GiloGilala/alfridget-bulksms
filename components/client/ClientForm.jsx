@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -50,13 +50,24 @@ const initialData = {
 };
 
 const ClientForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(clientSchema),
     defaultValues: initialData,
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setIsSubmitting(true);
+    try {
+      console.log("Form Data Submitted:", data);
+      // Simulate async API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -67,9 +78,10 @@ const ClientForm = () => {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <CardContent className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
             {/* Company Information */}
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="companyName"
               render={({ field }) => (
@@ -83,6 +95,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="companyCategory"
               render={({ field }) => (
@@ -96,6 +109,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="companySubcategory"
               render={({ field }) => (
@@ -111,6 +125,7 @@ const ClientForm = () => {
 
             {/* Contact Information */}
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -124,6 +139,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="emailAlt"
               render={({ field }) => (
@@ -141,6 +157,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="phone"
               render={({ field }) => (
@@ -154,6 +171,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="phoneAlt"
               render={({ field }) => (
@@ -173,6 +191,7 @@ const ClientForm = () => {
 
             {/* Address Information */}
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="county"
               render={({ field }) => (
@@ -186,6 +205,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="state"
               render={({ field }) => (
@@ -199,6 +219,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="streetName"
               render={({ field }) => (
@@ -214,6 +235,7 @@ const ClientForm = () => {
 
             {/* Additional Information */}
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="credits"
               render={({ field }) => (
@@ -227,6 +249,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="companyBranch"
               render={({ field }) => (
@@ -240,6 +263,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="status"
               render={({ field }) => (
@@ -264,6 +288,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="services"
               render={({ field }) => (
@@ -285,6 +310,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="comments"
               render={({ field }) => (
@@ -298,6 +324,7 @@ const ClientForm = () => {
               )}
             />
             <FormField
+              className="lg:col-span-3"
               control={form.control}
               name="createdBy"
               render={({ field }) => (
@@ -311,8 +338,26 @@ const ClientForm = () => {
               )}
             />
           </CardContent>
-          <CardFooter>
-            <Button type="submit">Submit</Button>
+          {/* Form Footer */}
+          <CardFooter className="flex justify-end space-x-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => form.reset()}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button className="w-32" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Create User"
+              )}
+            </Button>
           </CardFooter>
         </form>
       </Form>

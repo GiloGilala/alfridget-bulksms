@@ -30,13 +30,13 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
   const form = useForm({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-      location: "",
-      country: "",
-      state: "",
-      notes: "",
+      name: "Jane Doe",
+      phone: "+234070567890",
+      email: "doe@example.com",
+      location: "Lagos",
+      country: "Nigeria",
+      state: "LA",
+      notes: "Preferred contact time: afternoons",
       isActive: true,
       groupId: "",
       ...defaultValues,
@@ -66,9 +66,10 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <CardContent className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <CardContent className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
             {/* Name */}
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="name"
               label="Name"
@@ -78,6 +79,7 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
 
             {/* Phone */}
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="phone"
               label="Phone Number"
@@ -87,6 +89,7 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
 
             {/* Email */}
             <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="email"
               label="Email"
@@ -94,45 +97,8 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
               renderInput={(field) => <Input {...field} />}
             />
 
-            {/* Location */}
             <FormFieldWrapper
-              control={form.control}
-              name="location"
-              label="Location"
-              placeholder="Enter location"
-              renderInput={(field) => <Input {...field} />}
-            />
-
-            {/* Country */}
-            <FormFieldWrapper
-              control={form.control}
-              name="country"
-              label="Country"
-              placeholder="Enter country"
-              renderInput={(field) => <Input {...field} />}
-            />
-
-            {/* State */}
-            <FormFieldWrapper
-              control={form.control}
-              name="state"
-              label="State"
-              placeholder="Enter state"
-              renderInput={(field) => <Input {...field} />}
-            />
-
-            {/* Notes */}
-            <FormFieldWrapper
-              control={form.control}
-              name="notes"
-              label="Notes"
-              placeholder="Enter notes"
-              renderInput={(field) => (
-                <Textarea {...field} className="min-h-[100px]" />
-              )}
-            />
-
-            <FormFieldWrapper
+              className="lg:col-span-3"
               control={form.control}
               name="groupId"
               label="Group"
@@ -166,8 +132,51 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
               )}
             />
 
+            {/* Location */}
+            <FormFieldWrapper
+              className="sm:col-span-2 lg:col-span-6"
+              control={form.control}
+              name="location"
+              label="Location"
+              placeholder="Enter location"
+              renderInput={(field) => <Input {...field} />}
+            />
+
+            {/* Country */}
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="country"
+              label="Country"
+              placeholder="Enter country"
+              renderInput={(field) => <Input {...field} />}
+            />
+
+            {/* State */}
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="state"
+              label="State"
+              placeholder="Enter state"
+              renderInput={(field) => <Input {...field} />}
+            />
+
+            {/* Notes */}
+            <FormFieldWrapper
+              className="lg:col-span-3"
+              control={form.control}
+              name="notes"
+              label="Notes"
+              placeholder="Enter notes"
+              renderInput={(field) => (
+                <Textarea {...field} className="min-h-[100px]" />
+              )}
+            />
+
             {/* Active Status */}
             <FormFieldWrapper
+              className="lg:col-span-3 flex flex-col space-y-4"
               control={form.control}
               name="isActive"
               label="Active Status"

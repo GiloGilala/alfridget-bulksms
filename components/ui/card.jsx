@@ -65,7 +65,8 @@ const CardDetails = React.forwardRef(
       title,
       description,
       footer,
-      icon: Icon, // Capitalize `icon` for JSX usage
+      icon: Icon,
+      iconColor,
       children,
       ...props
     },
@@ -88,7 +89,7 @@ const CardDetails = React.forwardRef(
                 {title}
               </h3>
             )}
-            {Icon && <Icon className="h-6 w-6 text-muted-foreground" />}
+            {Icon && <Icon className={`h-6 w-6 ${iconColor}`} />}
             {/* Render icon component */}
           </div>
 

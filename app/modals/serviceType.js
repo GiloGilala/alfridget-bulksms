@@ -38,4 +38,8 @@ const serviceTypeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("ServiceType", serviceTypeSchema);
+const ServiceType =
+  mongoose.models?.ServiceType ||
+  mongoose.model("ServiceType", serviceTypeSchema);
+
+export default ServiceType;

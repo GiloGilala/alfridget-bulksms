@@ -112,7 +112,7 @@ const Nav = ({ links, isCollapsed }) => {
                             }),
                             link.variant === "default" &&
                               "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                            "justify-start flex items-center"
+                            "justify-start flex items-center my-1"
                           )}
                         >
                           {subLink.icon && (

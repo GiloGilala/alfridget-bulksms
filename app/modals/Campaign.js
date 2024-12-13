@@ -27,7 +27,6 @@ const campaignSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     messageToReply: {
       type: String,
       required: true,
@@ -53,9 +52,7 @@ const campaignSchema = new mongoose.Schema(
     },
     scheduleDate: {
       type: Date,
-      required: false, // Optional field for scheduling campaigns
     },
-
     sentAt: {
       type: Date,
     },
@@ -70,4 +67,7 @@ const campaignSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Campaign", campaignSchema);
+const Campaign =
+  mongoose.models?.Campaign || mongoose.model("Campaign", campaignSchema);
+
+export default Campaign;

@@ -87,10 +87,7 @@ const clientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    dateCreated: {
-      type: Date,
-      default: Date.now,
-    },
+
     isActive: {
       type: Boolean,
       required: false,
@@ -101,6 +98,7 @@ const clientSchema = new mongoose.Schema(
   }
 );
 
-const Client = mongoose.model("Client", clientSchema);
+const Client =
+  mongoose.models?.Client || mongoose.model("Client", clientSchema);
 
-module.exports = Client;
+export default Client;

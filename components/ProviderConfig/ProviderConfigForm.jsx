@@ -48,19 +48,23 @@ const ProviderConfigForm = ({ defaultValues = {} }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create Provider Config</CardTitle>
-        <CardDescription>Fill in provider details</CardDescription>
+        <CardTitle className="text-2xl font-bold">
+          Create Provider Config
+        </CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Fill in provider details
+        </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
             <FormFieldWrapper
               control={form.control}
               name="providerName"
               label="Provider Name"
               placeholder="Enter provider name"
               renderInput={(field) => <Input {...field} />}
-              className="lg:col-span-3"
+              className="lg:col-span-6"
             />
 
             <FormFieldWrapper
@@ -110,15 +114,6 @@ const ProviderConfigForm = ({ defaultValues = {} }) => {
 
             <FormFieldWrapper
               control={form.control}
-              name="providerUsername"
-              label="Provider Username"
-              placeholder="Enter provider username"
-              renderInput={(field) => <Input {...field} />}
-              className="lg:col-span-1"
-            />
-
-            <FormFieldWrapper
-              control={form.control}
               name="providerPassword"
               label="Provider Password"
               placeholder="Enter provider password"
@@ -156,16 +151,16 @@ const ProviderConfigForm = ({ defaultValues = {} }) => {
             />
 
             <FormFieldWrapper
+              className="lg:col-span-3 flex flex-col space-y-4"
               control={form.control}
               name="isActive"
               label="Active Status"
               renderInput={(field) => (
                 <Switch
                   checked={field.value}
-                  onCheckedChange={field.onChange}
+                  onCheckedChange={(value) => field.onChange(value)}
                 />
               )}
-              className="lg:col-span-1"
             />
           </CardContent>
         </form>

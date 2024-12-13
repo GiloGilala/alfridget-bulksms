@@ -14,8 +14,7 @@ import {
 import { columns } from "@/components/tables/Columns";
 import DataTable from "@/components/tables/DataTable";
 import { tableData } from "@/components/tables/data";
-import CampaignForm from "@/components/campaign/CampaignForm";
-import PlanForm from "@/components/plan/PlanForm";
+
 import toast from "react-hot-toast";
 
 const cardData = [
@@ -25,6 +24,7 @@ const cardData = [
     value: "335",
     percentage: "+20.1%",
     description: "from last month",
+    iconColor: "text-blue-500", // Blue
   },
   {
     title: "Sent Messages",
@@ -32,6 +32,7 @@ const cardData = [
     value: "255",
     percentage: "+15.6%",
     description: "from last quarter",
+    iconColor: "text-green-500", // Green
   },
   {
     title: "Pending",
@@ -39,6 +40,7 @@ const cardData = [
     value: "161",
     percentage: "+30.8%",
     description: "from last year",
+    iconColor: "text-yellow-500", // Yellow
   },
   {
     title: "Failed Messages",
@@ -46,6 +48,7 @@ const cardData = [
     value: "54",
     percentage: "+25.9%",
     description: "from last month",
+    iconColor: "text-red-500", // Red
   },
 ];
 
@@ -64,15 +67,20 @@ const handleSubmit = async (data) => {
     toast.error("Failed to create the group. Please try again.");
   }
 };
-
+console.log("UserDashboard:");
 export default function UserDashboard() {
   return (
     <div className=" relative">
-      <PageHeader heading="User Dashboard" className=""></PageHeader>
+      <PageHeader heading="Dashboard" className=""></PageHeader>
       <section className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {cardData.map((data, index) => (
-            <CardDetails key={index} title={data.title} icon={data.icon}>
+            <CardDetails
+              key={index}
+              title={data.title}
+              icon={data.icon}
+              iconColor={data.iconColor}
+            >
               <div className="text-2xl font-bold">{data.value}</div>
               <p className="text-xs text-muted-foreground">
                 {data.percentage} {data.description}
@@ -80,9 +88,8 @@ export default function UserDashboard() {
             </CardDetails>
           ))}
         </div>
-        {/* <DataTable columns={columns} data={tableData} /> */}
-        <PlanForm handleSubmit={handleSubmit} />
-        {/* <CampaignForm groups={groups} handleSubmit={handleSubmit} /> */}
+        <DataTable columns={columns} data={tableData} />
+        {/* <PlanForm handleSubmit={handleSubmit} /> */}
       </section>
     </div>
   );

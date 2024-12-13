@@ -61,4 +61,8 @@ const providerConfigSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("ProviderConfig", providerConfigSchema);
+const ProviderConfig =
+  mongoose.models?.ProviderConfig ||
+  mongoose.model("ProviderConfig", providerConfigSchema);
+
+export default ProviderConfig;

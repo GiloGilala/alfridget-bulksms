@@ -16,13 +16,111 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import * as z from "zod";
+import toast from "react-hot-toast";
+import myAxios from "@/lib/axiosConfig"; // Importing axios instance
+import { useRouter } from "next/navigation";
+
+const signupSchema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+    confirmPassword: z.string(),
+    username: z.string().min(3, "Username must be at least 3 characters long"),
+    email: z.string().email("Invalid email address"),
+    firstName: z
+      .string()
+      .min(2, "First name must be at least 2 characters long"),
+    lastName: z.string().min(2, "Last name must be at least 2 characters long"),
+    phone: z
+      .string()
+      .regex(
+        /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+        "Invalid phone number"
+      ),
+    terms: z.boolean(),
+  })
+  .refine(
+    (values) => {
+      return values.password === values.confirmPassword;
+    },
+    {
+      message: "Passwords must match!",
+      path: ["confirmPassword"],
+    }
+  );
 
 const SignUp = () => {
-  const [rememberMe, setRememberMe] = useState(false);
+  const [formData, setFormData] = useState({
+    password: "12345678",
+    confirmPassword: "12345678",
+    username: "JohnDoe1",
+    email: "john1@gmail.com",
+    firstName: "John1",
+    lastName: "Doe1",
+    phone: "09030904384",
+    terms: false,
+  });
+  const [errors, setErrors] = useState({});
 
-  const handleRememberMe = () => {
-    setRememberMe(!rememberMe);
+  const router = useRouter();
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Validate form data using Zod schema
+      signupSchema.parse(formData);
+
+      const data = {
+        password: "12345678",
+        confirmPassword: "12345678",
+        username: "JohnDoe1",
+        email: "john1@gmail.com",
+        firstName: "John1",
+        lastName: "Doe1",
+        phone: "09030904384",
+        terms: false,
+      };
+
+      const res = await myAxios.post("/authentication/signup", formData);
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        // Optionally, you can reset the form here:
+        setFormData({
+          password: "",
+          confirmPassword: "",
+          username: "",
+          email: "",
+          firstName: "",
+          lastName: "",
+          phone: "",
+          terms: false,
+        });
+        router.push("/login");
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Handling validation errors from Zod
+        const fieldErrors = error.errors.reduce((acc, err) => {
+          acc[err.path[0]] = err.message;
+          return acc;
+        }, {});
+        setErrors(fieldErrors);
+      } else {
+        console.error("Unexpected error:", error);
+        toast.error("An error occurred while creating the user.");
+      }
+    }
+  };
+
   return (
     <>
       {/* <div className="md:hidden">
@@ -83,7 +181,7 @@ const SignUp = () => {
           </div>
         </div>
         <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[550px]">
             {/* <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
                 Create an account
@@ -96,29 +194,148 @@ const SignUp = () => {
               <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl">Create an account</CardTitle>
                 <CardDescription>
-                  Enter your email below to create your account
+                  Enter your details below to create your account
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="m@example.com" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      placeholder="John"
+                    />
+                    {errors.firstName && (
+                      <p className="text-red-500">{errors.firstName}</p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      placeholder="Doe"
+                    />
+                    {errors.lastName && (
+                      <p className="text-red-500">{errors.lastName}</p>
+                    )}
+                  </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder="johnDoe"
+                  />
+                  {errors.username && (
+                    <p className="text-red-500">{errors.username}</p>
+                  )}
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="me@example.com"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500">{errors.email}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" type="phone" />
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+1 (555) 123-4567"
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500">{errors.phone}</p>
+                  )}
                 </div>
-              </CardContent>
-              <Link href="/login">
-                <CardFooter>
-                  <Button className="w-full">Create account</Button>
-                </CardFooter>
-              </Link>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className=" ">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                    {errors.password && (
+                      <p className="text-red-500">{errors.password}</p>
+                    )}
+                  </div>
+                  <div className="">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                    />
+                    {errors.confirmPassword && (
+                      <p className="text-red-500">{errors.confirmPassword}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    className="w-5 h-5"
+                    name="terms"
+                    checked={formData.terms}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, terms: checked })
+                    }
+                  />
 
+                  <Label htmlFor="termsAndConditions">I agree to the</Label>
+                  <Link
+                    href="/terms"
+                    className="underline underline-offset-4 hover:text-primary"
+                    target="_blank"
+                  >
+                    Terms of Service
+                  </Link>
+                  <Label htmlFor="termsAndConditions">and</Label>
+                  <Link
+                    href="/privacy"
+                    className="underline underline-offset-4 hover:text-primary"
+                    target="_blank"
+                  >
+                    Privacy Policy
+                  </Link>
+                </div>
+                {errors.terms && <p className="text-red-500">{errors.terms}</p>}
+              </CardContent>
+              <CardFooter>
+                <Button
+                  className="w-full"
+                  onClick={handleSubmit}
+                  disabled={!formData.terms}
+                >
+                  Create account
+                </Button>
+              </CardFooter>
               <CardFooter className="flex-col">
                 {/* <div className="space-y-4 pb-3">
                   <div className="relative">
@@ -163,10 +380,7 @@ const SignUp = () => {
                 </p>
                 <p className="text-center text-sm mt-4">
                   Already a Member?{" "}
-                  <Link
-                    href="/signin"
-                    className="text-blue-600 hover:underline"
-                  >
+                  <Link href="/login" className="text-blue-600 hover:underline">
                     Sign In
                   </Link>
                 </p>

@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/lib/dbConn";
-import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import User from "@/app/modals/User";
 // import myAxios from "@/lib/axiosConfig";
 
 const authOptions = {
@@ -23,6 +23,7 @@ const authOptions = {
         if (!credentials) {
           throw new Error("No credentials provided");
         }
+        // console.log("credentials auth:", credentials);
 
         try {
           // Find user by email
@@ -33,7 +34,6 @@ const authOptions = {
           if (!user) {
             throw new Error("No user found with this email");
           }
-
           // Check if password is correct
           const isValidPassword = await bcrypt.compare(
             credentials.password,
@@ -42,13 +42,23 @@ const authOptions = {
           if (!isValidPassword) {
             throw new Error("Incorrect password");
           }
+          console.log("credentials user:", user);
 
           // If password is correct, return user
           return {
-            id: user._id,
-            name: user.name,
+            id: user._id.toString(),
+            username: user.username,
             email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            credits: user.credits,
+            phone: user.phone,
+
             role: user.role,
+
+            profileImage: user.profileImage,
+            terms: user.terms,
+            isActive: user.isActive,
           };
         } catch (error) {
           console.error("Login error:", error.message);
@@ -59,23 +69,50 @@ const authOptions = {
   ],
 
   pages: {
-    signIn: "/auth/signin",
-    error: "/auth/error",
+    signIn: "/login",
   },
   callbacks: {
     async jwt({ token, user }) {
-      // console.log("JWT callback called with token:", token, "and user:", user);
       if (user) {
-        token.id = user.id;
-        // console.log("JWT token:", token);
+        // Merge the full user data into the JWT token
+        return {
+          ...token,
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          credits: user.credits,
+          phone: user.phone,
+
+          role: user.role,
+
+          profileImage: user.profileImage,
+          terms: user.terms,
+        };
       }
+      // console.log("JWT token:", token);
       return token;
     },
+
     async session({ session, token }) {
       if (token) {
-        session.id = token.id;
+        // Attach full user data to the session object
+        session.user = {
+          id: token.id,
+          username: token.username,
+          email: token.email,
+          firstName: token.firstName,
+          lastName: token.lastName,
+          credits: token.credits,
+          phone: token.phone,
 
-        // console.log("Session:", session);-
+          role: token.role,
+
+          profileImage: token.profileImage,
+          terms: token.terms,
+        };
+        // console.log("Session Auth:", session);
       }
       return session;
     },

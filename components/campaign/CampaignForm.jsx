@@ -31,38 +31,56 @@ import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { campaignSchema } from "@/lib/ValidationZod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { contactsData } from "../tables/data";
 
 const campaignTypes = [
   "SMS",
   "Bulk SMS",
   "Long SMS",
-  "Bulk Email",
-  "Whatsapp",
-  "MediaOutlet",
+  // "Bulk Email",
+  // "Whatsapp",
+  // "MediaOutlet",
 ];
 
-const CampaignForm = ({ defaultValues, groups = [], handleSubmit }) => {
+const CampaignForm = ({
+  defaultValues,
+  groups = [],
+  contacts = [],
+  handleSubmit,
+}) => {
   const form = useForm({
     resolver: zodResolver(campaignSchema),
     defaultValues: defaultValues || {
-      title: "",
-      from: "",
+      title: "Gilo Testing",
+      from: "2347030904385",
       type: "",
       unicode: false,
       message: "",
-      messageToReply: "",
-      credit: 0,
+      messageToReply: "Message from Alfridget ",
+      credit: 20,
       groupId: "",
-      status: "pending",
+      status: "",
       scheduleDate: null,
+      recipients: ["+2348035538208,+2348062846800,+2348056026428"],
     },
   });
 
   const onSubmit = async (data) => {
+    // Process recipients string into an array
+    const recipients = data.recipients
+      ? data.recipients.split(",").map((recipient) => recipient.trim())
+      : [];
+
+    // Attach the recipients array to the form data
+    const formData = {
+      ...data,
+      recipients,
+    };
+
     if (handleSubmit) {
-      await handleSubmit(data);
+      await handleSubmit(formData);
     } else {
-      console.log(data);
+      console.log(formData);
     }
   };
 
@@ -121,37 +139,54 @@ const CampaignForm = ({ defaultValues, groups = [], handleSubmit }) => {
               )}
               description="Enable for non-Latin characters"
             />
-            <div className="col-span-full">
-              <FormFieldWrapper
-                control={form.control}
-                name="message"
-                label="Message Content"
-                placeholder="Enter your message"
-                renderInput={(field) => (
-                  <Textarea {...field} className="min-h-[100px]" />
-                )}
-              />
-            </div>
-            <div className="col-span-full">
+
+            {/* <div className="col-span-full">
               <FormFieldWrapper
                 control={form.control}
                 name="messageToReply"
                 label="Reply Message"
                 placeholder="Enter the reply message"
                 renderInput={(field) => (
-                  <Textarea {...field} className="min-h-[100px]" />
+                  <Input {...field}  />
                 )}
               />
-            </div>
+            </div> */}
+
+            {/* <FormFieldWrapper
+              control={form.control}
+              name="recipients"
+              label="Recipients"
+              renderInput={(field) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select recipients" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contactsData.map((recipient) => (
+                      <SelectItem key={recipient.id} value={recipient.id}>
+                        {recipient.name} {recipient.email}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              description="Select recipients from your list"
+            /> */}
+
             <FormFieldWrapper
               control={form.control}
-              name="credit"
-              label="Credits"
-              placeholder="Enter credits required"
+              name="recipients"
+              label="Recipients"
               renderInput={(field) => (
-                <Input {...field} type="number" min="0" />
+                <Textarea
+                  {...field}
+                  className="min-h-[100px]"
+                  placeholder="Enter recipients (comma separated)"
+                />
               )}
+              description="List recipients separated by commas (e.g., 1234567890, example@mail.com)"
             />
+
             <FormFieldWrapper
               control={form.control}
               name="groupId"
@@ -171,6 +206,53 @@ const CampaignForm = ({ defaultValues, groups = [], handleSubmit }) => {
                 </Select>
               )}
             />
+
+            {/* <FormFieldWrapper
+              control={form.control}
+              name="recipients"
+              label="Recipients"
+              renderInput={(field) => (
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select recipients" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contacts.map((recipient) => (
+                      <SelectItem key={recipient.id} value={recipient.id}>
+                        {recipient.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              description="Select recipients from your list"
+            /> */}
+
+            <FormFieldWrapper
+              control={form.control}
+              name="credit"
+              label="Credits"
+              placeholder="Enter credits required"
+              renderInput={(field) => (
+                <Input {...field} type="number" min="0" />
+              )}
+            />
+
+            <div className="col-span-full">
+              <FormFieldWrapper
+                control={form.control}
+                name="message"
+                label="Message Content"
+                placeholder="Enter your message"
+                renderInput={(field) => (
+                  <Textarea {...field} className="min-h-[100px]" />
+                )}
+              />
+            </div>
+
             <FormFieldWrapper
               control={form.control}
               name="scheduleDate"

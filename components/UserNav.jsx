@@ -10,6 +10,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LogoutButton } from "./logout";
 
 const menuItems = [
   {
@@ -78,7 +79,8 @@ export function UserNav() {
 
         {/* Log Out */}
         <DropdownMenuItem>
-          Log out
+          {/* Log out */}
+          <LogoutButton />
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

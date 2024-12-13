@@ -16,7 +16,7 @@ export const GET = async (request, { params }) => {
   const { id } = params;
 
   // Retrieve the session to check user role
-  const session = await auth(request);
+  const session = await auth();
   if (
     !session ||
     (session.id !== id && !isAuthorized(session.user, ["admin", "superAdmin"]))

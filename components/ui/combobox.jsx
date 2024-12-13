@@ -57,7 +57,7 @@ export const Combobox = ({
           role="combobox"
           aria-expanded={open}
           aria-controls="combobox-list"
-          className="w-full max-w-[480px] justify-between"
+          className="w-full  justify-between"
         >
           <div className="flex gap-2 flex-wrap justify-start">
             {value.length > 0 ? (
