@@ -29,15 +29,12 @@ const campaignSchema = new mongoose.Schema(
     },
     messageToReply: {
       type: String,
-      required: true,
     },
     referenceId: {
       type: String,
-      unique: true,
     },
     credit: {
       type: Number,
-      required: true,
       default: 0,
     },
     groupId: {

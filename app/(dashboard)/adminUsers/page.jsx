@@ -16,6 +16,16 @@ import DataTable from "@/components/tables/DataTable";
 import { tableData } from "@/components/tables/data";
 
 import toast from "react-hot-toast";
+import StatisticsCard1 from "@/components/dashboard/StatisticsCard1";
+import StatisticsCard3 from "@/components/dashboard/StatisticsCard3";
+import { SuccessFul } from "@/components/Successful";
+import StatisticsCard2 from "@/components/dashboard/StatisticsCard2";
+import Sales from "@/components/dashboard/Sales";
+import CustomerReview from "@/components/dashboard/CustomerReview";
+import RecentOrders from "@/components/dashboard/RecentOrders";
+import TopSeller from "@/components/dashboard/TopSeller";
+import ReturningRate from "@/components/dashboard/ReturningRate";
+import CustomerTransactions from "@/components/dashboard/CustomerTransactions";
 
 const cardData = [
   {
@@ -52,11 +62,6 @@ const cardData = [
   },
 ];
 
-const groups = [
-  { _id: "1", name: "Group 1" },
-  { _id: "2", name: "Group 2" },
-];
-
 const handleSubmit = async (data) => {
   try {
     toast.success("Dashborad created successfully!");
@@ -67,7 +72,8 @@ const handleSubmit = async (data) => {
     toast.error("Failed to create the group. Please try again.");
   }
 };
-export default function UserDashboard() {
+
+export default function AdminDashboard() {
   return (
     <div className=" relative">
       <PageHeader heading="Dashboard" className=""></PageHeader>
@@ -87,8 +93,31 @@ export default function UserDashboard() {
             </CardDetails>
           ))}
         </div>
-        <DataTable columns={columns} data={tableData} />
-        {/* <PlanForm handleSubmit={handleSubmit} /> */}
+        <div className="grid grid-cols-12 gap-7">
+          <StatisticsCard1 className="col-span-12 lg:col-span-3" />
+          <StatisticsCard2 className="col-span-12 lg:col-span-3" />
+          <StatisticsCard3 className="col-span-12 lg:col-span-3" />
+          <Sales className="col-span-12 lg:col-span-8" />
+          <CustomerReview className="col-span-12 lg:col-span-4" />
+          <RecentOrders className="col-span-12 lg:col-span-8" />
+          <TopSeller className="col-span-12 lg:col-span-4" />
+          <ReturningRate className="col-span-12 lg:col-span-4" />
+          <CustomerTransactions className="col-span-12 lg:col-span-8" />
+
+          {/* <StatisticsCard2 className="col-span-12 lg:col-span-3" />
+      
+      <StatisticsCard4 className="col-span-12 lg:col-span-3" />
+
+      <Sales className="col-span-12 lg:col-span-8" />
+      <CustomerReview className="col-span-12 lg:col-span-4" />
+
+      <RecentOrders className="col-span-12 lg:col-span-8" />
+      <TopSeller className="col-span-12 lg:col-span-4" />
+
+      <ReturningRate className="col-span-12 lg:col-span-4" />
+      <CustomerTransactions className="col-span-12 lg:col-span-8" /> */}
+        </div>
+        {/* <DataTable columns={columns} data={tableData} /> */}
       </section>
     </div>
   );

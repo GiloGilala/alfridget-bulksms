@@ -1285,3 +1285,69 @@ export const usersData = [
     role: "superAdmin",
   },
 ];
+
+export const smsFormData = [
+  {
+    id: 1,
+    phone: "+1234567890",
+    location: "Text Input",
+    status: "Sent",
+  },
+  {
+    id: 2,
+    phone: "+9876543210",
+    location: "Imported",
+    status: "Delivered",
+  },
+  {
+    id: 3,
+    phone: "+5551234567",
+    location: "Group",
+    status: "Pending",
+  },
+  // {
+  //   phone: "+1234567890",
+  //   location: "Text Input",
+  //   status: "Failed",
+  // },
+  // {
+  //   phone: "+9876543210",
+  //   location: "Imported",
+  //   status: "Sent",
+  // },
+  // {
+  //   phone: "+5551234567",
+  //   location: "Group",
+  //   status: "Delivered",
+  // },
+  // {
+  //   phone: "+1112223333",
+  //   location: "Text Input",
+  //   status: "Pending",
+  // },
+  // {
+  //   phone: "+4445556666",
+  //   location: "Imported",
+  //   status: "Failed",
+  // },
+  // {
+  //   phone: "+7778889999",
+  //   location: "Group",
+  //   status: "Sent",
+  // },
+  // {
+  //   phone: "+3332221111",
+  //   location: "Text Input",
+  //   status: "Delivered",
+  // },
+  // {
+  //   phone: "+6665554444",
+  //   location: "Imported",
+  //   status: "Pending",
+  // },
+  // {
+  //   phone: "+9998887777",
+  //   location: "Group",
+  //   status: "Failed",
+  // },
+];

@@ -1,23 +1,25 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import Campaign from "@/models/Campaign";
 import { SMS } from "@/lib/africaTalkingConfig";
+import Campaign from "@/app/modals/Campaign";
+import { auth } from "@/auth";
+import { currentUser } from "@/lib/authUser";
 
 // POST /api/campaigns
-export const POST = async (request) => {
-  console.log("MongoDB 1");
-
+export const POST = async (req, res) => {
   await dbConnect();
-  console.log("MongoDB 2");
+
+  // const session = await auth(req, res);
+  // const user = currentUser();
+
+  // console.log("session :", session);
+
+  // if (!session) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
   try {
-    // Authenticate user
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
-    // Extract request body
+    // Extract req body
     const {
       senderId,
       title,
@@ -30,7 +32,7 @@ export const POST = async (request) => {
       group,
       recipients,
       scheduleDate,
-    } = await request.json();
+    } = await req.json();
 
     // Validate required fields
     if (!senderId || !title || !from || !type || !message || !recipients) {
@@ -43,20 +45,21 @@ export const POST = async (request) => {
     // Initialize SMS status
     let smsStatus = "failed";
     let recipientDetails = [];
+    let TotalSmsCost = 0;
 
-    // Attempt to send SMS
     try {
+      console.log("Attempting to send SMS...");
       const smsResponse = await SMS.send({
         to: recipients,
         message,
         from,
       });
+      console.log("SMS API Response:", smsResponse.SMSMessageData);
 
-      // Parse SMS response
+      // Parse the response and set status
       const { SMSMessageData } = smsResponse;
       const { Message, Recipients } = SMSMessageData;
 
-      // Update recipient details
       recipientDetails = Recipients.map((recipient) => ({
         number: recipient.number,
         cost: recipient.cost,
@@ -65,46 +68,53 @@ export const POST = async (request) => {
         messageId: recipient.messageId,
       }));
 
-      // Determine overall SMS status
-      if (Recipients.every((r) => r.statusCode === 100)) {
-        smsStatus = "success";
-      } else if (Recipients.some((r) => r.statusCode === 102)) {
-        smsStatus = "pending";
-      } else {
-        smsStatus = "partial"; // Indicates some successes and some failures
-      }
+      // Log total cost
+      const totalCost = Recipients.reduce((acc, recipient) => {
+        const cost = parseFloat(recipient.cost.replace("₦ ", ""));
+        return acc + cost;
+      }, 0);
+
+      const roundedTotalCost = Math.ceil(totalCost * 100) / 100;
+
+      console.log(`Total Cost: ₦ ${roundedTotalCost.toFixed(2)}`);
+
+      // Update SMSAPIResponse with total cost
+      TotalSmsCost = `₦ ${roundedTotalCost.toFixed(2)}`;
     } catch (smsError) {
-      console.error("SMS sending error:", smsError.message || smsError);
+      console.error(
+        "SMS Error Response:",
+        smsError.response?.data || smsError.message
+      );
       smsStatus = "failed";
     }
 
     // Save campaign to database
-    const newCampaign = new Campaign({
-      senderId,
-      title,
-      from,
-      type,
-      unicode,
-      message,
-      messageToReply,
-      credit,
-      group,
-      recipients,
-      scheduleDate,
-      smsStatus,
-      recipients: recipientDetails, // Save the details of each recipient
-    });
+    // const newCampaign = new Campaign({
+    //   senderId,
+    //   title,
+    //   from,
+    //   type,
+    //   unicode,
+    //   message,
+    //   messageToReply,
+    //   credit,
+    //   group,
+    //   recipients,
+    //   scheduleDate,
+    //   smsStatus,
+    //   recipients: recipientDetails, // Save the details of each recipient
+    // });
 
-    const savedCampaign = await newCampaign.save();
+    // const savedCampaign = await newCampaign.save();
 
     // Respond with the campaign details and SMS status
     return NextResponse.json(
       {
         message: `Campaign created with SMS status: ${smsStatus}`,
-        campaign: savedCampaign,
+        // campaign: savedCampaign,
         smsSummary: {
-          message: SMSMessageData.Message,
           recipients: recipientDetails,
+          TotalSmsCost: TotalSmsCost,
         },
         success: true,
       },

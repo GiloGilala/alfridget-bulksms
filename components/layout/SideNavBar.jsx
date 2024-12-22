@@ -22,7 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { SideNavItem } from "@/lib/constants";
+import { SideNavItem } from "@/routes";
 
 const SideNavBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);

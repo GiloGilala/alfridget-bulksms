@@ -53,9 +53,7 @@ const authOptions = {
             lastName: user.lastName,
             credits: user.credits,
             phone: user.phone,
-
             role: user.role,
-
             profileImage: user.profileImage,
             terms: user.terms,
             isActive: user.isActive,
@@ -84,9 +82,7 @@ const authOptions = {
           lastName: user.lastName,
           credits: user.credits,
           phone: user.phone,
-
           role: user.role,
-
           profileImage: user.profileImage,
           terms: user.terms,
         };
@@ -106,9 +102,7 @@ const authOptions = {
           lastName: token.lastName,
           credits: token.credits,
           phone: token.phone,
-
           role: token.role,
-
           profileImage: token.profileImage,
           terms: token.terms,
         };

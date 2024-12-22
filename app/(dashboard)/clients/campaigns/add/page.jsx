@@ -16,7 +16,7 @@ export default function AddCampaign() {
   const router = useRouter();
 
   const handleSubmit = async (data) => {
-    console.log("send:", data);
+    console.log("handleSubmit:", data);
 
     try {
       const smsData = {

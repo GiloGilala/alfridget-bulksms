@@ -51,15 +51,13 @@ const cardData = [
 const fetchUsers = async () => {
   try {
     const users = await fetchAllUsers();
-    console.log("Users C:", users);
+    // console.log("Users C:", users);
   } catch (error) {
     console.error("Error fetching users:", error);
   }
 };
 
 fetchUsers();
-
-console.log("UserDashboard:");
 
 export default function UserDashboard() {
   return (

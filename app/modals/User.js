@@ -108,6 +108,15 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       required: false,
     },
+    identifier: {
+      type: String,
+    },
+    lastVisit: {
+      type: Date,
+    },
+    visitCount: {
+      type: Number,
+    },
     isActive: {
       type: Boolean,
       required: false,

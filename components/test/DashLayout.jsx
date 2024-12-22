@@ -1,31 +1,39 @@
-import { Inter } from "next/font/google";
-import "../globals.css";
-import Topbar from "@/components/layout/TopBar";
-import LeftSideBar from "@/components/layout/SideNavBar";
-import RightSideBar from "@/components/layout/RightSideBar";
-import FooterBar from "@/components/layout/FooterBar";
-import { ToasterProvider } from "@/lib/ToasterProvider";
-import Container from "@/components/layout/Container";
-
-const DashboardLayout = ({ children }) => {
-  return (
-    <div className="h-screen flex ">
-      <ToasterProvider />
-
-      <LeftSideBar />
-
-      <div className="flex-1 flex">
-        <div className=" flex-col">
-          <Topbar />
-          <Container>{children}</Container>
-          {/* <FooterBar /> */}
-        </div>
-        <div className="  bg-[#bc6af2]">
-          <RightSideBar />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default DashboardLayout;
+// export const BalanceInfo = ({
+//   title,
+//   score,
+//   maxScore,
+//   icon,
+//   badgeColor,
+//   progressColor,
+// }) => {
+//   return (
+//     <Card className="bg-white shadow-md rounded-lg w-full p-0">
+//       <CardHeader className="flex-row items-center p-2">
+//         <div className="w-6 h-6 shrink-0 mr-2 rounded-full bg-blue-50 flex items-center justify-center">
+//           <span className="text-sm">₦</span>
+//         </div>
+//         <CardTitle className="text-base">{title}</CardTitle>
+//       </CardHeader>
+//       <CardContent className="p-2" p-2>
+//         <CardDescription>
+//           <div className="flex items-center">
+//             <span className="font-medium text-sm mr-auto text-gray-700 flex items-center">
+//               Score
+//               {/* <HelpCircle className="ml-2 shrink-0 w-5 h-5 text-gray-500" /> */}
+//             </span>
+//             <Badge
+//               className={`px-2 py-1 rounded-lg bg-${badgeColor}-50 text-${badgeColor}-500 text-xs`}
+//             >
+//               {score} / {maxScore}
+//             </Badge>
+//           </div>
+//         </CardDescription>
+//         <Progress
+//           value={(score / maxScore) * 100}
+//           className={`overflow-hidden bg-${progressColor}-50 h-1.5 rounded-full w-full`}
+//         />
+//       </CardContent>
+//       <CardFooter />
+//     </Card>
+//   );
+// };

@@ -8,8 +8,6 @@ export const GET = async (req, res) => {
 
   const session = await auth();
 
-  console.log("User get: ", session);
-
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
