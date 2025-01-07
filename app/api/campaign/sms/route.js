@@ -4,6 +4,8 @@ import { SMS } from "@/lib/africaTalkingConfig";
 import Campaign from "@/app/modals/Campaign";
 import { auth } from "@/auth";
 import { currentUser } from "@/lib/authUser";
+import Contact from "@/app/modals/Contact";
+import User from "@/app/modals/User";
 
 // POST /api/campaigns
 export const POST = async (req, res) => {
@@ -29,7 +31,7 @@ export const POST = async (req, res) => {
       message,
       messageToReply,
       credit,
-      group,
+      groupId,
       recipients,
       scheduleDate,
     } = await req.json();
@@ -45,14 +47,24 @@ export const POST = async (req, res) => {
     // Initialize SMS status
     let smsStatus = "failed";
     let recipientDetails = [];
-    let TotalSmsCost = 0;
+    let totalSmsCost = 0;
+    let roundedTotalCost = 0;
+    let contacts = [];
+    let balance = 0;
 
     try {
-      console.log("Attempting to send SMS...");
+      if (groupId) {
+        contacts = await Contact.find({ groupId: groupId });
+        contacts.map((contact) => contact.phone);
+      }
+
+      const combineContacts = [...contacts, ...recipients];
+      // console.log("combineContacts:", combineContacts);
+      // console.log("Attempting to send SMS...");
       const smsResponse = await SMS.send({
-        to: recipients,
+        to: combineContacts,
         message,
-        from,
+        from: "ATTALKNG",
       });
       console.log("SMS API Response:", smsResponse.SMSMessageData);
 
@@ -60,6 +72,32 @@ export const POST = async (req, res) => {
       const { SMSMessageData } = smsResponse;
       const { Message, Recipients } = SMSMessageData;
 
+      // const Recipients = [
+      //   {
+      //     cost: "NGN 3.6000",
+      //     messageId: "ATXid_87c54f3ad4627654ca3b5054b5c7543d",
+      //     messageParts: 1,
+      //     number: "+2348062846800",
+      //     status: "Success",
+      //     statusCode: 101,
+      //   },
+      //   {
+      //     cost: "NGN 3.6000",
+      //     messageId: "ATXid_1fa2485447e787836401e52126ee31e8",
+      //     messageParts: 1,
+      //     number: "+2348035538208",
+      //     status: "Success",
+      //     statusCode: 101,
+      //   },
+      //   {
+      //     cost: "NGN 3.1000",
+      //     messageId: "ATXid_f246341d10b7be1e52e780bf68ade239",
+      //     messageParts: 1,
+      //     number: "+2348056026428",
+      //     status: "Success",
+      //     statusCode: 101,
+      //   },
+      // ];
       recipientDetails = Recipients.map((recipient) => ({
         number: recipient.number,
         cost: recipient.cost,
@@ -68,18 +106,21 @@ export const POST = async (req, res) => {
         messageId: recipient.messageId,
       }));
 
+      console.log(`recipientDetails: `, recipientDetails);
+
       // Log total cost
       const totalCost = Recipients.reduce((acc, recipient) => {
-        const cost = parseFloat(recipient.cost.replace("₦ ", ""));
+        const cost = parseFloat(recipient.cost.replace("NGN ", ""));
         return acc + cost;
       }, 0);
 
-      const roundedTotalCost = Math.ceil(totalCost * 100) / 100;
+      roundedTotalCost = Math.ceil(totalCost * 100) / 100;
 
-      console.log(`Total Cost: ₦ ${roundedTotalCost.toFixed(2)}`);
+      // console.log(`Total Cost: ₦ ${roundedTotalCost.toFixed(2)}`);
 
       // Update SMSAPIResponse with total cost
-      TotalSmsCost = `₦ ${roundedTotalCost.toFixed(2)}`;
+      // totalSmsCost = `₦ ${roundedTotalCost.toFixed(2)}`;
+      totalSmsCost = roundedTotalCost.toFixed(2);
     } catch (smsError) {
       console.error(
         "SMS Error Response:",
@@ -89,33 +130,35 @@ export const POST = async (req, res) => {
     }
 
     // Save campaign to database
-    // const newCampaign = new Campaign({
-    //   senderId,
-    //   title,
-    //   from,
-    //   type,
-    //   unicode,
-    //   message,
-    //   messageToReply,
-    //   credit,
-    //   group,
-    //   recipients,
-    //   scheduleDate,
-    //   smsStatus,
-    //   recipients: recipientDetails, // Save the details of each recipient
-    // });
+    const newCampaign = new Campaign({
+      senderId,
+      title,
+      from,
+      type,
+      unicode,
+      message,
+      messageToReply,
+      credit: totalSmsCost,
+      // groupId: groupId ? groupId : null,
+      scheduleDate,
+      status: "sent",
+      recipients: recipientDetails, // Save the details of each recipient
+    });
 
-    // const savedCampaign = await newCampaign.save();
+    if (senderId) {
+      balance = await User.findByIdAndUpdate(senderId, {
+        $inc: { credit: -totalSmsCost },
+      });
+    }
+
+    const savedCampaign = await newCampaign.save();
 
     // Respond with the campaign details and SMS status
     return NextResponse.json(
       {
-        message: `Campaign created with SMS status: ${smsStatus}`,
-        // campaign: savedCampaign,
-        smsSummary: {
-          recipients: recipientDetails,
-          TotalSmsCost: TotalSmsCost,
-        },
+        message: Message,
+        campaign: savedCampaign,
+        balance: balance.credit.toFixed(),
         success: true,
       },
       { status: 201 }

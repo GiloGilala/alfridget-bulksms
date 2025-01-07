@@ -17,7 +17,15 @@ import {
 export const SideNavItem = [
   {
     title: "Dashboard",
-    href: "/",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    visible: ["superAdmin", "admin", "user"],
+    variant: "default",
+    submenu: false,
+  },
+  {
+    title: "Admin Dashboard",
+    href: "/adminUsers",
     icon: LayoutDashboard,
     visible: ["superAdmin", "admin", "user"],
     variant: "default",
@@ -34,14 +42,14 @@ export const SideNavItem = [
     subMenuItems: [
       {
         title: "Users",
-        href: "/clients/users",
+        href: "/adminUsers/users",
         visible: ["superAdmin", "admin", "user"],
       },
-      {
-        title: "Add",
-        href: "/clients/users/add",
-        visible: ["superAdmin", "admin", "user"],
-      },
+      // {
+      //   title: "Add",
+      //   href: "/clients/users/add",
+      //   visible: ["superAdmin", "admin", "user"],
+      // },
       // { title: "Active", href: "/users/active",visible: ["superAdmin", "admin"] },
       // { title: "Inactive", href: "/users/inactive" },
     ],
@@ -172,10 +180,10 @@ export const SideNavItem = [
     subMenuItems: [
       {
         title: "Plans",
-        href: "/plans",
+        href: "/clients/plan",
         visible: ["superAdmin", "admin", "user"],
       },
-      { title: "Add Plan", href: "/plans/add" },
+      // { title: "Add Plan", href: "/plans/add" },
     ],
   },
   {
@@ -188,13 +196,13 @@ export const SideNavItem = [
     submenu: true,
     subMenuItems: [
       {
-        title: "Billing History",
-        href: "/billing/topup",
+        title: "Topup",
+        href: "/billings/topup",
         visible: ["superAdmin", "admin", "user"],
       },
       {
         title: "Billing History",
-        href: "/billing/History",
+        href: "/billings",
         visible: ["superAdmin", "admin", "user"],
       },
       {
@@ -233,11 +241,11 @@ export const SideNavItem = [
         href: "/settings/privacy",
         visible: ["superAdmin", "admin", "user"],
       },
-      {
-        title: "Security",
-        href: "/settings/security",
-        visible: ["superAdmin", "admin", "user"],
-      },
+      // {
+      //   title: "Security",
+      //   href: "/settings/security",
+      //   visible: ["superAdmin", "admin", "user"],
+      // },
     ],
   },
 

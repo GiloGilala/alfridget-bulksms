@@ -4,6 +4,11 @@ import DataTableActions from "./DataTableActions";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import DataTableColumnHeader from "./DataTableColumnHeader";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { FilePenLine, Trash } from "lucide-react";
+import { Topup2 } from "../payment/TopUp";
+import { CurrencyFormatter } from "@/lib/calculateFn";
 
 const columnStyles = {
   username: "w-[150px] capitalize",
@@ -14,11 +19,11 @@ const columnStyles = {
   surname: "w-[100px] capitalize",
   gender: "w-[100px] capitalize",
   createdBy: "w-[100px] capitalize",
-  Credits: "w-[100px]",
+  credit: "w-[100px]",
   role: "w-[100px] capitalize",
 };
 
-export const UsersColumns = [
+export const UsersColumns = ({ handleEdit, handleDelete }) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -115,12 +120,15 @@ export const UsersColumns = [
     ),
   },
   {
-    accessorKey: "Credits",
+    accessorKey: "credit",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Credits" />
+      <DataTableColumnHeader column={column} title="Credit" />
     ),
     cell: ({ row }) => (
-      <div className={columnStyles.Credits}>{row.getValue("Credits")}</div>
+      <div className={columnStyles.credit}>
+        {" "}
+        {CurrencyFormatter(row.getValue("credit"), "NGN")}
+      </div>
     ),
   },
   {
@@ -133,7 +141,60 @@ export const UsersColumns = [
     ),
   },
   {
+    accessorKey: "topup",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Top Up" />
+    ),
+    cell: ({ row }) => (
+      <Topup2 topUpUser={row.original} />
+      // <Link href={`/clients/topup/${row.original._id}`}>
+      //   {/* <Button size={"xs"}>Top Up</Button> */}
+      // </Link>
+    ),
+  },
+  {
     id: "actions",
-    cell: ({ row }) => <DataTableActions row={row} />,
+    cell: ({ row }) => {
+      // const [showEditTaskDialog, setShowEditTaskDialog] = useState(false);
+      // const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
+
+      return (
+        <div className="flex justify-center gap-2">
+          {/* <EditTaskDialog
+            task={row.original}
+            open={showEditTaskDialog}
+            onOpenChange={setShowEditTaskDialog}
+          /> */}
+          {/* <Link href={`/contacts/add?id=${row.original._id}`}> */}
+          <Link href={`/adminUsers/users/${row.original._id}`}>
+            <Button
+              size={"xs"}
+              // onClick={() => handleEdit(row.original)}
+              // onClick={() => setShowEditTaskDialog(true)}
+            >
+              <FilePenLine className=" size-4" />
+              {/* Edit */}
+            </Button>
+          </Link>
+
+          {/* <DeleteTaskDialog
+            open={showDeleteTaskDialog}
+            onOpenChange={setShowDeleteTaskDialog}
+            showTrigger={false}
+            onSuccess={() => row.toggleSelected(false)}
+            tasks={[row.original]}
+          /> */}
+          <Button
+            size={"xs"}
+            variant="destructive"
+            onClick={() => handleDelete(row.original._id)}
+            // onClick={() => setShowDeleteTaskDialog(true)}
+          >
+            <Trash className=" size-4" />
+            {/* Delete */}
+          </Button>
+        </div>
+      );
+    },
   },
 ];

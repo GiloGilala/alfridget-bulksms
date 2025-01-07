@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/page-header";
 import { CardDetails } from "@/components/ui/card";
@@ -9,6 +8,14 @@ import DataTable from "@/components/tables/DataTable";
 import { campaignsData } from "@/components/tables/data";
 import toast from "react-hot-toast";
 import { CampaignsColumns } from "@/components/tables/CampaignsColumns";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getLabelAndValue } from "@/lib/calculateFn";
+import { deleteCampaign, fetchCampaignsByUser } from "@/actions/campaign";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Loading1 } from "@/components/loaders";
 
 const cardData = [
   {
@@ -45,23 +52,100 @@ const cardData = [
   },
 ];
 
-const handleSubmit = async (data) => {
-  try {
-    toast.success("Dashborad created successfully!");
-    console.log("Response:", data);
-    // Optionally: refresh data or update local state
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to create the group. Please try again.");
-  }
-};
+export default function SmsHistory() {
+  const { data: session } = useSession();
+  const [smsHistory, setSmsHistory] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const router = useRouter();
 
-export default function UserDashboard() {
+  const id = session?.user?.id;
+
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        try {
+          const res = await fetchCampaignsByUser(id);
+          //            function sanitizeData(data) {
+          // return JSON.parse(JSON.stringify(data));
+          // }
+          //           console.log("res :", res);
+
+          setSmsHistory(res.campaigns);
+        } catch (error) {
+          console.error("Error fetching smsHistory:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    } else {
+      console.error("No user ID found.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const tableFilterOptions = getLabelAndValue(smsHistory, "name", "name");
+  const tableFilterTitle = {
+    sms: "sms",
+    group: "Group",
+  };
+
+  const handleEdit = (sms) => {
+    console.log("Edit sms:", sms);
+    setEditingsms(sms);
+    setShowEditModal(true);
+  };
+
+  const handleDelete = async (smsId) => {
+    // Show confirmation before proceeding
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this sms?"
+    );
+
+    if (!isConfirmed) {
+      return; // Exit if the user cancels the deletion
+    }
+
+    setLoading(true); // Show loading state
+
+    try {
+      // Proceed with deletion
+      const res = await deleteCampaign(smsId);
+
+      if (res.successful) {
+        toast.success("sms deleted successfully!");
+
+        setSmsHistory((prevSmsHistory) =>
+          prevSmsHistory.filter((sms) => sms._id !== smsId)
+        );
+      }
+    } catch (err) {
+      // Handle errors and show error toast
+      toast.error(err.message || "An error occurred while deleting the sms");
+      console.error("Error deleting sms:", err);
+    } finally {
+      setLoading(false); // Hide loading state
+    }
+  };
+
   return (
     <div className=" relative">
-      <PageHeader heading="SMS History" className=""></PageHeader>
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <PageHeader
+            heading="SMS History"
+            className=""
+            description={"Use this as a guide to Create your SMS"}
+          ></PageHeader>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Link href="/clients/sms/add">
+            <Button>Add SMS</Button>
+          </Link>
+        </div>
+      </div>
       <section className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {cardData.map((data, index) => (
             <CardDetails
               key={index}
@@ -75,9 +159,17 @@ export default function UserDashboard() {
               </p>
             </CardDetails>
           ))}
-        </div>
-        <DataTable columns={CampaignsColumns} data={campaignsData} />
-        {/* <PlanForm handleSubmit={handleSubmit} /> */}
+        </div> */}
+        {loading ? (
+          <Loading1 />
+        ) : (
+          <DataTable
+            columns={CampaignsColumns({ handleEdit, handleDelete })}
+            data={smsHistory}
+            tableFilterOptions={tableFilterOptions}
+            tableFilterTitle={tableFilterTitle}
+          />
+        )}
       </section>
     </div>
   );

@@ -17,6 +17,7 @@ import {
   MailCheck,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 // Create a Shadow popup
 export function SuccessfulPopup({
@@ -28,6 +29,8 @@ export function SuccessfulPopup({
   buttonTitle,
   isOpen,
   onClose,
+  balance,
+  smsCost,
 }) {
   if (!isOpen) return null;
 
@@ -51,7 +54,7 @@ export function SuccessfulPopup({
         <div className="flex justify-between space-x-2">
           <BalanceInfo
             title="Balance"
-            amonut={14200}
+            amonut={balance}
             score={6.2}
             maxScore={10}
             icon={<HelpCircle className="text-blue-500 w-5 h-5" />}
@@ -60,7 +63,7 @@ export function SuccessfulPopup({
           />
           <BalanceInfo
             title="SMS Cost"
-            amonut={4200}
+            amonut={smsCost}
             score={6.2}
             maxScore={10}
             icon={<HelpCircle className="text-blue-500 w-5 h-5" />}
@@ -118,26 +121,6 @@ export function SuccessfulPopup({
   );
 }
 
-function CircleCheckIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
 export const BalanceInfo = ({
   title,
   score,
@@ -161,7 +144,7 @@ export const BalanceInfo = ({
           <CardDescription className="flex mb-1">
             <div className="flex items-center w-full">
               <span className="font-medium text-sm mr-auto text-gray-700 flex items-center">
-                {amonut}
+                {amonut?.toLocaleString()}
                 {/* <HelpCircle className="ml-2 shrink-0 w-5 h-5 text-gray-500" /> */}
               </span>
               <span
@@ -180,3 +163,122 @@ export const BalanceInfo = ({
     </Card>
   );
 };
+
+export function PaymentSuccessful() {
+  return (
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-md text-center">
+        <CircleCheckIcon className="mx-auto h-12 w-12 text-green-500" />
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Payment Successful!
+        </h1>
+        <p className="mt-4 text-muted-foreground">
+          Thank you for your payment. Here are the details of your transaction:
+        </p>
+        <div className="mt-6 space-y-4 rounded-lg border bg-card p-6 text-left text-sm">
+          <div className="flex items-center justify-between">
+            <span className="font-medium">Order Number:</span>
+            <span>123456789</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium">Amount Paid:</span>
+            <span>$99.99</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium">Payment Method:</span>
+            <span>Visa ending in 1234</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium">Transaction Date:</span>
+            <span>August 6, 2024</span>
+          </div>
+        </div>
+        <div className="mt-6">
+          <Link
+            href="#"
+            className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            prefetch={false}
+          >
+            Go to Homepage
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CircleCheckIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+export function PaymentSuccessful3() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="max-w-md text-center">
+        <div className="bg-primary rounded-full p-4 inline-block mb-6">
+          <CircleCheckIcon className="h-12 w-12 text-primary-foreground" />
+        </div>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Payment Successful
+        </h1>
+        <p className="mt-4 text-muted-foreground">
+          Thank you for your payment. Your order is being processed and you will
+          receive a confirmation email shortly.
+        </p>
+      </div>
+      <div className="mt-8 w-full max-w-md space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Payment Details</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Amount:</span>
+              <span className="font-medium">$99.99</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Payment Method:</span>
+              <span className="font-medium">Visa ending in 1234</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Transaction ID:</span>
+              <span className="font-medium">ABC123456789</span>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="flex justify-center gap-2">
+          <Link
+            href="#"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            prefetch={false}
+          >
+            View Order History
+          </Link>
+          <Link
+            href="#"
+            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            prefetch={false}
+          >
+            Return to Homepage
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -36,12 +36,35 @@ export const SmsFormColumns = [
     enableHiding: false,
   },
   {
-    accessorKey: "phone",
+    accessorKey: "number",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Phone" />
     ),
     cell: ({ row }) => (
-      <div className={columnStyles.phone}>{row.getValue("phone")}</div>
+      <div className={columnStyles.phone}>{row.getValue("number")}</div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => (
+      <div className={columnStyles.status}>
+        {" "}
+        <span
+          className={cn(
+            "capitalize",
+            row.getValue("status") === "Success"
+              ? "text-green-500"
+              : row.getValue("status") === "failed"
+              ? "text-red-500"
+              : "text-yellow-500"
+          )}
+        >
+          {row.getValue("status")}
+        </span>
+      </div>
     ),
   },
   {
@@ -53,15 +76,7 @@ export const SmsFormColumns = [
       <div className={columnStyles.location}>{row.getValue("location")}</div>
     ),
   },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
-    cell: ({ row }) => (
-      <div className={columnStyles.status}>{row.getValue("status")}</div>
-    ),
-  },
+
   {
     id: "actions",
     cell: ({ row }) => <DataTableActions row={row} />,

@@ -1,8 +1,11 @@
-import { Checkbox } from "../ui/checkbox";
+import { FilePenLine, Trash } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import DataTableActions from "./DataTableActions";
 import DataTableColumnHeader from "./DataTableColumnHeader";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export const ContactsColumns = [
+export const ContactsColumns = ({ handleEdit, handleDelete }) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -97,6 +100,48 @@ export const ContactsColumns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableActions row={row} />,
+    cell: ({ row }) => {
+      // const [showEditTaskDialog, setShowEditTaskDialog] = useState(false);
+      // const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
+
+      return (
+        <div className="flex justify-center gap-2">
+          {/* <EditTaskDialog
+            task={row.original}
+            open={showEditTaskDialog}
+            onOpenChange={setShowEditTaskDialog}
+          /> */}
+          {/* <Link href={`/contacts/add?id=${row.original._id}`}> */}
+          <Link href={`/clients/contacts/${row.original._id}`}>
+            <Button
+              size={"xs"}
+              variant="outline"
+              // onClick={() => handleEdit(row.original)}
+              // onClick={() => setShowEditTaskDialog(true)}
+            >
+              <FilePenLine className=" size-4" />
+              {/* Edit */}
+            </Button>
+          </Link>
+
+          {/* <DeleteTaskDialog
+            open={showDeleteTaskDialog}
+            onOpenChange={setShowDeleteTaskDialog}
+            showTrigger={false}
+            onSuccess={() => row.toggleSelected(false)}
+            tasks={[row.original]}
+          /> */}
+          <Button
+            size={"xs"}
+            variant="destructive"
+            onClick={() => handleDelete(row.original._id)}
+            // onClick={() => setShowDeleteTaskDialog(true)}
+          >
+            <Trash className=" size-4" />
+            {/* Delete */}
+          </Button>
+        </div>
+      );
+    },
   },
 ];

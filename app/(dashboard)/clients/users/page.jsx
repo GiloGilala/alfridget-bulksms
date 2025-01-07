@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/page-header";
@@ -6,12 +7,9 @@ import { Activity, UserPlus, Users, UserX } from "lucide-react";
 import DataTable from "@/components/tables/DataTable";
 import { usersData } from "@/components/tables/data";
 import { UsersColumns } from "@/components/tables/UsersColumns";
-import { fetchAllUsers } from "@/actions/user";
-
-export const metadata = {
-  title: "Dashboard",
-  description: "Check out some examples app built using the components.",
-};
+import { fetchAllUsers, fetchUsers } from "@/actions/user";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const cardData = [
   {
@@ -48,18 +46,33 @@ const cardData = [
   },
 ];
 
-const fetchUsers = async () => {
-  try {
-    const users = await fetchAllUsers();
-    // console.log("Users C:", users);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-  }
-};
-
-fetchUsers();
-
 export default function UserDashboard() {
+  const { data: session } = useSession();
+  const [users, setUsers] = useState([]);
+
+  const id = session?.user?.id;
+
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        try {
+          const res = await fetchUsers();
+          console.log("res :", res);
+
+          setUsers(res.users);
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    } else {
+      console.error("No user ID found.");
+      setLoading(false);
+    }
+  }, [id]); // Ensure this effect runs whenever `id` changes
+
   return (
     <div className=" relative">
       <PageHeader
@@ -85,7 +98,7 @@ export default function UserDashboard() {
             </CardDetails>
           ))}
         </div>
-        <DataTable columns={UsersColumns} data={usersData} />
+        {/* <DataTable columns={UsersColumns} data={usersData} /> */}
       </section>
     </div>
   );

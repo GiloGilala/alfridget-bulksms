@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
 import {
   Card,
@@ -45,42 +45,91 @@ const campaignTypes = [
 ];
 
 const CampaignForm = ({
-  defaultValues,
+  campaign,
   groups = [],
   setImportedGroupContacts,
   setRecipientsInput,
   handleSubmit,
   balance,
+  isSubmitting,
+  setIsSubmitting,
 }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm({
     resolver: zodResolver(campaignSchema),
-    defaultValues: defaultValues || {
+    defaultValues: {
       title: "Gilo Testing",
-      from: "+2347030904385",
+      from: "+2348080741116",
       type: "Bulk SMS",
       unicode: false,
       message: "Testing from Gilo SMS App",
       messageToReply: "Message from Alfridget ",
-      credit: 20,
       groupId: "",
       scheduleDate: null,
-      recipients: ["+2348035538208", "+2348062846800", "+2348056026428"], // Array of strings
+      // recipients: ["+2348035538208", "+2348062846800", "+2348056026428"], // Array of strings
     },
+    values: campaign,
+    // {
+    //   title: "Gilo Testing",
+    //   from: "+2348080741116",
+    //   type: "Bulk SMS",
+    //   unicode: false,
+    //   message: "Testing from Gilo SMS App",
+    //   messageToReply: "Message from Alfridget ",
+    //   groupId: "",
+    //   scheduleDate: null,
+    //   recipients: ["+2348035538208", "+2348062846800", "+2348056026428"], // Array of strings
+    // },
   });
 
-  const selectedType = form.watch("type");
+  // Watch specific fields
+  const message = form.watch("message") || ""; // Default to an empty string
+  const type = form.watch("type") || "SMS"; // Default to "SMS"
+  const recipientsInput = form.watch("recipients") || []; // Default to "SMS"
+
+  // Watch for field changes
+  const watchedValues = form.watch([
+    "message",
+    "groupId",
+    "recipients",
+    "type",
+  ]);
+
+  // Maximum message length based on type
+  const campaignTypes = [
+    { type: "SMS", maxLength: 160 },
+    { type: "Bulk SMS", maxLength: 320 },
+    { type: "Long SMS", maxLength: 1000 },
+  ];
+  // Determine max message length for the selected type
   const maxMessageLength =
-    campaignTypes.find((campaign) => campaign.type === selectedType)
-      ?.maxLength || 1000;
+    campaignTypes.find((campaign) => campaign.type === type)?.maxLength || 1000;
+
+  // Calculate message length and estimated cost
+  const messageLength = message.length;
+  const estimatedCost =
+    messageLength > 160 ? Math.ceil(messageLength / 153) : 1;
+
+  // console.log("estimatedCost :", estimatedCost);
+
+  // Effect for group updates
+  useEffect(() => {
+    if (watchedValues.groupId) {
+      const selectedGroup = groups.find(
+        (group) => group.id === watchedValues.groupId
+      );
+      if (selectedGroup) {
+        setImportedGroupContacts &&
+          setImportedGroupContacts(selectedGroup.contacts || []);
+      }
+    }
+  }, [watchedValues.groupId, groups, setImportedGroupContacts]);
 
   const parseRecipients = (input) => {
     const contactsInput = input
       .split(",") // Split by commas
       .map((recipient) => recipient.trim()) // Trim whitespace
       .filter((recipient) => recipient); // Remove empty strings
-
+    setRecipientsInput(contactsInput);
     return contactsInput;
   };
 
@@ -187,15 +236,17 @@ const CampaignForm = ({
                     className="min-h-[100px]"
                     maxLength={maxMessageLength} // Prevent typing beyond the limit
                     value={field.value || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Prevent typing beyond maxMessageLength
+                      if (value.length <= maxMessageLength) {
+                        field.onChange(value);
+                      }
+                    }}
                   />
                 )}
-                description={`Maximum length for ${selectedType}: ${maxMessageLength} characters`}
+                description={`Maximum length for ${type}: ${messageLength}/${maxMessageLength} characters`}
               />
-              {form.formState.errors.message && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.message.message}
-                </p>
-              )}
             </div>
             <div className="col-span-full">
               <FormFieldWrapper
@@ -293,6 +344,8 @@ const CampaignForm = ({
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
+              ) : campaign._id ? (
+                "Update Campaign"
               ) : (
                 "Create Campaign"
               )}

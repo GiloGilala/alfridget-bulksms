@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
       enum: ["Male", "Female", "Other"],
       trim: true,
     },
-    credits: {
+    credit: {
       type: Number,
       default: 0,
     },

@@ -121,7 +121,7 @@ const Login = () => {
           <div className="absolute inset-0 bg-zinc-900/30" />
           <div className="relative z-20 flex items-center text-2xl font-medium">
             <Image
-              src="/Alfridget-Logo.jpeg"
+              src="/regel.jpeg"
               alt="Alfridget company logo"
               width={100}
               height={100}
@@ -257,7 +257,7 @@ const Login = () => {
                     href="/signup"
                     className="text-blue-600 hover:underline"
                   >
-                    Login
+                    SignUp
                   </Link>
                 </p>
               </CardFooter>

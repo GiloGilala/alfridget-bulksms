@@ -74,12 +74,12 @@ const SideNavBar = () => {
           className={cn("flex justify-between w-full ")}
         >
           <Avatar className="mr-2 h-8 w-8">
-            <AvatarImage src="/Alfridget-Logo.jpeg" alt="Me" className="" />
+            <AvatarImage src="/regel.jpeg" alt="Me" className="" />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
           {isCollapsed ? null : (
             <>
-              <span className="hidden md:block">Alfridget</span>
+              <span className="hidden md:block">Regel</span>
               <CircleChevronUpIcon className="ml-auto h-5 w-5 shrink-0 opacity-50" />
             </>
           )}

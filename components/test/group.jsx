@@ -93,7 +93,12 @@ const CampaignForm = ({
                     value={field.value || ""}
                   />
                 )}
-                description={`Maximum length for ${selectedType}: ${maxMessageLength} characters`}
+                description={`${field.value.length} characters,
+                 ${
+                   field.value.length > maxMessageLength
+                     ? Math.ceil(field.value.length / maxMessageLength)
+                     : 1
+                 } SMS part(s)`}
               />
               {form.formState.errors.message && (
                 <p className="text-red-500 text-sm">

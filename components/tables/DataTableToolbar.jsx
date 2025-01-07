@@ -10,7 +10,7 @@ import { incomeType, categories } from "./data";
 import { CalendarDatePicker } from "../CalendarDatePicker";
 import DataTableViewOptions from "./DataTableViewOptions";
 
-function DataTableToolbar({ table }) {
+function DataTableToolbar({ table, tableFilterOptions, tableFilterTitle }) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const [dateRange, setDateRange] = useState({
@@ -23,31 +23,77 @@ function DataTableToolbar({ table }) {
     table.getColumn("date")?.setFilterValue([from, to]);
   };
 
+  const selecetedIds = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => row.original);
+  console.log("seleceted Ids :", selecetedIds);
+
   return (
     <div className="flex flex-wrap items-center justify-between">
       <div className="flex flex-1 flex-wrap items-center gap-2">
-        <Input
+        {/* <Input
           placeholder="Filter labels..."
           value={table.getColumn("note")?.getFilterValue() ?? ""}
           onChange={(event) => {
             table.getColumn("note")?.setFilterValue(event.target.value);
           }}
           className="h-8 w-[150px] lg:w-[250px]"
-        />
-        {table.getColumn("category") && (
-          <DataTableFilter
-            column={table.getColumn("category")}
-            title="Category"
-            options={categories}
-          />
+        /> */}
+
+        {tableFilterTitle?.group === "Group" && (
+          <>
+            {table.getColumn("name") && (
+              <Input
+                placeholder="Filter labels..."
+                value={table.getColumn("name")?.getFilterValue() ?? ""}
+                onChange={(event) => {
+                  table.getColumn("name")?.setFilterValue(event.target.value);
+                }}
+                className="h-8 w-[150px] lg:w-[250px]"
+              />
+            )}
+
+            {table.getColumn("name") && (
+              <DataTableFilter
+                column={table.getColumn("name")}
+                title="name"
+                options={tableFilterOptions}
+              />
+            )}
+          </>
         )}
-        {table.getColumn("type") && (
-          <DataTableFilter
-            column={table.getColumn("type")}
-            title="Type"
-            options={incomeType}
-          />
+        {tableFilterTitle?.user === "User" && (
+          <>
+            {table.getColumn("username") && (
+              <Input
+                placeholder="Filter labels..."
+                value={table.getColumn("username")?.getFilterValue() ?? ""}
+                onChange={(event) => {
+                  table
+                    .getColumn("username")
+                    ?.setFilterValue(event.target.value);
+                }}
+                className="h-8 w-[150px] lg:w-[250px]"
+              />
+            )}
+
+            {table.getColumn("isActive") && (
+              <DataTableFilter
+                column={table.getColumn("isActive")}
+                title="Active"
+                options={tableFilterOptions}
+              />
+            )}
+            {table.getColumn("role") && (
+              <DataTableFilter
+                column={table.getColumn("role")}
+                title="Role"
+                options={tableFilterOptions}
+              />
+            )}
+          </>
         )}
+
         {isFiltered && (
           <Button
             variant="ghost"

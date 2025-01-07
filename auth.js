@@ -42,7 +42,7 @@ const authOptions = {
           if (!isValidPassword) {
             throw new Error("Incorrect password");
           }
-          console.log("credentials user:", user);
+          // console.log("credentials user:", user);
 
           // If password is correct, return user
           return {
@@ -51,7 +51,7 @@ const authOptions = {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            credits: user.credits,
+            credit: user.credit,
             phone: user.phone,
             role: user.role,
             profileImage: user.profileImage,
@@ -80,7 +80,7 @@ const authOptions = {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          credits: user.credits,
+          credit: user.credit,
           phone: user.phone,
           role: user.role,
           profileImage: user.profileImage,
@@ -100,7 +100,7 @@ const authOptions = {
           email: token.email,
           firstName: token.firstName,
           lastName: token.lastName,
-          credits: token.credits,
+          credit: token.credit,
           phone: token.phone,
           role: token.role,
           profileImage: token.profileImage,

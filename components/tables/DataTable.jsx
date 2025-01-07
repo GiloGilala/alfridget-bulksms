@@ -23,7 +23,15 @@ import {
 import DataTableToolbar from "./DataTableToolbar";
 import { DataTablePagination } from "../Pagination";
 
-function DataTable({ columns, data }) {
+/**
+ * Props for the DataTable component.
+ *
+ * @typedef {Object} DataTableProps
+ * @property {Array} columns - The columns for the table.
+ * @property {Array} data - The data for the table.
+ */
+
+function DataTable({ columns, data, tableFilterOptions, tableFilterTitle }) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = useState([]);
@@ -32,6 +40,8 @@ function DataTable({ columns, data }) {
   const table = useReactTable({
     data,
     columns,
+    tableFilterOptions,
+    tableFilterTitle,
     state: {
       sorting,
       columnVisibility,
@@ -53,7 +63,11 @@ function DataTable({ columns, data }) {
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar
+        table={table}
+        tableFilterOptions={tableFilterOptions}
+        tableFilterTitle={tableFilterTitle}
+      />
       <div className="overflow-y-auto rounded-md border">
         <Table>
           <TableHeader>

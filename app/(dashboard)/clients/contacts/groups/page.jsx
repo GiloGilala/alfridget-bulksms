@@ -1,68 +1,88 @@
 "use client";
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/ui/page-header";
-import { CardDetails } from "@/components/ui/card";
-import { Archive, CheckCircle, Hourglass, Users } from "lucide-react";
 import DataTable from "@/components/tables/DataTable";
-import { groupsData } from "@/components/tables/data";
 import { GroupContactColumns } from "@/components/tables/GroupContactColumns";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
+import { getLabelAndValue } from "@/lib/calculateFn";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { deleteGroup, fetchGroupsByUser } from "@/actions/group";
+import toast from "react-hot-toast";
 import Link from "next/link";
-
-const cardData = [
-  {
-    title: "Total Groups",
-    icon: Users,
-    value: "120",
-    percentage: "+10.5%",
-    description: "from last quarter",
-  },
-  {
-    title: "Active Groups",
-    icon: CheckCircle,
-    value: "90",
-    percentage: "+8.1%",
-    description: "from last month",
-  },
-  {
-    title: "Pending Groups",
-    icon: Hourglass,
-    value: "15",
-    percentage: "+20%",
-    description: "from last week",
-  },
-  {
-    title: "Archived Groups",
-    icon: Archive,
-    value: "10",
-    percentage: "+5%",
-    description: "from last year",
-  },
-];
+import { Button } from "@/components/ui/button";
 
 export default function Groups() {
-  // Fetch group data from the backend
-  // const { data, isLoading, isError } = useQuery({
-  //   queryKey: ["groups"],
-  //   queryFn: async () => {
-  //     const response = await axios.get("/api/groups");
-  //     return response.data;
-  //   },
-  // });
+  const { data: session } = useSession();
+  const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  // console.log("data :", data);
+  const id = session?.user?.id;
+  console.log("Groups id:", id);
 
-  // if (isLoading) return <p>Loading groups...</p>;
-  // if (isError) return <p>Failed to load groups.</p>;
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        try {
+          const res = await fetchGroupsByUser(id);
+
+          setGroups(res.groups);
+        } catch (error) {
+          console.error("Error fetching groups:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    } else {
+      console.error("No user ID found.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const handleEdit = (group) => {
+    console.log("Edit group:", group);
+    // Navigate to the edit page with the group ID
+    router.push(`/groups/edit/${group.id}`);
+  };
+
+  const handleDelete = async (groupId) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this group?"
+    );
+
+    if (!isConfirmed) return;
+
+    try {
+      await deleteGroup(groupId);
+      toast.success("Group deleted successfully!");
+      setGroups((prevGroups) =>
+        prevGroups.filter((group) => group._id !== groupId)
+      );
+    } catch (error) {
+      toast.error("Error deleting group: " + error.message);
+      console.error("Error deleting group:", error);
+    }
+  };
+
+  const tableFilterOptions = getLabelAndValue(groups, "name", "name");
+  const tableFilterTitle = {
+    contact: "Contact",
+    group: "Group",
+  };
+
+  if (loading) {
+    return <div>Loading groups...</div>;
+  }
 
   return (
-    <div className=" relative">
+    <div className="relative">
       <div className="flex items-center justify-between space-y-2">
         <div>
           <PageHeader
             heading="Groups"
             className=""
-            description={"Use this as a guide to Create your Group"}
+            description={"Use this as a guide to Create your Groups"}
           ></PageHeader>
         </div>
         <div className="flex items-center space-x-2">
@@ -71,19 +91,13 @@ export default function Groups() {
           </Link>
         </div>
       </div>
-
       <section className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {cardData.map((data, index) => (
-            <CardDetails key={index} title={data.title} icon={data.icon}>
-              <div className="text-2xl font-bold">{data.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {data.percentage} {data.description}
-              </p>
-            </CardDetails>
-          ))}
-        </div>
-        <DataTable columns={GroupContactColumns} data={groupsData} />
+        <DataTable
+          columns={GroupContactColumns({ handleEdit, handleDelete })}
+          data={groups}
+          tableFilterOptions={tableFilterOptions}
+          tableFilterTitle={tableFilterTitle}
+        />
       </section>
     </div>
   );

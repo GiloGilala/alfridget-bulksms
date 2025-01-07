@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const TransactionSchema = new mongoose.Schema(
   {
-    id: {
-      type: Number,
-      unique: true,
-    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -33,21 +29,21 @@ const TransactionSchema = new mongoose.Schema(
       trim: true,
     },
 
-    transactionType: {
+    type: {
       type: String,
       enum: ["Deposit", "Withdrawal", "Payment", "Other"],
       trim: true,
     },
-    transID: {
+    transactionId: {
       type: String,
       unique: true,
       trim: true,
     },
-    transTime: {
+    time: {
       type: Date,
       trim: true,
     },
-    transAmount: {
+    amount: {
       type: Number,
       min: 0,
     },

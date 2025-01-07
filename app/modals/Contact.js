@@ -26,7 +26,8 @@ const contactSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-    conutry: {
+    country: {
+      // Corrected typo here
       type: String,
     },
     state: {
@@ -38,8 +39,8 @@ const contactSchema = new mongoose.Schema(
       default: null,
     },
     isActive: {
-      type: Boolean,
-      required: false,
+      type: Boolean, // Removed unnecessary 'required: false'
+      default: true, // You can also provide a default value (if applicable)
     },
   },
   { timestamps: true }

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,9 +18,14 @@ import { Switch } from "@/components/ui/switch";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
 import { Combobox } from "@/components/ui/combobox"; // Import the reusable Combobox component
 
-const GroupForm = ({ handleSubmit, contacts = [] }) => {
+const GroupForm = ({
+  defaultValues,
+  handleSubmit,
+  contacts = [],
+  isSubmitting,
+  setIsSubmitting,
+}) => {
   const [selectedContacts, setSelectedContacts] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -30,17 +34,24 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
       isActive: false,
       contactIds: [],
     },
+    values: {
+      name: defaultValues?.name,
+      description: defaultValues?.description,
+      contactIds: defaultValues?.isActive,
+      contactIds: defaultValues?.contactIds,
+    },
   });
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
 
+    const formData = {
+      ...data,
+      contactIds: selectedContacts,
+    };
     try {
-      const formData = {
-        ...data,
-        contactIds: selectedContacts,
-      };
       await handleSubmit(formData);
+      setIsSubmitting(false);
     } catch (error) {
       console.error("Form submission error:", error);
     } finally {
@@ -56,9 +67,9 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Create Group</CardTitle>
+        <CardTitle className="text-2xl font-bold">Details</CardTitle>
         <CardDescription className="text-muted-foreground">
-          Fill in contact details
+          Fill in Group details
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -135,6 +146,8 @@ const GroupForm = ({ handleSubmit, contacts = [] }) => {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
+              ) : defaultValues._id ? (
+                "Update Group"
               ) : (
                 "Create Group"
               )}

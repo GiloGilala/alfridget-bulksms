@@ -4,19 +4,16 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/page-header";
 import { CardDetails } from "@/components/ui/card";
-import {
-  Hourglass,
-  MailCheck,
-  MailWarning,
-  MailX,
-  MessageSquare,
-} from "lucide-react";
+import { Activity, UserPlus, Users, UserX } from "lucide-react";
 import { columns } from "@/components/tables/Columns";
 import DataTable from "@/components/tables/DataTable";
 import { tableData } from "@/components/tables/data";
 
 import toast from "react-hot-toast";
-import StatisticsCard1 from "@/components/dashboard/StatisticsCard1";
+import {
+  CardProgress,
+  StatisticsCard1,
+} from "@/components/dashboard/StatisticsCard";
 import StatisticsCard3 from "@/components/dashboard/StatisticsCard3";
 import { SuccessFul } from "@/components/Successful";
 import StatisticsCard2 from "@/components/dashboard/StatisticsCard2";
@@ -29,34 +26,34 @@ import CustomerTransactions from "@/components/dashboard/CustomerTransactions";
 
 const cardData = [
   {
-    title: "Total Messages",
-    icon: MessageSquare,
-    value: "335",
-    percentage: "+20.1%",
+    title: "Total Users",
+    icon: Users,
+    value: "1,234",
+    percentage: "+10.5%",
     description: "from last month",
     iconColor: "text-blue-500", // Blue
   },
   {
-    title: "Sent Messages",
-    icon: MailCheck,
-    value: "255",
-    percentage: "+15.6%",
+    title: "Active Users",
+    icon: Activity,
+    value: "821",
+    percentage: "+5.2%",
     description: "from last quarter",
     iconColor: "text-green-500", // Green
   },
   {
-    title: "Pending",
-    icon: Hourglass,
-    value: "161",
-    percentage: "+30.8%",
+    title: "New Sign-ups",
+    icon: UserPlus,
+    value: "150",
+    percentage: "+20.8%",
     description: "from last year",
     iconColor: "text-yellow-500", // Yellow
   },
   {
-    title: "Failed Messages",
-    icon: MailX,
-    value: "54",
-    percentage: "+25.9%",
+    title: "Inactive Users",
+    icon: UserX,
+    value: "120",
+    percentage: "-5.1%",
     description: "from last month",
     iconColor: "text-red-500", // Red
   },
@@ -97,6 +94,13 @@ export default function AdminDashboard() {
           <StatisticsCard1 className="col-span-12 lg:col-span-3" />
           <StatisticsCard2 className="col-span-12 lg:col-span-3" />
           <StatisticsCard3 className="col-span-12 lg:col-span-3" />
+          <CardProgress
+            title="Sales"
+            amount="$10,000"
+            percentage="+25%"
+            progressValue={75}
+            className="col-span-12 lg:col-span-3"
+          />
           <Sales className="col-span-12 lg:col-span-8" />
           <CustomerReview className="col-span-12 lg:col-span-4" />
           <RecentOrders className="col-span-12 lg:col-span-8" />

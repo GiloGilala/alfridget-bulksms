@@ -24,33 +24,38 @@ import { Form, FormFieldWrapper } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Loader2 } from "lucide-react";
 
-const ContactForm = ({ defaultValues = {}, groups = [] }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+const ContactForm = ({
+  defaultValues,
+  groups = [],
+  isSubmitting,
+  setIsSubmitting,
+  handleSubmit,
+}) => {
   const form = useForm({
     resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name: "Jane Doe",
-      phone: "+234070567890",
-      email: "doe@example.com",
-      location: "Lagos",
-      country: "Nigeria",
-      state: "LA",
-      notes: "Preferred contact time: afternoons",
-      isActive: true,
-      groupId: "",
-      ...defaultValues,
+    values: {
+      name: defaultValues?.name,
+      phone: defaultValues?.phone,
+      email: defaultValues?.email,
+      // groupId: defaultValues?.groupId,
+      location: defaultValues?.location,
+      country: defaultValues?.country,
+      state: defaultValues?.state,
+      notes: defaultValues?.notes,
+      isActive: defaultValues?.isActive,
     },
   });
 
+  console.log("defaultValues :", defaultValues);
+
   const onSubmit = async (data) => {
     setIsSubmitting(true);
+
     try {
-      console.log("Form Data Submitted:", data);
-      // Simulate async API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await handleSubmit(data); // Directly pass the data
+      setIsSubmitting(false);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -59,7 +64,9 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Create Contact</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          {defaultValues._id ? "Update Contact" : "Create Contact"}
+        </CardTitle>
         <CardDescription className="text-muted-foreground">
           Fill in contact details
         </CardDescription>
@@ -206,6 +213,8 @@ const ContactForm = ({ defaultValues = {}, groups = [] }) => {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
+              ) : defaultValues._id ? (
+                "Update Contact"
               ) : (
                 "Create Contact"
               )}
