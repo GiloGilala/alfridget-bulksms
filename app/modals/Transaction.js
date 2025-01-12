@@ -1,65 +1,45 @@
 import mongoose from "mongoose";
 
-const TransactionSchema = new mongoose.Schema(
+const transactionSchema = new mongoose.Schema(
   {
-    userId: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    clientId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Client",
+    reference: {
+      type: String,
       required: true,
-    },
-    firstName: {
-      type: String,
-      trim: true,
-    },
-    middleName: {
-      type: String,
-      trim: true,
-    },
-    lastName: {
-      type: String,
-      trim: true,
-    },
-    settlementAc: {
-      type: String,
-      trim: true,
-    },
-
-    type: {
-      type: String,
-      enum: ["Deposit", "Withdrawal", "Payment", "Other"],
-      trim: true,
-    },
-    transactionId: {
-      type: String,
       unique: true,
-      trim: true,
-    },
-    time: {
-      type: Date,
-      trim: true,
     },
     amount: {
       type: Number,
-      min: 0,
+      required: true,
     },
-    isActive: {
-      type: Boolean,
-      required: false,
+    currency: {
+      type: String,
+      required: true,
     },
+    status: {
+      type: String,
+      enum: ["pending", "success", "failed"],
+      required: true,
+    },
+    payment_method: {
+      type: String,
+      enum: ["card", "bank", "mobile"],
+      required: true,
+    },
+    opay_transaction_id: {
+      type: String,
+    },
+    callback_data: mongoose.Schema.Types.Mixed,
   },
-
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Transaction =
   mongoose.models?.Transaction ||
-  mongoose.model("Transaction", TransactionSchema);
+  mongoose.model("Transaction", transactionSchema);
 
 export default Transaction;
