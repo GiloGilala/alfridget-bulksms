@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import Chart from "react-apexcharts";
-import { CurrencyFormatter } from "@/lib/currencyFormatter";
-// import { ActionlessBarChartOptions } from "./chartOptions";
+import dynamic from "next/dynamic";
+import { CurrencyFormatter } from "@/lib/calculateFn";
+
+// Dynamically import react-apexcharts with SSR disabled
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const LineChart = ({
   grid = true,
@@ -22,8 +24,6 @@ const LineChart = ({
       stacked: true,
       toolbar: { show: false },
       background: "transparent",
-      // fontFamily: theme.typography.fontFamily,
-      // dropShadow: { enabled: false },
     },
 
     states: {
@@ -49,7 +49,6 @@ const LineChart = ({
       fontSize: "14px",
       horizontalAlign: legendHorizontalPosition,
       itemMargin: { horizontal: 12 },
-      // fontFamily: theme.typography.fontFamily,
       onItemClick: { toggleDataSeries: false },
       onItemHover: { highlightDataSeries: false },
       markers: { radius: 30, width: 8, height: 8 },
@@ -59,7 +58,6 @@ const LineChart = ({
     },
 
     dataLabels: { enabled: false },
-    // theme: { mode: theme.palette.mode },
     stroke: {
       show: true,
       width: strokeWidth,
@@ -71,7 +69,6 @@ const LineChart = ({
       show: true,
       tickAmount: 5,
       labels: {
-        // formatter: (value) => value / 1000 + "K",
         style: { colors: "hsl(var(--secondary-foreground))" },
       },
     },
@@ -99,7 +96,6 @@ const LineChart = ({
       marker: { show: false },
       style: {
         fontSize: "14px",
-        // fontFamily: theme.typography.fontFamily
       },
       y: {
         title: { formatter: () => "" },
@@ -147,7 +143,6 @@ const LineChart = ({
               style: {
                 fontWeight: 500,
                 colors: "hsl(var(--secondary-foreground))",
-                // fontFamily: theme.typography.fontFamily,
               },
             },
           },

@@ -22,8 +22,6 @@ export default function AddContact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [groups, setGroups] = useState(groupsData);
 
-  console.log("id :", id);
-
   useEffect(() => {
     // Fetch the contact by ID when the component mounts or when ID changes
     const fetchContact = async () => {
@@ -50,14 +48,14 @@ export default function AddContact() {
 
     try {
       if (contact?._id) {
-        const updatedContact = await updateContact(contact._id, data); // Pass contact.id for update
+        const updatedContact = await updateContact(contact?._id, data); // Pass contact.id for update
         console.log("Updated contact:", updatedContact);
       } else {
         const newContact = await createContact({
           ...data,
           userId: session?.user?.id,
         });
-        console.log("Contact created:", newContact);
+        // console.log("Contact created:", newContact);
       }
 
       toast.success("Contact save successfully!");

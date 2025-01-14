@@ -1,5 +1,7 @@
+"use client";
+
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import dynamic from "next/dynamic";
 import {
   Card,
   CardContent,
@@ -14,6 +16,26 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
+// Dynamically import recharts components
+const LineChart = dynamic(
+  () => import("recharts").then((mod) => mod.LineChart),
+  {
+    ssr: false,
+  }
+);
+const CartesianGrid = dynamic(
+  () => import("recharts").then((mod) => mod.CartesianGrid),
+  {
+    ssr: false,
+  }
+);
+const XAxis = dynamic(() => import("recharts").then((mod) => mod.XAxis), {
+  ssr: false,
+});
+const Line = dynamic(() => import("recharts").then((mod) => mod.Line), {
+  ssr: false,
+});
 
 // Sample data
 const chartData = [

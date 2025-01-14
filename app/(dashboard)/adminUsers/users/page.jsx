@@ -62,7 +62,7 @@ export default function Users() {
   const [loading, setLoading] = useState(true); // Add loading state
   const router = useRouter();
 
-  const id = session?.user;
+  const id = session?.user?.id;
   //   console.log("id :", id);
 
   useEffect(() => {

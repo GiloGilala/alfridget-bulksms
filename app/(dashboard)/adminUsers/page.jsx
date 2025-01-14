@@ -1,29 +1,37 @@
 "use client";
-
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 import { PageHeader } from "@/components/ui/page-header";
 import { CardDetails } from "@/components/ui/card";
 import { Activity, UserPlus, Users, UserX } from "lucide-react";
-import { columns } from "@/components/tables/Columns";
-import DataTable from "@/components/tables/DataTable";
-import { tableData } from "@/components/tables/data";
-
-import toast from "react-hot-toast";
 import {
   CardProgress,
   StatisticsCard1,
 } from "@/components/dashboard/StatisticsCard";
 import StatisticsCard3 from "@/components/dashboard/StatisticsCard3";
-import { SuccessFul } from "@/components/Successful";
 import StatisticsCard2 from "@/components/dashboard/StatisticsCard2";
-import Sales from "@/components/dashboard/Sales";
-import CustomerReview from "@/components/dashboard/CustomerReview";
-import RecentOrders from "@/components/dashboard/RecentOrders";
-import TopSeller from "@/components/dashboard/TopSeller";
-import ReturningRate from "@/components/dashboard/ReturningRate";
-import CustomerTransactions from "@/components/dashboard/CustomerTransactions";
 
+const Sales = dynamic(() => import("@/components/dashboard/Sales"), {
+  ssr: false,
+});
+const CustomerReview = dynamic(
+  () => import("@/components/dashboard/CustomerReview"),
+  { ssr: false }
+);
+const RecentOrders = dynamic(
+  () => import("@/components/dashboard/RecentOrders"),
+  { ssr: false }
+);
+const TopSeller = dynamic(() => import("@/components/dashboard/TopSeller"), {
+  ssr: false,
+});
+const ReturningRate = dynamic(
+  () => import("@/components/dashboard/ReturningRate"),
+  { ssr: false }
+);
+const CustomerTransactions = dynamic(
+  () => import("@/components/dashboard/CustomerTransactions"),
+  { ssr: false }
+);
 const cardData = [
   {
     title: "Total Users",
@@ -59,24 +67,13 @@ const cardData = [
   },
 ];
 
-const handleSubmit = async (data) => {
-  try {
-    toast.success("Dashborad created successfully!");
-    console.log("Response:", data);
-    // Optionally: refresh data or update local state
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to create the group. Please try again.");
-  }
-};
-
 export default function AdminDashboard() {
   return (
     <div className=" relative">
       <PageHeader heading="Dashboard" className=""></PageHeader>
       <section className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {cardData.map((data, index) => (
+          {cardData?.map((data, index) => (
             <CardDetails
               key={index}
               title={data.title}
@@ -101,27 +98,14 @@ export default function AdminDashboard() {
             progressValue={75}
             className="col-span-12 lg:col-span-3"
           />
+
           <Sales className="col-span-12 lg:col-span-8" />
           <CustomerReview className="col-span-12 lg:col-span-4" />
           <RecentOrders className="col-span-12 lg:col-span-8" />
           <TopSeller className="col-span-12 lg:col-span-4" />
           <ReturningRate className="col-span-12 lg:col-span-4" />
           <CustomerTransactions className="col-span-12 lg:col-span-8" />
-
-          {/* <StatisticsCard2 className="col-span-12 lg:col-span-3" />
-      
-      <StatisticsCard4 className="col-span-12 lg:col-span-3" />
-
-      <Sales className="col-span-12 lg:col-span-8" />
-      <CustomerReview className="col-span-12 lg:col-span-4" />
-
-      <RecentOrders className="col-span-12 lg:col-span-8" />
-      <TopSeller className="col-span-12 lg:col-span-4" />
-
-      <ReturningRate className="col-span-12 lg:col-span-4" />
-      <CustomerTransactions className="col-span-12 lg:col-span-8" /> */}
         </div>
-        {/* <DataTable columns={columns} data={tableData} /> */}
       </section>
     </div>
   );

@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-import mongoose from "mongoose";
-
 const serviceTypeSchema = new mongoose.Schema(
   {
     name: {

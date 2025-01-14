@@ -6,6 +6,7 @@ import { groupsData } from "@/components/tables/data";
 import { useSession } from "next-auth/react";
 import myAxios from "@/lib/axiosConfig";
 import { useRouter } from "next/navigation";
+import CampaignForm from "@/components/campaign/CampaignForm";
 
 export default function AddCampaign() {
   const { data: session } = useSession();

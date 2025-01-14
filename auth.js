@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import dbConnect from "@/lib/dbConn";
-import bcrypt from "bcryptjs";
-import User from "@/app/modals/User";
+// import dbConnect from "@/lib/dbConn";
+// import bcrypt from "bcryptjs";
+// import User from "@/app/modals/User";
+import myAxios from "@/lib/axiosConfig";
 // import myAxios from "@/lib/axiosConfig";
 
 const authOptions = {
@@ -18,46 +19,55 @@ const authOptions = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        await dbConnect();
+        // await dbConnect();
 
-        if (!credentials) {
-          throw new Error("No credentials provided");
-        }
-        // console.log("credentials auth:", credentials);
+        // if (!credentials) {
+        //   throw new Error("No credentials provided");
+        // }
 
         try {
-          // Find user by email
-          const user = await User.findOne({
-            $or: [{ email: credentials.email }, { phone: credentials.phone }],
-          });
+          // // Find user by email
+          // const user = await User.findOne({
+          //   $or: [{ email: credentials.email }, { phone: credentials.phone }],
+          // });
 
-          if (!user) {
-            throw new Error("No user found with this email");
-          }
-          // Check if password is correct
-          const isValidPassword = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-          if (!isValidPassword) {
-            throw new Error("Incorrect password");
-          }
+          // if (!user) {
+          //   throw new Error("No user found with this email");
+          // }
+          // // Check if password is correct
+          // const isValidPassword = await bcrypt.compare(
+          //   credentials.password,
+          //   user.password
+          // );
+          // if (!isValidPassword) {
+          //   throw new Error("Incorrect password");
+          // }
           // console.log("credentials user:", user);
 
           // If password is correct, return user
-          return {
-            id: user._id.toString(),
-            username: user.username,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            credit: user.credit,
-            phone: user.phone,
-            role: user.role,
-            profileImage: user.profileImage,
-            terms: user.terms,
-            isActive: user.isActive,
-          };
+          // return {
+          //   id: user._id.toString(),
+          //   username: user.username,
+          //   email: user.email,
+          //   firstName: user.firstName,
+          //   lastName: user.lastName,
+          //   credit: user.credit,
+          //   phone: user.phone,
+          //   role: user.role,
+          //   profileImage: user.profileImage,
+          //   terms: user.terms,
+          //   isActive: user.isActive,
+          // };
+          const res = await myAxios.post("/auth/login", {
+            email: credentials.email,
+            password: credentials.password,
+          });
+
+          const { data } = res;
+          if (!data.success) {
+            throw new Error(data.message || "Authorization failed");
+          }
+          return data.user;
         } catch (error) {
           console.error("Login error:", error.message);
           throw new Error("Authorization failed");
@@ -113,6 +123,10 @@ const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
+};
+// Force Node.js runtime
+export const config = {
+  runtime: "nodejs", // Ensures Mongoose compatibility
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

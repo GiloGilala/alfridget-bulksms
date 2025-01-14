@@ -23,10 +23,14 @@ import {
   CardTitle,
 } from "../ui/card";
 import { SideNavItem } from "@/routes";
+import { useSession } from "next-auth/react";
 
 const SideNavBar = () => {
+  const { data: session } = useSession();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeMenuItems, setActiveMenuItems] = useState({});
+
+  const userRole = session?.user?.role;
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -88,7 +92,7 @@ const SideNavBar = () => {
 
       <Separator className="my-2" />
 
-      <Nav isCollapsed={isCollapsed} links={SideNavItem} />
+      <Nav isCollapsed={isCollapsed} links={SideNavItem} userRole={userRole} />
 
       {!isCollapsed && (
         <div className="flex justify-center absolute bottom-0 left-0 right-0 m-4">

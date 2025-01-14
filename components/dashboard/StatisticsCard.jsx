@@ -69,6 +69,7 @@ export const CardCTA = ({
   handleButtonClick,
   modalButton,
   pricingPlans,
+  userRole,
 }) => {
   return (
     <Card className={className}>
@@ -80,7 +81,7 @@ export const CardCTA = ({
       </CardHeader>
       <CardFooter>
         {modalButton ? (
-          <Topup2 pricingPlans={pricingPlans} />
+          <Topup2 pricingPlans={pricingPlans} userRole={userRole} />
         ) : (
           <Button onClick={handleButtonClick}>{buttonText}</Button>
         )}

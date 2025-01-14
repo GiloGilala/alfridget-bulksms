@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import Campaign from "@/models/Campaign";
-import { SMS } from "../../config/africaTalkingConfig";
 import { auth } from "@/auth";
+import { SMS } from "@/lib/africaTalkingConfig";
+import Campaign from "@/app/modals/Campaign";
 
 // POST /api/campaigns
 export const POST = async (request) => {

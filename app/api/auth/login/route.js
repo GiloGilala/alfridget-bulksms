@@ -4,7 +4,7 @@ import dbConnect from "@/lib/dbConn";
 import User from "@/app/modals/User";
 
 // POST /api/auth/login
-export const POST = async (req) => {
+export const POST = async (req, res) => {
   await dbConnect();
 
   try {
@@ -43,14 +43,17 @@ export const POST = async (req) => {
 
     // If login is successful, you can return user information (excluding the password)
     const userData = {
-      id: user._id,
+      id: user._id.toString(),
+      username: user.username,
+      email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email,
+      credit: user.credit,
       phone: user.phone,
       role: user.role,
-      credits: user.credits,
-      verified: user.verified,
+      profileImage: user.profileImage,
+      terms: user.terms,
+      isActive: user.isActive,
     };
 
     // Optionally, you could generate a JWT here for session management

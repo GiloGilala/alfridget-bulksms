@@ -11,15 +11,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
-const Nav = ({ links, isCollapsed }) => {
+const Nav = ({ links, isCollapsed, userRole }) => {
   const pathName = usePathname();
   const [expandedIndexes, setExpandedIndexes] = useState({});
 
   const toggleSubmenu = useCallback((index) => {
     setExpandedIndexes((prev) => ({ ...prev, [index]: !prev[index] }));
   }, []);
+
+  // Filter links based on user's role
+  // Memoized visible links based on user role
+  const filteredLinks = useMemo(() => {
+    return links.filter((link) => link.visible.includes(userRole));
+  }, [links, userRole]);
 
   return (
     <TooltipProvider>
@@ -28,7 +34,7 @@ const Nav = ({ links, isCollapsed }) => {
         className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
       >
         <nav className="grid gap-1 px-2 group-[data-collapsed=true]:justify-center group-[data-collapsed=true]:px-2">
-          {links.map((link, index) =>
+          {filteredLinks.map((link, index) =>
             link.submenu ? (
               isCollapsed ? (
                 <Tooltip key={index} delayDuration={0}>
@@ -100,27 +106,31 @@ const Nav = ({ links, isCollapsed }) => {
                   </div>
                   {expandedIndexes[index] && (
                     <div className="pl-6 py-1">
-                      {link.subMenuItems.map((subLink, subIndex) => (
-                        <Link
-                          key={subIndex}
-                          href={subLink.href}
-                          className={cn(
-                            buttonVariants({
-                              variant:
-                                subLink.href === pathName ? "default" : "ghost",
-                              size: "sm",
-                            }),
-                            link.variant === "default" &&
-                              "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
-                            "justify-start flex items-center my-1"
-                          )}
-                        >
-                          {subLink.icon && (
-                            <subLink.icon className="mr-2 h-4 w-4" />
-                          )}
-                          {subLink.title}
-                        </Link>
-                      ))}
+                      {link.subMenuItems
+                        .filter((subLink) => subLink.visible.includes(userRole))
+                        .map((subLink, subIndex) => (
+                          <Link
+                            key={subIndex}
+                            href={subLink.href}
+                            className={cn(
+                              buttonVariants({
+                                variant:
+                                  subLink.href === pathName
+                                    ? "default"
+                                    : "ghost",
+                                size: "sm",
+                              }),
+                              link.variant === "default" &&
+                                "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
+                              "justify-start flex items-center my-1"
+                            )}
+                          >
+                            {subLink.icon && (
+                              <subLink.icon className="mr-2 h-4 w-4" />
+                            )}
+                            {subLink.title}
+                          </Link>
+                        ))}
                     </div>
                   )}
                 </div>

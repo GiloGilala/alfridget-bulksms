@@ -26,7 +26,7 @@ function DataTableToolbar({ table, tableFilterOptions, tableFilterTitle }) {
   const selecetedIds = table
     .getFilteredSelectedRowModel()
     .rows.map((row) => row.original);
-  console.log("seleceted Ids :", selecetedIds);
+  // console.log("seleceted Ids :", selecetedIds);
 
   return (
     <div className="flex flex-wrap items-center justify-between">

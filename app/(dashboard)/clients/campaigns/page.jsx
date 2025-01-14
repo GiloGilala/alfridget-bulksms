@@ -8,9 +8,6 @@ import {
   MailX,
   MessageSquare,
 } from "lucide-react";
-import DataTable from "@/components/tables/DataTable";
-import { contactsData } from "@/components/tables/data";
-import { ContactsColumns } from "@/components/tables/ContactsColumns";
 
 const cardData = [
   {
@@ -59,16 +56,16 @@ export default function Contacts() {
       ></PageHeader>
       <section className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {cardData.map((data, index) => (
+          {/* {cardData?.map((data, index) => (
             <CardDetails key={index} title={data.title} icon={data.icon}>
               <div className="text-2xl font-bold">{data.value}</div>
               <p className="text-xs text-muted-foreground">
                 {data.percentage} {data.description}
               </p>
             </CardDetails>
-          ))}
+          ))} */}
         </div>
-        <DataTable columns={ContactsColumns} data={contactsData} />
+        {/* <DataTable columns={ContactsColumns} data={contactsData} /> */}
       </section>
     </div>
   );

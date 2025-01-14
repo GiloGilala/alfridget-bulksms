@@ -65,10 +65,6 @@ export default function SmsHistory() {
       const fetchData = async () => {
         try {
           const res = await fetchCampaignsByUser(id);
-          //            function sanitizeData(data) {
-          // return JSON.parse(JSON.stringify(data));
-          // }
-          //           console.log("res :", res);
 
           setSmsHistory(res.campaigns);
         } catch (error) {

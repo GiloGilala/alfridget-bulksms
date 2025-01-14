@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConn";
-import User from "@/models/User";
 import { auth } from "@/auth"; // Adjust the path as necessary
+import User from "@/app/modals/User";
 
 // Helper function to check if the user has the required role
 const isAuthorized = (user, allowedRoles) => {

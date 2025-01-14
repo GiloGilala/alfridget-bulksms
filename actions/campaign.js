@@ -76,30 +76,20 @@ export const fetchCampaignsByUser = async (userId) => {
   try {
     await dbConnect();
 
-    // const campaigns = await Campaign.find({ userId })
-    //   .populate("groupId")
-    //   .lean();
-    const campaigns = await Campaign.find({ userId }).populate("groupId");
+    const campaigns = await Campaign.find({ userId })
+      .populate("groupId")
+      .lean();
 
     if (!campaigns.length) {
       throw new Error(`No campaigns found for user ID ${userId}`);
     }
-    // Format campaigns to expand nested objects if needed
-    // const plainCampaigns = campaigns.map((campaign) => ({
-    //   ...campaign,
-    //   _id: campaign._id?.toString(),
-    //   senderId: campaign.senderId?.toString(),
-    //   createdAt: campaign.createdAt?.toISOString(),
-    //   updatedAt: campaign.updatedAt?.toISOString(),
-    //   recipients: campaign.recipients?.map((recipient) => ({
-    //     ...recipient,
-    //     _id: recipient._id?.toString(),
-    //   })),
-    // }));
-    console.log("campaigns :", campaigns);
-    const data = {
+
+    // Deeply serialize the data using JSON.parse and JSON.stringify
+    const plainCampaigns = JSON.parse(JSON.stringify(campaigns));
+
+    return {
       message: "Campaigns fetched successfully",
-      campaigns,
+      campaigns: plainCampaigns,
       successful: true,
     };
 

@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import ProviderConfig from "@/models/ProviderConfig";
-import { auth } from "next-auth"; // Ensure to import auth
+import ProviderConfig from "@/app/modals/ProviderConfig";
+import { auth } from "@/auth";
 
 // Function to check if a user has the necessary authorization
 const isAuthorized = (user, roles) => {
-  return roles.includes(user.role);
+  return roles.includes(user?.role);
 };
 // POST /api/provider-configs
 export const POST = async (request) => {
   const session = await auth(request);
-  if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
+  if (!isAuthorized(session?.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
 

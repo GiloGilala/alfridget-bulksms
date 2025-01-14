@@ -65,7 +65,7 @@ const ContactForm = ({
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
-          {defaultValues._id ? "Update Contact" : "Create Contact"}
+          {defaultValues?._id ? "Update Contact" : "Create Contact"}
         </CardTitle>
         <CardDescription className="text-muted-foreground">
           Fill in contact details
@@ -213,7 +213,7 @@ const ContactForm = ({
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
-              ) : defaultValues._id ? (
+              ) : defaultValues?._id ? (
                 "Update Contact"
               ) : (
                 "Create Contact"

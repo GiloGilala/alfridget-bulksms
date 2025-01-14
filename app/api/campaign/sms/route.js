@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConn";
 import { SMS } from "@/lib/africaTalkingConfig";
 import Campaign from "@/app/modals/Campaign";
 import { auth } from "@/auth";
-import { currentUser } from "@/lib/authUser";
 import Contact from "@/app/modals/Contact";
 import User from "@/app/modals/User";
 

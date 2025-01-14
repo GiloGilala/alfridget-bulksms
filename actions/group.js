@@ -66,24 +66,17 @@ export const fetchGroupsByUser = async (userId) => {
   try {
     await dbConnect();
 
-    // const groups = await Group.find({ userId }).populate("contactIds").lean();
-    const groups = await Group.find({ userId })
-      .populate({
-        path: "contactIds",
-        options: { lean: true }, // Ensure populated documents are plain objects
-      })
-      .lean();
+    const groups = await Group.find({ userId }).populate("contactIds").lean();
 
     if (!groups.length) {
       throw new Error(`No groups found for user ID ${userId}`);
     }
 
-    // const plainGroups = JSON.parse(JSON.stringify(groups));
+    const plainGroups = JSON.parse(JSON.stringify(groups));
 
     return {
       message: "Groups fetched successfully",
-      groups: groups,
-      // groups: plainGroups,
+      groups: plainGroups,
       successful: true,
     };
   } catch (error) {

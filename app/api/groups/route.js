@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import { auth } from "next-auth"; // Ensure to import auth
+import { auth } from "@/auth";
 import Group from "@/app/modals/Group ";
 
 // Function to check if a user has the necessary authorization
@@ -12,7 +12,7 @@ const isAuthorized = (user, roles) => {
 export const POST = async (request) => {
   await dbConnect();
 
-  const session = await auth(request);
+  const session = await auth();
   if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
@@ -45,7 +45,7 @@ export const POST = async (request) => {
 export const GET = async (request) => {
   await dbConnect();
 
-  const session = await auth(request);
+  const session = await auth();
   if (
     !session ||
     (session.id !== id && !isAuthorized(session.user, ["superAdmin"]))
@@ -68,7 +68,7 @@ export const GET_BY_ID = async (request, { params }) => {
 
   await dbConnect();
 
-  const session = await auth(request);
+  const session = await auth();
   if (
     !session ||
     (session.id !== id && !isAuthorized(session.user, ["admin", "superAdmin"]))
@@ -94,7 +94,7 @@ export const PUT = async (request, { params }) => {
 
   await dbConnect();
 
-  const session = await auth(request);
+  const session = await auth();
   if (
     !session ||
     (session.id !== id && !isAuthorized(session.user, ["admin", "superAdmin"]))
@@ -131,7 +131,7 @@ export const DELETE = async (request, { params }) => {
 
   await dbConnect();
 
-  const session = await auth(request);
+  const session = await auth();
   if (
     !session ||
     (session.id !== id && !isAuthorized(session.user, ["admin", "superAdmin"]))

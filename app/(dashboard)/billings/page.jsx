@@ -200,31 +200,31 @@ const DataTable = ({ headers, rows }) => (
   </Table>
 );
 
-const CardComponent = ({ className }) => {
-  return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {data.map((item, index) => (
-        <Card key={index}>
-          <CardHeader className="pb-2">
-            <CardDescription>{item.title}</CardDescription>
-            <CardTitle className="text-4xl">{item.amount}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xs text-muted-foreground">
-              {item.percentage} from last month
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Progress
-              value={item.progressValue}
-              aria-label={`${item.progressValue}% increase`}
-            />
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
-  );
-};
+// const CardComponent = ({ className }) => {
+//   return (
+//     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+//       {data.map((item, index) => (
+//         <Card key={index}>
+//           <CardHeader className="pb-2">
+//             <CardDescription>{item.title}</CardDescription>
+//             <CardTitle className="text-4xl">{item.amount}</CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             <div className="text-xs text-muted-foreground">
+//               {item.percentage} from last month
+//             </div>
+//           </CardContent>
+//           <CardFooter>
+//             <Progress
+//               value={item.progressValue}
+//               aria-label={`${item.progressValue}% increase`}
+//             />
+//           </CardFooter>
+//         </Card>
+//       ))}
+//     </div>
+//   );
+// };
 
 export default function Component() {
   const [isOpen, setIsOpen] = useState(false);
@@ -253,8 +253,6 @@ export default function Component() {
     //   quantity: "Qty 1 • Billed monthly",
     // },
   ];
-
-  console.log("session?.user? ", session?.user);
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">

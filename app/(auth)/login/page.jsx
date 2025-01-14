@@ -122,12 +122,12 @@ const Login = () => {
           <div className="relative z-20 flex items-center text-2xl font-medium">
             <Image
               src="/regel.jpeg"
-              alt="Alfridget company logo"
+              alt="Regel company logo"
               width={100}
               height={100}
               className="mr-2 h-10 w-10"
             />
-            Alfridget
+            Regel
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">

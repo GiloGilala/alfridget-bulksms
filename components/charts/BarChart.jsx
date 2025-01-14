@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import Chart from "react-apexcharts";
-import { CurrencyFormatter } from "@/lib/currencyFormatter";
-// import { ActionlessBarChartOptions } from "./chartOptions";
+import dynamic from "next/dynamic";
+import { CurrencyFormatter } from "@/lib/calculateFn";
+
+// Dynamically import react-apexcharts with SSR disabled
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const BarChart = ({
   height = 275,

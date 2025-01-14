@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -142,25 +143,26 @@ export function Topup1() {
   );
 }
 
-export function Topup2({ pricingPlans, topUpUser }) {
+export function Topup2({ pricingPlans }) {
   const { data: session } = useSession();
+  const user = session?.user;
 
   const [formData, setFormData] = useState(paymentForm);
   const router = useRouter();
-  const isUserId = "user";
-  // const isUserId = "admin";
+  const userRole = user?.role;
+  // const userRole = "admin";
 
   const items =
-    isUserId === "admin"
+    userRole === "admin"
       ? [
           {
-            id: topUpUser?._id,
+            id: userRole?._id,
             name: "Regel Top Up",
             price: 0 || formData.amount,
             description: "Regel Top Up Your Credit",
-            email: "solomongilala@gmail.com" || topUpUser?.email,
-            // email: "akuuchenna@gmail.com" || topUpUser?.email,
-            username: topUpUser?.usename,
+            email: "solomongilala@gmail.com" || userRole?.email,
+            // email: "akuuchenna@gmail.com" || userRole?.email,
+            username: userRole?.usename,
           },
         ]
       : pricingPlans;
@@ -229,22 +231,22 @@ export function Topup2({ pricingPlans, topUpUser }) {
     event.preventDefault();
 
     const userData =
-      isUserId === "admin"
+      userRole === "admin"
         ? {
             adminId: session?.user?.id,
             adminPassword: formData.password,
-            userId: topUpUser?._id,
+            userId: userRole?._id,
             credit: formData.amount,
             email: "akuuchenna@gmail.com",
           }
         : {
-            userId: topUpUser?._id,
+            userId: userRole?._id,
             credit: formData.amount,
             ...formData,
           };
 
     try {
-      if (isUserId === "admin") {
+      if (userRole === "admin") {
         const res = await updateCreditByAdmin(userData);
         if (res.successful) {
           toast.success(res.message);
@@ -270,7 +272,7 @@ export function Topup2({ pricingPlans, topUpUser }) {
     }));
   };
 
-  // const isUserId = "admin";
+  // const userRole = "admin";
 
   return (
     <Dialog>
@@ -327,11 +329,11 @@ export function Topup2({ pricingPlans, topUpUser }) {
                 name="email"
                 type="email"
                 placeholder="Shipping Email"
-                value={topUpUser?.email || formData.email}
+                value={userRole?.email || formData.email}
                 onChange={handleChange}
                 className="mb-4"
               />
-              {["admin", "superAdmin"].includes(isUserId) && (
+              {["admin", "superAdmin"].includes(userRole) && (
                 <Input
                   id="password"
                   name="password"
@@ -342,7 +344,7 @@ export function Topup2({ pricingPlans, topUpUser }) {
                   className="mb-4"
                 />
               )}
-              {isUserId === "user" && (
+              {userRole === "user" && (
                 <>
                   <div className="mb-4">
                     <div className="mb-2 flex justify-between">
@@ -463,7 +465,7 @@ export function Topup2({ pricingPlans, topUpUser }) {
             </CardContent>
 
             <CardFooter className="w-full flex-col">
-              {isUserId === "user" ? (
+              {userRole === "user" ? (
                 <Button
                   className="mb-6 w-full bg-black py-3 text-sm font-semibold text-white"
                   onClick={handleSubmit}
@@ -487,47 +489,6 @@ export function Topup2({ pricingPlans, topUpUser }) {
         </div>
       </DialogContent>
     </Dialog>
-  );
-}
-
-function BanknoteIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="20" height="12" x="2" y="6" rx="2" />
-      <circle cx="12" cy="12" r="2" />
-      <path d="M6 12h.01M18 12h.01" />
-    </svg>
-  );
-}
-
-function CreditCardIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="20" height="14" x="2" y="5" rx="2" />
-      <line x1="2" x2="22" y1="10" y2="10" />
-    </svg>
   );
 }
 

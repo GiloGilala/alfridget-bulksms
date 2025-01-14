@@ -89,7 +89,7 @@ export default function AddCampaign() {
     }
   }, [userId]);
 
-  console.log("groups :", groups);
+  // console.log("groups :", groups);
 
   const perSms = 2.83;
   const smstoSend = importedContacts.length + recipientsInput.length;

@@ -42,7 +42,9 @@ export const fetchContactsByUser = async (userId) => {
       throw new Error(`No contacts found for user ID ${userId}`);
     }
 
-    return contacts; // No need to call .toJSON() on lean() results
+    const plainContacts = JSON.parse(JSON.stringify(contacts));
+
+    return plainContacts; // No need to call .toJSON() on lean() results
   } catch (error) {
     console.error("Error fetching contacts:", error);
     throw new Error(error.message || "Could not fetch contacts");

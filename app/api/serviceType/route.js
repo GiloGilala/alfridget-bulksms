@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConn";
-import ServiceType from "@/models/ServiceType";
-import { auth } from "next-auth"; // Ensure to import auth
+import { auth } from "@/auth";
+import ServiceType from "@/app/modals/serviceType";
 
 // Function to check if a user has the necessary authorization
 const isAuthorized = (user, roles) => {
@@ -10,7 +10,7 @@ const isAuthorized = (user, roles) => {
 
 // POST /api/service-types
 export const POST = async (request) => {
-  const session = await auth(request);
+  const session = await auth();
   if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
@@ -53,7 +53,7 @@ export const POST = async (request) => {
 
 // GET /api/service-types
 export const GET = async (request) => {
-  const session = await auth(request);
+  const session = await auth();
   if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
@@ -71,7 +71,7 @@ export const GET = async (request) => {
 
 // GET /api/service-types/:id
 export const GET_BY_ID = async (request, { params }) => {
-  const session = await auth(request);
+  const session = await auth();
   if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
@@ -97,7 +97,7 @@ export const GET_BY_ID = async (request, { params }) => {
 
 // PUT /api/service-types/:id
 export const PUT = async (request, { params }) => {
-  const session = await auth(request);
+  const session = await auth();
   if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }
@@ -142,7 +142,7 @@ export const PUT = async (request, { params }) => {
 
 // DELETE /api/service-types/:id
 export const DELETE = async (request, { params }) => {
-  const session = await auth(request);
+  const session = await auth();
   if (!isAuthorized(session.user, ["admin", "superAdmin"])) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
   }

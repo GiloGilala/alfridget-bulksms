@@ -4,6 +4,7 @@ import dbConnect from "@/lib/dbConn"; // Database connection file
 import User from "@/app/modals/User"; // Mongoose User model
 import bcrypt from "bcryptjs";
 import { sendEmail } from "@/lib/nodemailer";
+import { generateOTP } from "@/lib/generateOTP";
 
 export const createUser = async (userData) => {
   // Validate input data
@@ -55,9 +56,11 @@ export const fetchUsers = async () => {
       throw new Error(`Users not found`);
     }
 
+    const plainUsers = JSON.parse(JSON.stringify(users));
+
     const data = {
       message: "User fetched successfully",
-      users: users,
+      users: plainUsers,
       successful: true,
     };
 
@@ -73,15 +76,20 @@ export const fetchUserById = async (userId) => {
     await dbConnect();
 
     // Find the user by ID
-    const user = await User.findById(userId).select("-password -__v").lean(); // Exclude password and version fields
+    const user = await User.findById(userId)
+      .select(
+        "-createdAt -updatedAt -resetPasswordToken -resetPasswordExpires -password"
+      )
+      .lean(); // Exclude password and version fields
 
     if (!user) {
       throw new Error(`User with ID ${userId} not found`);
     }
+    const plainUser = JSON.parse(JSON.stringify(user));
 
     const data = {
       message: "User fetched successfully",
-      user: user,
+      user: plainUser,
       successful: true,
     };
 
@@ -216,9 +224,16 @@ export const updateUser = async (userId, userData) => {
     }
 
     // Update the user data
-    const updatedUser = await User.findByIdAndUpdate(userId, userData, {
-      new: true,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: userData,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     const data = {
       message: "User updated successfully",
@@ -420,6 +435,7 @@ export const updateUserPassword = async (userId, newPassword) => {
   }
 };
 
+// Function to send password reset email
 export const sendPasswordResetEmail = async (email) => {
   // Validate input data
   if (!email) {
@@ -430,51 +446,86 @@ export const sendPasswordResetEmail = async (email) => {
     await dbConnect();
 
     // Find the user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
     if (!user) {
       throw new Error(`User with email ${email} not found`);
     }
 
-    // Generate a password reset token
-    const token = await user.generatePasswordResetToken();
+    // Generate OTP and expiry time
+    const { otp, expires } = generateOTP(6, "numeric", 5); // 6-digit numeric OTP, expires in 5 minutes
+
+    // Update the user with the OTP and expiry time
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id, // Corrected: Pass the ID directly
+      {
+        $set: {
+          resetPasswordToken: otp.toString(),
+          resetPasswordExpires: expires,
+        },
+      },
+      { new: true, runValidators: true } // Ensure the updated document is returned
+    );
+
+    if (!updatedUser) {
+      throw new Error("Failed to update user with reset token");
+    }
 
     // Send the password reset email
     await sendEmail({
       to: email,
       subject: "Password Reset Request",
-      text: `To reset your password, click on this link: ${token}`,
+      text: `To reset your password, use this OTP: ${otp}. This OTP will expire in 5 minutes.`,
     });
 
-    const data = {
+    return {
       message: "Password reset email sent successfully",
       successful: true,
     };
-
-    return data;
   } catch (error) {
     console.error("Error sending password reset email:", error);
     throw new Error(error.message || "Could not send password reset email");
   }
 };
 
-export const resetPassword = async (token, newPassword) => {
+export const resetPassword = async (resetData) => {
+  const { email, password, confirmPassword, token } = resetData;
+
   // Validate input data
-  if (!token || !newPassword) {
-    throw new Error("Invalid input data");
+  if (!email || !token || !password || !confirmPassword) {
+    throw new Error(
+      "Email, token, password, and confirm password are required"
+    );
+  }
+  if (password !== confirmPassword) {
+    throw new Error("Passwords do not match");
   }
 
   try {
     await dbConnect();
 
-    // Find the user by password reset token
-    const user = await User.findOne({ passwordResetToken: token });
+    // Find user by email and token
+    const user = await User.findOne({
+      email,
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }, // Check if token is still valid
+    });
+
     if (!user) {
       throw new Error(`User with password reset token ${token} not found`);
     }
 
     // Update the user's password
-    user.password = await bcrypt.hash(newPassword, 12);
-    await user.save();
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          password: hashedPassword,
+          resetPasswordToken: "",
+          resetPasswordExpires: "",
+        },
+      }
+    );
 
     const data = {
       message: "Password reset successfully",

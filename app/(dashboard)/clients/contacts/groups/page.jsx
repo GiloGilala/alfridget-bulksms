@@ -18,7 +18,7 @@ export default function Groups() {
   const router = useRouter();
 
   const id = session?.user?.id;
-  console.log("Groups id:", id);
+  // console.log("Groups id:", id);
 
   useEffect(() => {
     if (id) {

@@ -88,7 +88,6 @@ export default function Contacts() {
   };
 
   const handleEdit = (contact) => {
-    console.log("Edit contact:", contact);
     setEditingContact(contact);
     setShowEditModal(true);
   };

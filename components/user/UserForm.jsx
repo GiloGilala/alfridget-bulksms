@@ -23,45 +23,30 @@ import { Form, FormFieldWrapper } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { Separator } from "../ui/separator";
+import { Loader2 } from "lucide-react";
 
-const UserForm = ({ defaultValues = {} }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+const UserForm = ({
+  defaultValues = {},
+  user,
+  isSubmitting,
+  setIsSubmitting,
+  handleSubmit,
+}) => {
   const form = useForm({
     resolver: zodResolver(userSchema),
-    defaultValues: {
-      username: "",
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      phone: "",
-      gender: "",
-      age: "",
-      Credits: 0,
-      companyName: "",
-      companyEmail: "",
-      companyPhone: "",
-      companyCategory: "",
-      companyWebsite: "",
-      verified: false,
-      isDisabled: false,
-      disableDate: null,
-      isActive: true,
-      role: "user",
-      profileImage: null,
-    },
+    values: user,
   });
 
   const onSubmit = async (data) => {
+    // console.log("Updated user:", data);
+
     setIsSubmitting(true);
+
     try {
-      console.log("Form Data Submitted:", data);
-      // Simulate async API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await handleSubmit(data); // Directly pass the data
+      setIsSubmitting(false);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -83,7 +68,9 @@ const UserForm = ({ defaultValues = {} }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Create User</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          {user?._id ? "Update User" : "Create User"}
+        </CardTitle>
         <CardDescription className="text-muted-foreground">
           Fill in user details
         </CardDescription>
@@ -158,15 +145,6 @@ const UserForm = ({ defaultValues = {} }) => {
             <FormFieldWrapper
               className="lg:col-span-3"
               control={form.control}
-              name="password"
-              label="Password"
-              placeholder="Enter password"
-              renderInput={(field) => <Input {...field} type="password" />}
-            />
-
-            <FormFieldWrapper
-              className="lg:col-span-3"
-              control={form.control}
               name="gender"
               label="Gender"
               renderInput={(field) => (
@@ -184,15 +162,6 @@ const UserForm = ({ defaultValues = {} }) => {
                   </SelectContent>
                 </Select>
               )}
-            />
-
-            <FormFieldWrapper
-              className="lg:col-span-3"
-              control={form.control}
-              name="Credits"
-              label="Credits"
-              placeholder="Enter credits"
-              renderInput={(field) => <Input {...field} type="number" />}
             />
 
             {/* Active Status */}
@@ -346,6 +315,8 @@ const UserForm = ({ defaultValues = {} }) => {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
+              ) : user?._id ? (
+                "Update User"
               ) : (
                 "Create User"
               )}
