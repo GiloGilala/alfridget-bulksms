@@ -126,7 +126,7 @@ export const SideNavItem = [
     title: "SMS",
     href: "#",
     icon: Smartphone,
-    visible: ["superAdmin", "user"],
+    visible: ["superAdmin", "admin", "user"],
     submenu: true,
     subMenuItems: [
       {

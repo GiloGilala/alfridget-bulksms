@@ -22,9 +22,9 @@ const nextConfig = {
   },
 
   // Prevent static optimization for pages using browser APIs
-  experimental: {
-    appDir: true,
-  },
+  // experimental: {
+  //   appDir: true,
+  // },
 
   // Output standalone build
   output: "standalone",

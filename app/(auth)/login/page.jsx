@@ -73,7 +73,7 @@ const Login = () => {
 
       if (res.ok) {
         setLoading(false);
-        router.push("/clients/sms");
+        router.push("/clients/dashboard");
       }
     } catch (error) {
       console.error("Unexpected error:", error);
