@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // import bcrypt from "bcryptjs";
 // import User from "@/app/modals/User";
 import myAxios from "@/lib/axiosConfig";
-// import myAxios from "@/lib/axiosConfig";
 
 const authOptions = {
   providers: [

@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Existing image configuration
   images: {
-    domains: ["www.dropbox.com"],
+    remotePatterns: [
+      { protocol: "https", hostname: "www.dropbox.com" },
+      { protocol: "https", hostname: "regeltechnology.com" },
+      { protocol: "https", hostname: "**.regeltechnology.com" },
+    ],
   },
-
-  // Existing rewrites
   async rewrites() {
     return [
       {
@@ -15,18 +16,9 @@ const nextConfig = {
       },
     ];
   },
-
-  // Add these new configurations to handle the window reference error
   eslint: {
-    ignoreDuringBuilds: true, // Disable ESLint during builds
+    ignoreDuringBuilds: true,
   },
-
-  // Prevent static optimization for pages using browser APIs
-  // experimental: {
-  //   appDir: true,
-  // },
-
-  // Output standalone build
   output: "standalone",
 };
 
