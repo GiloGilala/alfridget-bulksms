@@ -206,8 +206,8 @@ export const SideNavItem = [
         visible: ["superAdmin", "admin", "user"],
       },
       {
-        title: "Payment Methods",
-        href: "/billing/paymentMethods",
+        title: "Payment",
+        href: "/billings/payment",
         visible: ["superAdmin", "admin", "user"],
       },
       // { title: "Active", href: "/users/active",visible: ["superAdmin", "admin"] },

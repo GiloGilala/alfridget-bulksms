@@ -45,7 +45,7 @@ const CampaignForm = ({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
       title: "Gilo Testing",
-      from: "+2348080741116",
+      from: "REGEL",
       type: "Bulk SMS",
       unicode: false,
       message: "Testing from Gilo SMS App",
@@ -54,7 +54,7 @@ const CampaignForm = ({
       scheduleDate: null,
       recipients: "", // Initialize as a string, not an array
     },
-    values: campaign,
+    // values: campaign,
   });
 
   const message = form.watch("message") || "";
@@ -78,7 +78,7 @@ const CampaignForm = ({
   useEffect(() => {
     if (watchedValues.groupId) {
       const selectedGroup = groups.find(
-        (group) => group.id === watchedValues.groupId
+        (group) => group._id === watchedValues.groupId
       );
       if (selectedGroup) {
         setImportedGroupContacts &&
@@ -90,8 +90,19 @@ const CampaignForm = ({
   const onSubmit = async (data) => {
     setIsSubmitting(true);
 
+    const recipientsArray = data.recipients
+      .split(",") // Split by comma
+      .map((phone) => phone.trim()); // Trim any extra spaces
+
+    // Prepare the payload for the API
+    const smsData = {
+      ...data,
+      recipients: recipientsArray, // Replace the string with the array
+    };
+
     try {
-      await handleSubmit(data); // Directly pass the data
+      // console.log("send :", smsData);
+      await handleSubmit(data);
       setIsSubmitting(false);
     } catch (error) {
       console.error("Form submission error:", error);
@@ -120,8 +131,8 @@ const CampaignForm = ({
             <FormFieldWrapper
               control={form.control}
               name="from"
-              label="From"
-              placeholder="Sender name or number"
+              label="Sender ID"
+              placeholder="Enter Your Sender ID"
               renderInput={(field) => <Input {...field} />}
             />
 
@@ -156,7 +167,7 @@ const CampaignForm = ({
                   </SelectTrigger>
                   <SelectContent>
                     {groups.map((group) => (
-                      <SelectItem key={group.id} value={group.id}>
+                      <SelectItem key={group._id} value={group._id}>
                         {group.name}
                       </SelectItem>
                     ))}
@@ -198,14 +209,14 @@ const CampaignForm = ({
                   <Textarea
                     {...field}
                     className="min-h-[100px]"
-                    placeholder="Enter recipients (e.g., 123,456,789)"
+                    placeholder="Enter recipients phone Numbers (e.g., +123...,+456...,+789...)"
                     value={field.value || ""} // Treat as a string
                     onChange={(e) => {
                       field.onChange(e.target.value); // Update the string directly
                     }}
                   />
                 )}
-                description="Enter recipients as a single string (e.g., 123,456,789)"
+                description="Enter recipients as a single string (e.g., +123...,+456...,+789...)"
               />
             </div>
           </CardContent>
