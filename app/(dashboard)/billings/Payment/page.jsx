@@ -345,8 +345,7 @@ const Checkout = () => {
       currency: "NGN",
       total: 400, // Replace with dynamic cart data if applicable
     },
-    // callbackUrl: "http://localhost:3000/api/payments/opay/callback",
-    callbackUrl: "https://alfridget-bulksms.onrender.com/dashboard",
+    // callbackUrl: "https://alfridget-bulksms.onrender.com/dashboard",
     cancelUrl: "http://localhost:3000/billings/paymentFailed",
     country: "NG",
     evokeOpay: true,

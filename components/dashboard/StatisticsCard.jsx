@@ -126,8 +126,11 @@ export const CardProgress = ({
   );
 };
 
-export function PricingCard({ pricingPlans }) {
-  const sumTotalPrice = pricingPlans.reduce((acc, plan) => acc + plan.price, 0);
+export function PricingCard({ pricingPlans = [] }) {
+  const sumTotalPrice = pricingPlans?.reduce(
+    (acc, plan) => acc + plan?.price,
+    0
+  );
 
   const totalPrice = CurrencyFormatter(sumTotalPrice, "NGN");
   return (
