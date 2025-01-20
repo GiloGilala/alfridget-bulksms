@@ -2,38 +2,46 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
   {
-    user_id: {
+    fromWalletId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+      ref: "Wallet",
     },
-    reference: {
+    toWalletId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Wallet",
+    },
+    paymentMethod: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PaymentMethod",
+    },
+    type: {
       type: String,
-      required: true,
-      unique: true,
-    },
-    amount: {
-      type: Number,
+      enum: ["deposit", "withdrawal", "transfer"],
       required: true,
     },
+    amount: { type: Number, required: true, min: 0 },
+    accountBalanceBefore: { type: Number, required: true, default: 0 },
+    accountBalanceAfter: { type: Number, required: true, default: 0 },
     currency: {
       type: String,
+      enum: ["USD", "EUR", "GBP", "INR", "NGN"],
       required: true,
     },
     status: {
       type: String,
-      enum: ["pending", "success", "failed"],
+      enum: ["pending", "completed", "failed", "cancelled"],
       required: true,
+      default: "pending",
     },
-    payment_method: {
-      type: String,
-      enum: ["card", "bank", "mobile"],
-      required: true,
+    paymentMethodId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PaymentMethod",
     },
-    opay_transaction_id: {
-      type: String,
-    },
-    callback_data: mongoose.Schema.Types.Mixed,
+    description: { type: String, trim: true },
+    reference: { type: String, required: true, unique: true },
+    failureReason: { type: String },
+    metadata: { type: Object },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

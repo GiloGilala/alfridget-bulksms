@@ -327,7 +327,7 @@ const Checkout = () => {
     postalCode: "10001",
     country: "USA",
     cardNumber: "4242424242424242",
-    expirationDate: "12/2025",
+    expirationDate: "12/25",
     cvv: "123",
   });
   const [loading, setLoading] = useState(false);
@@ -341,23 +341,24 @@ const Checkout = () => {
   };
 
   const formData = {
-    amount: {
-      currency: "NGN",
-      total: 400, // Replace with dynamic cart data if applicable
-    },
-    // callbackUrl: "https://alfridget-bulksms.onrender.com/dashboard",
-    cancelUrl: "http://localhost:3000/billings/paymentFailed",
+    // payMethod: "BankCard",
+    // callbackUrl:
+    //   "https://alfridget-bulksms.onrender.com/api/billings/payments/opay/callback",
+    cancelUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/billings/paymentFailed`,
     country: "NG",
     evokeOpay: true,
     expireAt: 300,
     sn: "PE462xxxxxxxx",
-    // payMethod: "BankCard",
-    product: {
-      description: "Product description",
-      name: "Product name",
-    },
     reference: `ref-${Date.now()}`,
-    returnUrl: "http://localhost:3000/billings/paymentSuccessful",
+    returnUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/billings/paymentSuccessful`,
+    amount: {
+      currency: "NGN",
+      total: 400, // Replace with dynamic cart data if applicable
+    },
+    product: {
+      description: "Top Up Wallet",
+      name: "Regel Top",
+    },
     userInfo: {
       userEmail: session?.user?.email || "example@example.com", // Use dynamic email
       userId: session?.user?.id || "userid001", // Use dynamic userId
@@ -392,9 +393,42 @@ const Checkout = () => {
     if (
       !formValues.firstName ||
       !formValues.lastName ||
-      !formValues.cardNumber
+      !formValues.cardNumber ||
+      !formValues.expirationDate ||
+      !formValues.cvv
     ) {
-      alert("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    // Validate card number (basic Luhn check)
+    const cardNumber = formValues.cardNumber.replace(/\D/g, "");
+    if (!/^\d{16}$/.test(cardNumber)) {
+      toast.error(
+        "Invalid card number. Please enter a valid 16-digit card number."
+      );
+      return;
+    }
+
+    // Validate expiration date
+    const [month, year] = formValues.expirationDate.split("/");
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+
+    if (
+      !/^\d{2}\/\d{2}$/.test(formValues.expirationDate) ||
+      +month < 1 ||
+      +month > 12 ||
+      +year < currentYear ||
+      (+year === currentYear && +month < currentMonth)
+    ) {
+      toast.error("Invalid expiration date. Please enter a valid MM/YY date.");
+      return;
+    }
+
+    // Validate CVV
+    if (!/^\d{3,4}$/.test(formValues.cvv)) {
+      toast.error("Invalid CVV. Please enter a valid 3 or 4-digit CVV.");
       return;
     }
 

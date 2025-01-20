@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    walletId: { type: mongoose.Schema.Types.ObjectId, ref: "Wallet" },
+
     username: {
       type: String,
       required: true,
