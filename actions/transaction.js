@@ -1,36 +1,50 @@
+"use server";
+import PaymentGateway from "@/app/modals/paymentGateway";
+import Transaction from "@/app/modals/Transaction";
 import dbConnect from "@/lib/dbConn";
-import Transaction from "@/models/Transaction";
 
 export const createTransaction = async (transactionData) => {
   // Validate input data
   if (
     !transactionData.userId ||
-    !transactionData.clientId ||
-    !transactionData.type ||
-    !transactionData.amount
+    !transactionData.amount ||
+    !transactionData.currency ||
+    !transactionData.reference ||
+    !transactionData.gateway ||
+    !transactionData.type
   ) {
-    throw new Error("Invalid input data");
+    throw new Error("Missing required fields");
   }
+
   try {
     await dbConnect();
 
-    // Check if a transaction with the same transactionId already exists
-    const existingTransaction = await Transaction.findOne({
-      transactionId: transactionData.transactionId,
+    // Create initial transaction record
+    const transaction = await Transaction.create({
+      userId: transactionData.userId,
+      type: transactionData.type,
+      amount: transactionData.amount,
+      currency: transactionData.currency,
+      reference: transactionData.reference,
+      gateway: transactionData.gateway,
+      status: "pending",
     });
-    if (existingTransaction) {
-      throw new Error(
-        `A transaction with the ID ${transactionData.transactionId} already exists.`
-      );
-    }
 
-    // Create and save the new transaction
-    const transaction = new Transaction(transactionData);
-    const savedTransaction = await transaction.save();
+    // Create payment gateway record
+    await PaymentGateway.create({
+      userId: transactionData.userId,
+      name: transactionData.gateway,
+      transactionId: transaction._id,
+      gatewayTransactionId: transactionData.reference,
+      amount: transactionData.amount,
+      currency: transactionData.currency,
+      status: "pending",
+    });
+    const plainTransaction = JSON.parse(JSON.stringify(transaction));
 
     const data = {
       message: "Transaction created successfully",
-      transaction: savedTransaction.toJSON(),
+      transaction: plainTransaction,
       successful: true,
     };
 

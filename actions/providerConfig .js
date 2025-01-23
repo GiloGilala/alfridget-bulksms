@@ -1,3 +1,5 @@
+"use server";
+
 import dbConnect from "@/lib/dbConn"; // Database connection
 import ProviderConfig from "@/app/models/ProviderConfig"; // ProviderConfig model
 

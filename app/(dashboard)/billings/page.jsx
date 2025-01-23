@@ -34,8 +34,13 @@ import { CardCTA, CardProgress } from "@/components/dashboard/StatisticsCard";
 import { CreditCard, MailCheck } from "lucide-react";
 import { CurrencyFormatter } from "@/lib/currencyFormatter";
 import { Topup1 } from "@/components/payment/TopUp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import {
+  getWalletAndAllTransactions,
+  getWalletByUserId,
+} from "@/actions/wallet";
+import { useRouter } from "next/navigation";
 
 const data = [
   {
@@ -71,50 +76,20 @@ const tabs = [
 ];
 
 const filterOptions = [
-  {
-    label: "Fulfilled",
-    checked: true,
-  },
-  {
-    label: "Declined",
-    checked: false,
-  },
-  {
-    label: "Refunded",
-    checked: false,
-  },
+  { label: "Fulfilled", checked: true },
+  { label: "Declined", checked: false },
+  { label: "Refunded", checked: false },
 ];
 
 const headers = [
-  { label: "Transactions ID", className: "" },
+  { label: "Transaction ID", className: "" },
   { label: "Customer", className: "hidden sm:table-cell" },
   { label: "Status", className: "hidden sm:table-cell" },
   { label: "Date", className: "hidden md:table-cell" },
   { label: "Amount", className: "text-right" },
 ];
 
-const rows = [
-  [
-    { content: <Link href="#">#1234</Link>, className: "font-medium" },
-    { content: "Liam Johnson", className: "hidden sm:table-cell" },
-    {
-      content: <Badge variant="secondary">Fulfilled</Badge>,
-      className: "hidden sm:table-cell",
-    },
-    { content: "2023-06-23", className: "hidden md:table-cell" },
-    { content: "$250.00", className: "text-right" },
-  ],
-  [
-    { content: <Link href="#">#1235</Link>, className: "font-medium" },
-    { content: "Olivia Smith", className: "hidden sm:table-cell" },
-    {
-      content: <Badge variant="outline">Declined</Badge>,
-      className: "hidden sm:table-cell",
-    },
-    { content: "", className: "hidden md:table-cell" },
-    { content: "$0.00", className: "text-right" },
-  ],
-];
+// Map transactions data to rows
 
 // TabsWrapper Component
 const TabsWrapper = ({ defaultValue, triggers, children }) => (
@@ -174,31 +149,71 @@ const ButtonWithIcon = ({ icon: Icon, label, ...props }) => (
   </Button>
 );
 
-// DataTable Component
-const DataTable = ({ headers, rows }) => (
-  <Table>
-    <TableHeader>
-      <TableRow>
-        {headers.map((header, index) => (
-          <TableHead key={index} className={header.className}>
-            {header.label}
-          </TableHead>
-        ))}
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      {rows.map((row, index) => (
-        <TableRow key={index}>
-          {row.map((cell, cellIndex) => (
-            <TableCell key={cellIndex} className={cell.className}>
-              {cell.content}
-            </TableCell>
+const DataTable = ({ headers, transactions }) => {
+  const rows = transactions?.map((transaction) => [
+    {
+      content: (
+        <Link href={`/transactions/${transaction._id}`}>
+          #{transaction.reference}
+        </Link>
+      ),
+      className: "font-medium",
+    },
+    {
+      content: transaction.userId?.name || "N/A", // Assuming `userId` has a `name` field
+      className: "hidden sm:table-cell",
+    },
+    {
+      content: (
+        <Badge
+          variant={
+            transaction.status === "completed"
+              ? "secondary"
+              : transaction.status === "failed"
+              ? "outline"
+              : "default"
+          }
+        >
+          {transaction.status}
+        </Badge>
+      ),
+      className: "hidden sm:table-cell",
+    },
+    {
+      content: new Date(transaction.createdAt).toLocaleDateString(), // Format date
+      className: "hidden md:table-cell",
+    },
+    {
+      content: `${transaction.amount} ${transaction.currency}`,
+      className: "text-right",
+    },
+  ]);
+
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          {headers.map((header, index) => (
+            <TableHead key={index} className={header.className}>
+              {header.label}
+            </TableHead>
           ))}
         </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-);
+      </TableHeader>
+      <TableBody>
+        {rows?.map((row, index) => (
+          <TableRow key={index}>
+            {row.map((cell, cellIndex) => (
+              <TableCell key={cellIndex} className={cell.className}>
+                {cell.content}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
 
 // const CardComponent = ({ className }) => {
 //   return (
@@ -229,6 +244,37 @@ const DataTable = ({ headers, rows }) => (
 export default function Component() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(false); // Add loading state
+  const [wallet, setWallet] = useState({});
+  const [transactions, setTransactions] = useState([]);
+  const router = useRouter();
+
+  const id = session?.user?.id;
+
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        try {
+          const res = await getWalletAndAllTransactions(id);
+          // console.log("Wallet fetched successfully:", res);
+          setWallet(res?.wallet);
+          setTransactions(res?.transactions);
+        } catch (error) {
+          console.error("Error fetching wallet:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    } else {
+      console.error("No user ID found.");
+      setLoading(false);
+    }
+  }, [id]);
+
+  const handleTopUp = () => {
+    router.push("/billings/checkout");
+  };
 
   const pricingPlans = [
     {
@@ -263,13 +309,13 @@ export default function Component() {
             title="Are you getting low on criedt!"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex."
             buttonText="TopUp Now"
-            handleButtonClick={() => console.log("Top up Now")}
-            modalButton={true}
+            handleButtonClick={handleTopUp}
+            // modalButton={true}
             pricingPlans={pricingPlans}
           />
           <CardProgress
             title="Your balance"
-            amount={CurrencyFormatter(session?.user?.credit, "NGN")}
+            amount={CurrencyFormatter(wallet.balance, "NGN")}
             percentage="25%"
             progressValue={75}
             Icon={CreditCard}
@@ -288,7 +334,7 @@ export default function Component() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <DataTable headers={headers} rows={rows} />
+                    <DataTable headers={headers} transactions={transactions} />
                   </CardContent>
                 </Card>
               </TabsContent>

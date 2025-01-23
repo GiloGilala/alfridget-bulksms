@@ -2,7 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { PlayCircle, Facebook, Twitter, Linkedin, Youtube } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
+import {
+  PlayCircle,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Youtube,
+  PhoneCallIcon,
+  MoveRightIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
@@ -10,104 +20,12 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-gray-50 px-5 sm:px-10">
+    <div className="min-h-screen  px-5 sm:px-10 container mx-auto max-w-[1200px]">
       {/* Navigation */}
-      <nav className="w-full py-4">
-        <div className="container mx-auto max-w-[1200px] flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="https://www.dropbox.com/scl/fi/z46u29l8ebthk2la0i8eu/logo.png?rlkey=euopxjffbafhg1ebd95a1o7mc&st=8wohkarn&raw=1"
-              alt="AI Teleprompter Logo"
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
-            <span className="text-xl font-semibold">AI Teleprompter</span>
-          </Link>
-          <div className="flex items-center gap-8">
-            <div className="hidden md:flex items-center gap-8">
-              <Link
-                href="/features"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                Features
-              </Link>
-              <Link
-                href="/pricing"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                Pricing
-              </Link>
-              <Link href="/about" className="text-gray-600 hover:text-gray-900">
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                Contact
-              </Link>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" asChild>
-                <Link href="/login">Login</Link>
-              </Button>
-              <Button className="bg-[#E57B63] hover:bg-[#E57B63]/90" asChild>
-                <Link href="/signup">Sign Up</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
 
-      {/* Hero Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-12 md:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              Never Miss
-              <br />A Line Again.
-            </h1>
-            <p className="text-xl text-gray-600 max-w-lg">
-              Save Time And Reduce Retakes For Your Social Media Videos With An
-              AI Powered Teleprompter That Keeps Pace With You.
-            </p>
-            <Button
-              size="lg"
-              className="bg-[#E57B63] hover:bg-[#E57B63]/90 text-lg px-8"
-            >
-              Get Started and Reduce My Retakes
-            </Button>
-            <div className="flex items-center gap-4">
-              <div className="flex -space-x-3">
-                {[
-                  "https://www.dropbox.com/scl/fi/l8kggsa72bkajpj64jnfv/avatar-1.png?rlkey=m6ltrsuqimxysxyvkjts3w1o4&st=9nv21g6q&raw=1",
-                  "https://www.dropbox.com/scl/fi/09dilc8qjrdx67ynczjni/avatar-2.png?rlkey=kzg38r6cn6aihxesvd1b80yqi&st=pccp4b9u&raw=1",
-                  "https://www.dropbox.com/scl/fi/i0cmxiodv3mbegrpbczgt/avatar-3.png?rlkey=qv3yj4bh0zu0rdtx4w0gcf5z8&st=g1q0cteb&raw=1",
-                  "https://www.dropbox.com/scl/fi/wbwc6r4sdy29tgl36n5s7/avatar-4.png?rlkey=9njnc6jnmas93nqf1sha6y9nv&st=s15ed47i&raw=1",
-                ].map((src, i) => (
-                  <Avatar key={i} className="border-2 border-white w-10 h-10">
-                    <AvatarImage src={src} alt={`User ${i + 1}`} />
-                  </Avatar>
-                ))}
-              </div>
-              <span className="text-sm text-gray-600">
-                Used by over 100 people already
-              </span>
-            </div>
-          </div>
-          <div className="relative h-[600px]">
-            <Image
-              src="https://www.dropbox.com/scl/fi/6ssxz0dugkp4tsa4h1f3x/hero.png?rlkey=r7g032yl0pwbw44t98xoko050&st=v7o966a7&raw=1"
-              alt="AI Teleprompter Interface Illustration"
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </div>
-        </div>
-      </section>
+      <Navbar />
+      <Hero />
+      <WhatWeDo />
 
       {/* Pain Points Section */}
       <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
@@ -807,3 +725,290 @@ function PlugIcon(props) {
     </svg>
   );
 }
+
+const Navbar = () => {
+  // Array of navigation links
+  const navLinks = [
+    { href: "/features", text: "Features" },
+    { href: "/pricing", text: "Pricing" },
+    { href: "/about", text: "About" },
+    { href: "/contact", text: "Contact" },
+  ];
+
+  // Array of authentication buttons
+  const authButtons = [
+    { href: "/login", text: "Login", variant: "ghost" },
+    {
+      href: "/signup",
+      text: "Sign Up",
+      className: "bg-primary hover:bg-primaryHover text-white",
+    },
+  ];
+
+  return (
+    <nav className="w-full py-4">
+      <div className="container mx-auto max-w-[1200px] flex items-center justify-between">
+        {/* Logo Section */}
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/regel.jpeg"
+            alt="regel.png Logo"
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+          <span className="text-xl font-semibold text-secondary">
+            Regel Technology
+          </span>
+        </Link>
+
+        {/* Navigation Links and Auth Buttons */}
+        <div className="flex items-center gap-8">
+          {/* Map over navLinks */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link, index) => (
+              <Link
+                key={index}
+                href={link.href}
+                className="text-secondary hover:text-secondaryHover transition-colors"
+              >
+                {link.text}
+              </Link>
+            ))}
+          </div>
+
+          {/* Map over authButtons */}
+          <div className="flex items-center gap-4">
+            {authButtons.map((button, index) => (
+              <Button
+                key={index}
+                variant={button.variant}
+                className={button.className}
+                asChild
+              >
+                <Link href={button.href}>{button.text}</Link>
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+const Hero = () => {
+  // Reusable content for the hero section
+  const heroContent = {
+    title: "This is the start of something!",
+    description:
+      "Managing a small business today is already tough. Avoid further complications by ditching outdated, tedious trade methods. Our goal is to streamline SMB trade, making it easier and faster than ever.",
+    buttons: [
+      {
+        text: "Jump on a call",
+        icon: <PhoneCallIcon className="w-4 h-4" />,
+        variant: "default",
+      },
+      {
+        text: "Sign up here",
+        icon: <MoveRightIcon className="w-4 h-4" />,
+        variant: "outline",
+      },
+    ],
+    image: {
+      src: "/home/sms1.png",
+      alt: "Section 2 Image",
+      width: 700,
+      height: 500,
+    },
+    companyLogos: [1, 2, 3, 4, 5, 6, 7], // Replace with actual image paths
+  };
+
+  return (
+    <div className="w-full container mx-auto max-w-[1200px]">
+      {/* First Section */}
+      <section className="w-full py-10 space-y-2 ">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-4 gap-8 items-center">
+            {/* Hero Content */}
+            <div className="gap-4 flex-col col-span-4">
+              <div>
+                <Badge variant="outline">We&apos;re live!</Badge>
+              </div>
+              <div className="gap-4">
+                <h1 className="text-7xl tracking-tighter text-left font-regular">
+                  We are your communication solution partner on a global scale.
+                </h1>
+                <p className="text-2xl leading-relaxed tracking-tight text-muted-foreground  text-left">
+                  Connect with your customers through SMS, OTP and explore
+                  unlimited possibilities across the globe.{" "}
+                </p>
+              </div>
+            </div>
+
+            {/* Two Columns Section */}
+            <div className="flex-col gap-4 col-span-2 space-y-4">
+              <div className="flex justify-between space-x-2">
+                {/* Left Column */}
+                <div className="flex gap-4 flex-col">
+                  <h1 className="text-4xl  tracking-tighter text-left font-regular">
+                    1B +
+                  </h1>
+                  <p className="text-xl leading-relaxed tracking-tight text-muted-foreground  text-left">
+                    Over 1 billion sms transactions processed successfully.
+                  </p>
+                </div>
+
+                {/* Right Column */}
+                <div className="flex gap-4 flex-col">
+                  <h1 className="text-4xl  tracking-tighter text-left font-regular">
+                    100+ Networks
+                  </h1>
+                  <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
+                    Deliver to over 100 mobile networks globally.
+                  </p>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-row gap-4">
+                {heroContent.buttons.map((button, index) => (
+                  <Button
+                    key={index}
+                    size="xl"
+                    className="gap-4"
+                    variant={button.variant}
+                  >
+                    {button.text} {button.icon}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Image Section */}
+            <div className="flex gap-4 col-span-2 items-center justify-center">
+              <div className="bg-background rounded-md aspect-square flex ">
+                <Image
+                  src={heroContent.image.src}
+                  alt={heroContent.image.alt}
+                  width={heroContent.image.width}
+                  height={heroContent.image.height}
+                  className="rounded-md object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Company Logos */}
+            <div className="flex gap-4 col-span-4">
+              {heroContent.companyLogos.map((index) => (
+                <div
+                  key={index}
+                  className="bg-muted rounded-md  flex items-center justify-center"
+                >
+                  <Image
+                    src={`/regel.jpeg`} // Replace with actual image paths
+                    alt={`Regel ${index}`}
+                    width={150}
+                    height={150}
+                    className="rounded-md object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const WhatWeDo = () => {
+  // Reusable content for the "What We Do" section
+  const whatWeDoContent = {
+    badge: "We're live!",
+    title: "We are your communication solution partner on a global scale.",
+    description:
+      "Connect with your customers through SMS, OTP and explore unlimited possibilities across the globe.",
+    stats: [
+      {
+        value: "Bulk SMS",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms2.png",
+          alt: "SMS Transactions",
+          width: 700,
+          height: 500,
+        },
+      },
+      {
+        value: "OTP & Notifications",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms3.png",
+          alt: "SMS Transactions",
+          width: 700,
+          height: 500,
+        },
+      },
+      {
+        value: "Global E-sim",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms4.png",
+          alt: "SMS Transactions",
+          width: 700,
+          height: 500,
+        },
+      },
+    ],
+  };
+
+  return (
+    <div className="w-full container mx-auto max-w-[1200px]">
+      {/* First Section */}
+      <section className="w-full py-10 space-y-2">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-3 gap-8 items-center">
+            {/* Hero Content */}
+            <div className="gap-4 flex-col col-span-3">
+              <div>
+                <Badge variant="outline">{whatWeDoContent.badge}</Badge>
+              </div>
+              <div className="gap-4">
+                <h1 className="text-7xl tracking-tighter text-left font-regular">
+                  {whatWeDoContent.title}
+                </h1>
+                <p className="text-2xl leading-relaxed tracking-tight text-muted-foreground text-left">
+                  {whatWeDoContent.description}
+                </p>
+              </div>
+            </div>
+
+            {/* Stats Section */}
+            <div className="flex-col gap-4 col-span-3 space-y-4">
+              <div className="flex justify-between space-x-2">
+                {/* Map over stats */}
+                {whatWeDoContent.stats.map((stat, index) => (
+                  <div key={index} className="flex gap-4 flex-col">
+                    <h1 className="text-4xl tracking-tighter text-left font-regular">
+                      {stat.value}
+                    </h1>
+                    <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
+                      {stat.description}
+                    </p>
+                    <Image
+                      src={stat.image.src}
+                      alt={stat.image.alt}
+                      width={stat.image.width}
+                      height={stat.image.height}
+                      className="rounded-md object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};

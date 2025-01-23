@@ -2,13 +2,22 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
   {
+    userId: {
+      // Added userId for direct user reference
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
     fromWalletId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Wallet",
+      sparse: true,
     },
     toWalletId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Wallet",
+      sparse: true,
     },
     paymentMethod: {
       type: mongoose.Schema.Types.ObjectId,
@@ -16,12 +25,22 @@ const transactionSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["deposit", "withdrawal", "transfer"],
+      enum: ["deposit", "credit", "withdrawal", "transfer"],
       required: true,
     },
-    amount: { type: Number, required: true, min: 0 },
-    accountBalanceBefore: { type: Number, required: true, default: 0 },
-    accountBalanceAfter: { type: Number, required: true, default: 0 },
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    accountBalanceBefore: {
+      type: Number,
+      default: 0,
+    },
+    accountBalanceAfter: {
+      type: Number,
+      default: 0,
+    },
     currency: {
       type: String,
       enum: ["USD", "EUR", "GBP", "INR", "NGN"],
@@ -37,11 +56,36 @@ const transactionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "PaymentMethod",
     },
-    description: { type: String, trim: true },
-    reference: { type: String, required: true, unique: true },
-    failureReason: { type: String },
-    metadata: { type: Object },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    description: {
+      type: String,
+      trim: true,
+    },
+    reference: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    failureReason: {
+      type: String,
+    },
+    metadata: {
+      type: mongoose.Schema.Types.Mixed,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    gateway: {
+      type: String,
+      enum: ["paystack", "opay", "stripe", "paypal"],
+      required: true,
+    },
+    gatewayTransactionId: {
+      type: String,
+    },
+    paymentGatewayResponse: {
+      type: mongoose.Schema.Types.Mixed,
+    },
   },
   { timestamps: true }
 );

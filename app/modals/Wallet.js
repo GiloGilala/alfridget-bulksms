@@ -8,7 +8,11 @@ const walletSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    balance: { type: Number, default: 0, min: 0 },
+    balance: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     currency: {
       type: String,
       required: true,
@@ -20,8 +24,17 @@ const walletSchema = new mongoose.Schema(
       enum: ["active", "frozen", "closed", "suspended"],
       default: "active",
     },
-    lastTransactionAt: { type: Date },
-    isActive: { type: Boolean, default: true },
+    lastTransactionAt: {
+      type: Date,
+    },
+    lastTransactionAmount: {
+      type: Number,
+      default: 0,
+    },
+    transactionCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
