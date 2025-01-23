@@ -26,6 +26,7 @@ export default function Component() {
       <Navbar />
       <Hero />
       <WhatWeDo />
+      <HowItWorks />
 
       {/* Pain Points Section */}
       <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
@@ -924,8 +925,8 @@ const Hero = () => {
 const WhatWeDo = () => {
   // Reusable content for the "What We Do" section
   const whatWeDoContent = {
-    badge: "We're live!",
-    title: "We are your communication solution partner on a global scale.",
+    badge: "What We Do",
+    title: "An all-in-one communication solution, for people who want more.",
     description:
       "Connect with your customers through SMS, OTP and explore unlimited possibilities across the globe.",
     stats: [
@@ -935,8 +936,8 @@ const WhatWeDo = () => {
         image: {
           src: "/home/sms2.png",
           alt: "SMS Transactions",
-          width: 700,
-          height: 500,
+          width: 350,
+          height: 350,
         },
       },
       {
@@ -945,8 +946,8 @@ const WhatWeDo = () => {
         image: {
           src: "/home/sms3.png",
           alt: "SMS Transactions",
-          width: 700,
-          height: 500,
+          width: 350,
+          height: 350,
         },
       },
       {
@@ -955,8 +956,8 @@ const WhatWeDo = () => {
         image: {
           src: "/home/sms4.png",
           alt: "SMS Transactions",
-          width: 700,
-          height: 500,
+          width: 350,
+          height: 350,
         },
       },
     ],
@@ -974,12 +975,12 @@ const WhatWeDo = () => {
                 <Badge variant="outline">{whatWeDoContent.badge}</Badge>
               </div>
               <div className="gap-4">
-                <h1 className="text-7xl tracking-tighter text-left font-regular">
+                <h1 className="text-6xl tracking-tighter text-left font-regular">
                   {whatWeDoContent.title}
                 </h1>
-                <p className="text-2xl leading-relaxed tracking-tight text-muted-foreground text-left">
+                {/* <p className="text-2xl leading-relaxed tracking-tight text-muted-foreground text-left">
                   {whatWeDoContent.description}
-                </p>
+                </p> */}
               </div>
             </div>
 
@@ -989,7 +990,7 @@ const WhatWeDo = () => {
                 {/* Map over stats */}
                 {whatWeDoContent.stats.map((stat, index) => (
                   <div key={index} className="flex gap-4 flex-col">
-                    <h1 className="text-4xl tracking-tighter text-left font-regular">
+                    <h1 className="text-3xl font-bold tracking-tighter text-left font-regular">
                       {stat.value}
                     </h1>
                     <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
@@ -1002,6 +1003,102 @@ const WhatWeDo = () => {
                       height={stat.image.height}
                       className="rounded-md object-cover"
                     />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const HowItWorks = () => {
+  // Reusable content for the "What We Do" section
+  const whatWeDoContent = {
+    badge: "We're live!",
+    title: "We are your communication solution partner on a global scale.",
+    description:
+      "Connect with your customers through SMS, OTP and explore unlimited possibilities across the globe.",
+    stats: [
+      {
+        value: "Create a free account",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms6.png",
+          alt: "SMS Transactions",
+          width: 318,
+          height: 318,
+        },
+      },
+      {
+        value: "Request for custom sender ID",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms5.png",
+          alt: "SMS Transactions",
+          width: 318,
+          height: 318,
+        },
+      },
+      {
+        value: "Fund your wallet with payment",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms7.png",
+          alt: "SMS Transactions",
+          width: 318,
+          height: 318,
+        },
+      },
+      {
+        value: "Send message & view instant reports",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        image: {
+          src: "/home/sms8.png",
+          alt: "SMS Transactions",
+          width: 318,
+          height: 318,
+        },
+      },
+    ],
+  };
+
+  return (
+    <div className="w-full container mx-auto max-w-[1200px]">
+      {/* First Section */}
+      <section className="w-full py-10 space-y-2">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-3 gap-8 items-center">
+            {/* Hero Content */}
+            <div className="gap-4 flex-col col-span-3">
+              <div className="gap-4">
+                <h1 className="text-2xl tracking-tighter font-extrabold text-center">
+                  How It Works
+                </h1>
+              </div>
+            </div>
+
+            {/* Stats Section */}
+            <div className="flex-col gap-4 col-span-3 space-y-4">
+              <div className="flex justify-between space-x-2">
+                {/* Map over stats */}
+                {whatWeDoContent.stats.map((stat, index) => (
+                  <div key={index} className="flex gap-4 flex-col">
+                    <Image
+                      src={stat.image.src}
+                      alt={stat.image.alt}
+                      width={stat.image.width}
+                      height={stat.image.height}
+                      className="rounded-md object-cover"
+                    />
+                    <h1 className="text-3xl font-bold tracking-tighter text-left font-regular">
+                      {stat.value}
+                    </h1>
+                    <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
+                      {stat.description}
+                    </p>
                   </div>
                 ))}
               </div>
