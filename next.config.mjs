@@ -13,6 +13,12 @@ const nextConfig = {
         source: "/api/opay",
         destination:
           "https://testapi.opaycheckout.com/api/v1/international/cashier/create",
+        headers: [
+          {
+            key: "Authorization",
+            value: `Bearer ${process.env.OPAY_SECRET_KEY}`,
+          },
+        ],
       },
     ];
   },
@@ -25,10 +31,10 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.paystack.com; " +
-              "style-src 'self' 'unsafe-inline' https://checkout.paystack.com; " +
-              "frame-src https://checkout.paystack.com; " + // Allow Paystack iframe
-              "connect-src 'self' https://checkout.paystack.com;", // Allow API calls to Paystack
+              "script-src 'self' https://checkout.paystack.com; " +
+              "style-src 'self' https://checkout.paystack.com; " +
+              "frame-src https://checkout.paystack.com; " +
+              "connect-src 'self' https://checkout.paystack.com https://api.paystack.co;",
           },
         ],
       },

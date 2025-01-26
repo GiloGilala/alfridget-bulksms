@@ -27,13 +27,8 @@ import toast from "react-hot-toast";
 import myAxios from "@/lib/axiosConfig";
 import dynamic from "next/dynamic";
 // import PaystackHookButton from "@/lib/payment/PaystackHookButton";
-// const PaystackHookButton = dynamic(
-//   () => import("@/lib/payment/PaystackHookButton"),
-//   { ssr: false }
-// );
-
 const PaystackHookButton = dynamic(
-  () => import("react-paystack").then((mod) => mod.PaystackHookButton),
+  () => import("@/lib/payment/PaystackHookButton"),
   { ssr: false }
 );
 
