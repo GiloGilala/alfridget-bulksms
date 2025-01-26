@@ -17,6 +17,11 @@ import {
   Youtube,
   PhoneCallIcon,
   MoveRightIcon,
+  MessageCircle,
+  Eye,
+  Users,
+  RefreshCw,
+  UserPlus,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +36,7 @@ export default function Component() {
       <Navbar />
       <Hero />
       <WhatWeDo />
+      <YourGlobal />
       <HowItWorks />
 
       {/* Pain Points Section */}
@@ -743,7 +749,7 @@ const Navbar = () => {
 
   // Array of authentication buttons
   const authButtons = [
-    { href: "/login", text: "Login", variant: "ghost" },
+    { href: "/login", text: "Login", variant: "outline" },
     {
       href: "/signup",
       text: "Sign Up",
@@ -754,6 +760,7 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4">
       <div className="container mx-auto max-w-[1200px] flex items-center justify-between">
+        {" "}
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -763,20 +770,17 @@ const Navbar = () => {
             height={50}
             className="rounded-full"
           />
-          <span className="text-xl font-semibold text-secondary">
-            Regel Technology
-          </span>
+          <span className="text-xl font-semibold ">Regel Technology</span>
         </Link>
-
         {/* Navigation Links and Auth Buttons */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center justify-between space-x-3">
           {/* Map over navLinks */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link, index) => (
               <Link
                 key={index}
                 href={link.href}
-                className="text-secondary hover:text-secondaryHover transition-colors"
+                className=" hover:text-secondary transition-colors"
               >
                 {link.text}
               </Link>
@@ -823,16 +827,16 @@ const Hero = () => {
     image: {
       src: "/home/sms1.png",
       alt: "Section 2 Image",
-      width: 700,
-      height: 500,
+      width: 600,
+      height: 400,
     },
     companyLogos: [1, 2, 3, 4, 5, 6, 7], // Replace with actual image paths
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px]">
+    <div className="w-full container mx-auto max-w-[1200px] py-10">
       {/* First Section */}
-      <section className="w-full py-10 space-y-2 ">
+      <section className="w-full space-y-2 ">
         <div className="container mx-auto">
           <div className="grid grid-cols-4 gap-8 items-center">
             {/* Hero Content */}
@@ -840,23 +844,23 @@ const Hero = () => {
               <div>
                 <Badge variant="outline">We&apos;re live!</Badge>
               </div>
-              <div className="gap-4">
-                <h1 className="text-7xl tracking-tighter text-left font-regular">
+              <div className="gap-4 space-y-3">
+                <h1 className="text-6xl tracking-tighter text-left font-semibold">
                   We are your communication solution partner on a global scale.
                 </h1>
-                <p className="text-2xl leading-relaxed tracking-tight text-muted-foreground  text-left">
+                <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left max-w-md">
                   Connect with your customers through SMS, OTP and explore
-                  unlimited possibilities across the globe.{" "}
+                  unlimited possibilities across the globe.
                 </p>
               </div>
             </div>
 
             {/* Two Columns Section */}
-            <div className="flex-col gap-4 col-span-2 space-y-4">
+            <div className="flex-col gap-4 col-span-2 space-y-6">
               <div className="flex justify-between space-x-2">
                 {/* Left Column */}
-                <div className="flex gap-4 flex-col">
-                  <h1 className="text-4xl  tracking-tighter text-left font-regular">
+                <div className="flex flex-col">
+                  <h1 className="text-4xl tracking-tighter text-left font-regular">
                     1B +
                   </h1>
                   <p className="text-xl leading-relaxed tracking-tight text-muted-foreground  text-left">
@@ -865,7 +869,7 @@ const Hero = () => {
                 </div>
 
                 {/* Right Column */}
-                <div className="flex gap-4 flex-col">
+                <div className="flex flex-col">
                   <h1 className="text-4xl  tracking-tighter text-left font-regular">
                     100+ Networks
                   </h1>
@@ -892,19 +896,19 @@ const Hero = () => {
 
             {/* Image Section */}
             <div className="flex gap-4 col-span-2 items-center justify-center">
-              <div className="bg-background rounded-md aspect-square flex ">
+              <div className="bg-background rounded-md items-center justify-center flex w-full max-h-80">
                 <Image
                   src={heroContent.image.src}
                   alt={heroContent.image.alt}
                   width={heroContent.image.width}
                   height={heroContent.image.height}
-                  className="rounded-md object-cover"
+                  className="rounded-md object-fill "
                 />
               </div>
             </div>
 
             {/* Company Logos */}
-            <div className="flex gap-4 col-span-4">
+            <div className="flex gap-4 col-span-4 mt-4">
               {heroContent.companyLogos.map((index) => (
                 <div
                   key={index}
@@ -969,11 +973,11 @@ const WhatWeDo = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px]">
+    <div className="w-full container mx-auto max-w-[1200px] py-20">
       {/* First Section */}
-      <section className="w-full py-10 space-y-2">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-3 gap-8 items-center">
+      <section className="w-full  ">
+        <div className="container mx-auto ">
+          <div className="grid grid-cols-3 gap-8 items-center space-y-6">
             {/* Hero Content */}
             <div className="gap-4 flex-col col-span-3">
               <div>
@@ -984,7 +988,7 @@ const WhatWeDo = () => {
                 </Badge>
               </div>
               <div className="gap-4 py-4">
-                <h1 className="text-3xl tracking-tighter text-left font-regular max-w-lg">
+                <h1 className="text-5xl tracking-tighter text-left font-regular max-w-xl font-bold">
                   {whatWeDoContent.title}
                 </h1>
               </div>
@@ -1009,6 +1013,88 @@ const WhatWeDo = () => {
                       </CardTitle>
                       <CardDescription className="text-lg mt-2">
                         {stat.description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const YourGlobal = () => {
+  // Reusable content for the "How It Works" section
+  const howItWorksContent = {
+    title1: "YOUR GLOBAL",
+    title2: "TELECOMMUNICATION PARTNER.",
+    description:
+      "At Regel, we are on a mission to reposition how businesses and customers communicate. We strive to ensure that businesses provide the optimal customer satisfaction through our robust and innovative solution.",
+    steps: [
+      {
+        value: "Mission",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        icon: <MessageCircle size={48} className="text-primary  " />,
+      },
+      {
+        value: "Vision",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        icon: <Eye size={48} className="text-primary " />,
+      },
+      {
+        value: "Culture",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        icon: <Users size={48} className="text-primary" />,
+      },
+      {
+        value: "Retention",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        icon: <RefreshCw size={48} className="text-primary" />,
+      },
+      {
+        value: "Customer Acquisition",
+        description: "Over 1 billion SMS transactions processed successfully.",
+        icon: <UserPlus size={48} className="text-primary" />,
+      },
+    ],
+  };
+
+  return (
+    <div className="w-full container mx-auto max-w-[1200px] py-20">
+      {/* First Section */}
+      <section className="w-full space-y-8">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-3 gap-8 ">
+            {/* Hero Content */}
+            <div className="gap-4 flex-col col-span-3 space-y-4 text-center">
+              <h1 className="text-6xl tracking-tighter font-extrabold text-left ">
+                {howItWorksContent.title1}
+              </h1>
+              <h1 className="text-6xl tracking-tighter font-extrabold text-left bg-gradient-to-r from-primary to-black bg-clip-text text-transparent">
+                {howItWorksContent.title2}
+              </h1>
+              <p className="text-xl leading-relaxed tracking-tight text-muted-foreground max-w-3xl  text-left">
+                {howItWorksContent.description}
+              </p>
+            </div>
+
+            {/* Steps Section */}
+            <div className="flex-col gap-4 col-span-3 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Map over steps */}
+                {howItWorksContent.steps.map((step, index) => (
+                  <Card key={index} className="flex flex-col gap-4 pt-6">
+                    <CardContent className="p-6 ">
+                      {/* Render icon */}
+                      {step.icon}
+                      <CardTitle className="text-2xl font-bold mt-4 text-left">
+                        {step.value}
+                      </CardTitle>
+                      <CardDescription className="text-lg mt-2 text-left">
+                        {step.description}
                       </CardDescription>
                     </CardContent>
                   </Card>
@@ -1074,15 +1160,15 @@ const HowItWorks = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px]">
+    <div className="w-full py-20 bg-gradient-to-b from-primary via-black to-primary">
       {/* First Section */}
-      <section className="w-full py-10 space-y-2">
+      <section className="container mx-auto max-w-[1200px] py-20 space-y-2">
         <div className="container mx-auto">
           <div className="grid grid-cols-3 gap-8 items-center">
             {/* Hero Content */}
             <div className="gap-4 flex-col col-span-3">
               <div className="gap-4">
-                <h1 className="text-2xl tracking-tighter font-extrabold text-center">
+                <h1 className="text-2xl tracking-tighter font-extrabold text-center ">
                   {howItWorksContent.title}
                 </h1>
               </div>
