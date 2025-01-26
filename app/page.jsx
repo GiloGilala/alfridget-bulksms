@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
@@ -972,38 +977,41 @@ const WhatWeDo = () => {
             {/* Hero Content */}
             <div className="gap-4 flex-col col-span-3">
               <div>
-                <Badge variant="outline">{whatWeDoContent.badge}</Badge>
+                <Badge variant="outline">
+                  <p className="text-lg font-regular ">
+                    {whatWeDoContent.badge}
+                  </p>
+                </Badge>
               </div>
-              <div className="gap-4">
-                <h1 className="text-6xl tracking-tighter text-left font-regular">
+              <div className="gap-4 py-4">
+                <h1 className="text-3xl tracking-tighter text-left font-regular max-w-lg">
                   {whatWeDoContent.title}
                 </h1>
-                {/* <p className="text-2xl leading-relaxed tracking-tight text-muted-foreground text-left">
-                  {whatWeDoContent.description}
-                </p> */}
               </div>
             </div>
 
             {/* Stats Section */}
             <div className="flex-col gap-4 col-span-3 space-y-4">
-              <div className="flex justify-between space-x-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Map over stats */}
                 {whatWeDoContent.stats.map((stat, index) => (
-                  <div key={index} className="flex gap-4 flex-col">
-                    <h1 className="text-3xl font-bold tracking-tighter text-left font-regular">
-                      {stat.value}
-                    </h1>
-                    <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
-                      {stat.description}
-                    </p>
-                    <Image
-                      src={stat.image.src}
-                      alt={stat.image.alt}
-                      width={stat.image.width}
-                      height={stat.image.height}
-                      className="rounded-md object-cover"
-                    />
-                  </div>
+                  <Card key={index} className="flex flex-col gap-4">
+                    <CardContent className="p-6">
+                      <Image
+                        src={stat.image.src}
+                        alt={stat.image.alt}
+                        width={stat.image.width}
+                        height={stat.image.height}
+                        className="rounded-md object-cover"
+                      />
+                      <CardTitle className="text-3xl font-bold mt-4">
+                        {stat.value}
+                      </CardTitle>
+                      <CardDescription className="text-lg mt-2">
+                        {stat.description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>
@@ -1015,13 +1023,13 @@ const WhatWeDo = () => {
 };
 
 const HowItWorks = () => {
-  // Reusable content for the "What We Do" section
-  const whatWeDoContent = {
+  // Reusable content for the "How It Works" section
+  const howItWorksContent = {
     badge: "We're live!",
-    title: "We are your communication solution partner on a global scale.",
+    title: "How It Works",
     description:
       "Connect with your customers through SMS, OTP and explore unlimited possibilities across the globe.",
-    stats: [
+    steps: [
       {
         value: "Create a free account",
         description: "Over 1 billion SMS transactions processed successfully.",
@@ -1075,31 +1083,33 @@ const HowItWorks = () => {
             <div className="gap-4 flex-col col-span-3">
               <div className="gap-4">
                 <h1 className="text-2xl tracking-tighter font-extrabold text-center">
-                  How It Works
+                  {howItWorksContent.title}
                 </h1>
               </div>
             </div>
 
-            {/* Stats Section */}
+            {/* Steps Section */}
             <div className="flex-col gap-4 col-span-3 space-y-4">
-              <div className="flex justify-between space-x-2">
-                {/* Map over stats */}
-                {whatWeDoContent.stats.map((stat, index) => (
-                  <div key={index} className="flex gap-4 flex-col">
-                    <Image
-                      src={stat.image.src}
-                      alt={stat.image.alt}
-                      width={stat.image.width}
-                      height={stat.image.height}
-                      className="rounded-md object-cover"
-                    />
-                    <h1 className="text-3xl font-bold tracking-tighter text-left font-regular">
-                      {stat.value}
-                    </h1>
-                    <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
-                      {stat.description}
-                    </p>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {/* Map over steps */}
+                {howItWorksContent.steps.map((step, index) => (
+                  <Card key={index} className="flex flex-col gap-4">
+                    <CardContent className="p-6">
+                      <Image
+                        src={step.image.src}
+                        alt={step.image.alt}
+                        width={step.image.width}
+                        height={step.image.height}
+                        className="rounded-md object-cover"
+                      />
+                      <CardTitle className="text-2xl font-bold mt-4">
+                        {step.value}
+                      </CardTitle>
+                      <CardDescription className="text-lg mt-2">
+                        {step.description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>

@@ -20,20 +20,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import myAxios from "@/lib/axiosConfig";
-// import PaystackPop from "@paystack/inline-js";
-import { createTransaction } from "@/actions/transaction";
-import { usePaystackPayment } from "@/lib/payment/paystackPayment";
-// import dynamic from "next/dynamic";
-
-// const PaystackPop = dynamic(
-//   () => import("@paystack/inline-js"), // Replace with the correct import
+import dynamic from "next/dynamic";
+// import PaystackHookButton from "@/lib/payment/PaystackHookButton";
+// const PaystackHookButton = dynamic(
+//   () => import("@/lib/payment/PaystackHookButton"),
 //   { ssr: false }
 // );
+
+const PaystackHookButton = dynamic(
+  () => import("react-paystack").then((mod) => mod.PaystackHookButton),
+  { ssr: false }
+);
 
 const Checkout = () => {
   const { data: session } = useSession();
@@ -51,12 +53,7 @@ const Checkout = () => {
     cvv: "123",
   });
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("opay"); // Default to Opay
-  const userId = session?.user?.id;
-  const { initializePayment: initializePaystack } = usePaystackPayment(
-    session,
-    formValues
-  );
+  const [paymentMethod, setPaymentMethod] = useState("opay");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -80,23 +77,23 @@ const Checkout = () => {
         returnUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/billings/paymentSuccessful`,
         amount: {
           currency: "NGN",
-          total: 400, // Replace with dynamic cart data if applicable
+          total: 400,
         },
         product: {
           description: "Top Up Wallet",
           name: "Regel Top",
         },
         userInfo: {
-          userEmail: session?.user?.email || "example@example.com", // Use dynamic email
-          userId: session?.user?.id || "userid001", // Use dynamic userId
-          userMobile: "13056288895", // Replace with dynamic mobile number
+          userEmail: session?.user?.email || "example@example.com",
+          userId: session?.user?.id || "userid001",
+          userMobile: "13056288895",
           userName: `${formValues.firstName} ${formValues.lastName}`,
         },
       };
 
       const response = await myAxios.post("/payments/opay/pay", formData);
       if (response.data.message === "SUCCESSFUL") {
-        router.push(response.data.data?.cashierUrl); // Redirect to Opay's cashier URL
+        router.push(response.data.data?.cashierUrl);
       } else {
         toast.error("Failed to create order. Please try again.");
       }
@@ -108,27 +105,63 @@ const Checkout = () => {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!validateForm()) return;
+  const amountInKobo = 800 * 100;
 
-    setLoading(true);
+  const configPaystackPayment = {
+    reference: `ref-${Date.now()}`,
+    email: session?.user?.email || "example@example.com",
+    amount: amountInKobo,
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+    currency: "NGN",
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Plan",
+          variable_name: "plan",
+          value: "Basic SMS Plan - 50,000",
+        },
+        {
+          display_name: "Additional Notes",
+          variable_name: "notes",
+          value: "Customer purchased additional credits",
+        },
+      ],
+    },
+  };
+
+  const onSuccess = async (response) => {
+    console.log("Payment successful!", response);
+    toast.success("Payment successful!");
+
     try {
-      if (paymentMethod === "opay") {
-        await initializeOpayPayment();
-      } else if (paymentMethod === "paystack") {
-        const res = await initializePaystack();
-        if (res) {
-          // Optional: additional handling if needed
-          console.log("Paystack Response:", res);
-        }
+      const backendResponse = await myAxios.post("/payments/paystack/verify", {
+        reference: response.reference,
+        status: response.status,
+        transactionId: response.transaction,
+        amount: amountInKobo,
+        email: session?.user?.email || "example@example.com",
+      });
+
+      if (backendResponse?.data?.success) {
+        toast.success(backendResponse?.data?.message);
+        router.push("/billings");
+      } else {
+        toast.error("Payment verification failed.");
       }
     } catch (error) {
-      // Handle any unhandled errors
-      console.error("Payment submission error:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error during payment verification:", error);
+      toast.error("An error occurred during payment verification.");
     }
+  };
+
+  const onClose = () => {
+    console.log("Payment modal closed");
+    toast.error("Payment was not completed.");
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    initializeOpayPayment();
   };
 
   const validateForm = () => {
@@ -197,7 +230,6 @@ const Checkout = () => {
   //       return;
   //     }
 
-  //     const paystack = new PaystackPop();
   //     const paystackPayload = {
   //       key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
   //       email: session?.user?.email || "example@example.com",
@@ -257,7 +289,6 @@ const Checkout = () => {
   //     };
 
   //     // Start Paystack transaction
-  //     paystack.newTransaction(paystackPayload);
   //   } catch (error) {
   //     console.error("Error initializing payment:", error);
   //     toast.error("Payment initialization failed.");
@@ -266,202 +297,161 @@ const Checkout = () => {
   //   }
   // };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   // Basic validation
-  //   if (
-  //     !formValues.firstName ||
-  //     !formValues.lastName ||
-  //     !formValues.cardNumber ||
-  //     !formValues.expirationDate ||
-  //     !formValues.cvv
-  //   ) {
-  //     toast.error("Please fill in all required fields.");
-  //     return;
-  //   }
-
-  //   // Validate card number (basic Luhn check)
-  //   const cardNumber = formValues.cardNumber.replace(/\D/g, "");
-  //   if (!/^\d{16}$/.test(cardNumber)) {
-  //     toast.error(
-  //       "Invalid card number. Please enter a valid 16-digit card number."
-  //     );
-  //     return;
-  //   }
-
-  //   // Validate expiration date
-  //   const [month, year] = formValues.expirationDate.split("/");
-  //   const currentYear = new Date().getFullYear() % 100;
-  //   const currentMonth = new Date().getMonth() + 1;
-
-  //   if (
-  //     !/^\d{2}\/\d{2}$/.test(formValues.expirationDate) ||
-  //     +month < 1 ||
-  //     +month > 12 ||
-  //     +year < currentYear ||
-  //     (+year === currentYear && +month < currentMonth)
-  //   ) {
-  //     toast.error("Invalid expiration date. Please enter a valid MM/YY date.");
-  //     return;
-  //   }
-
-  //   // Validate CVV
-  //   if (!/^\d{3,4}$/.test(formValues.cvv)) {
-  //     toast.error("Invalid CVV. Please enter a valid 3 or 4-digit CVV.");
-  //     return;
-  //   }
-
-  //   // Initialize payment based on selected method
-  //   if (paymentMethod === "opay") {
-  //     await initializeOpayPayment();
-  //   } else if (paymentMethod === "paystack") {
-  //     await initializePaystackPayment();
-  //   }
-  // };
-
   return (
-    <main className="lg:flex">
-      <div className="lg:w-1/2 px-2 py-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Checkout</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex items-center">
-                <Badge>1</Badge>
-                <span className="ml-2">Shipping Address</span>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  type="text"
-                  name="firstName"
-                  value={formValues.firstName}
-                  onChange={handleChange}
-                  placeholder="First Name"
-                  aria-label="First Name"
-                />
-                <Input
-                  type="text"
-                  name="lastName"
-                  value={formValues.lastName}
-                  onChange={handleChange}
-                  placeholder="Last Name"
-                  aria-label="Last Name"
-                />
-                <Input
-                  type="text"
-                  name="streetAddress"
-                  value={formValues.streetAddress}
-                  onChange={handleChange}
-                  placeholder="Street Address"
-                  className="col-span-2"
-                  aria-label="Street Address"
-                />
-                <Input
-                  type="text"
-                  name="city"
-                  value={formValues.city}
-                  onChange={handleChange}
-                  placeholder="City"
-                  aria-label="City"
-                />
-                <Input
-                  type="text"
-                  name="state"
-                  value={formValues.state}
-                  onChange={handleChange}
-                  placeholder="State"
-                  aria-label="State"
-                />
-                <Input
-                  type="text"
-                  name="postalCode"
-                  value={formValues.postalCode}
-                  onChange={handleChange}
-                  placeholder="Postal Code"
-                  aria-label="Postal Code"
-                />
-                <Input
-                  type="text"
-                  name="country"
-                  value={formValues.country}
-                  onChange={handleChange}
-                  placeholder="Country"
-                  className="col-span-2"
-                  aria-label="Country"
-                />
-              </div>
-              <div className="flex items-center mt-4">
-                <Badge>2</Badge>
-                <span className="ml-2">Payment Method</span>
-              </div>
-              <RadioGroup
-                defaultValue="opay"
-                className="grid grid-cols-2 gap-4"
-                onValueChange={(value) => setPaymentMethod(value)}
-              >
-                <div>
-                  <RadioGroupItem
-                    value="opay"
-                    id="opay"
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor="opay"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                  >
-                    <WalletCardsIcon className="mb-3 h-6 w-6" />
-                    Opay
-                  </Label>
+    <>
+      <main className="lg:flex">
+        <div className="lg:w-1/2 px-2 py-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Checkout</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4">
+                <div className="flex items-center">
+                  <Badge>1</Badge>
+                  <span className="ml-2">Shipping Address</span>
                 </div>
-                <div>
-                  <RadioGroupItem
-                    value="paystack"
-                    id="paystack"
-                    className="peer sr-only"
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    type="text"
+                    name="firstName"
+                    value={formValues.firstName}
+                    onChange={handleChange}
+                    placeholder="First Name"
+                    aria-label="First Name"
                   />
-                  <Label
-                    htmlFor="paystack"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                  >
-                    <CreditCardIcon className="mb-3 h-6 w-6" />
-                    Paystack
-                  </Label>
+                  <Input
+                    type="text"
+                    name="lastName"
+                    value={formValues.lastName}
+                    onChange={handleChange}
+                    placeholder="Last Name"
+                    aria-label="Last Name"
+                  />
+                  <Input
+                    type="text"
+                    name="streetAddress"
+                    value={formValues.streetAddress}
+                    onChange={handleChange}
+                    placeholder="Street Address"
+                    className="col-span-2"
+                    aria-label="Street Address"
+                  />
+                  <Input
+                    type="text"
+                    name="city"
+                    value={formValues.city}
+                    onChange={handleChange}
+                    placeholder="City"
+                    aria-label="City"
+                  />
+                  <Input
+                    type="text"
+                    name="state"
+                    value={formValues.state}
+                    onChange={handleChange}
+                    placeholder="State"
+                    aria-label="State"
+                  />
+                  <Input
+                    type="text"
+                    name="postalCode"
+                    value={formValues.postalCode}
+                    onChange={handleChange}
+                    placeholder="Postal Code"
+                    aria-label="Postal Code"
+                  />
+                  <Input
+                    type="text"
+                    name="country"
+                    value={formValues.country}
+                    onChange={handleChange}
+                    placeholder="Country"
+                    className="col-span-2"
+                    aria-label="Country"
+                  />
                 </div>
-              </RadioGroup>
-              <Button type="submit" className="w-full mt-4" disabled={loading}>
-                {loading ? "Processing..." : "Complete Order"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="mt-8 lg:mt-0 lg:w-1/2 px-2 py-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Order Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span>Product A</span>
-                <span>$100</span>
+                <div className="flex items-center mt-4">
+                  <Badge>2</Badge>
+                  <span className="ml-2">Payment Method</span>
+                </div>
+                <RadioGroup
+                  defaultValue="opay"
+                  className="grid grid-cols-2 gap-4"
+                  onValueChange={(value) => setPaymentMethod(value)}
+                >
+                  <div>
+                    <RadioGroupItem
+                      value="opay"
+                      id="opay"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="opay"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <WalletCardsIcon className="mb-3 h-6 w-6" />
+                      Opay
+                    </Label>
+                  </div>
+                  <div>
+                    <RadioGroupItem
+                      value="paystack"
+                      id="paystack"
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor="paystack"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <CreditCardIcon className="mb-3 h-6 w-6" />
+                      Paystack
+                    </Label>
+                  </div>
+                </RadioGroup>
+                <PaystackHookButton
+                  onSuccess={onSuccess}
+                  onClose={onClose}
+                  isLoading={loading}
+                  buttonText="Pay with Paystack"
+                  configPaystackPayment={configPaystackPayment}
+                />
+                <Button
+                  type="submit"
+                  className="w-full mt-4"
+                  disabled={loading}
+                >
+                  {loading ? "Processing..." : "Complete Order"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="mt-8 lg:mt-0 lg:w-1/2 px-2 py-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <span>Product A</span>
+                  <span>$100</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Product B</span>
+                  <span>$200</span>
+                </div>
+                <div className="flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>$300</span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span>Product B</span>
-                <span>$200</span>
-              </div>
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>$300</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </main>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    </>
   );
 };
 

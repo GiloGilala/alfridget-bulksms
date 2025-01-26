@@ -12,50 +12,79 @@
 </div>; */
 }
 
-import { MoveRight, PhoneCall } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+("use client");
 
-const Hero = () => {
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import myAxios from "@/lib/axiosConfig";
+
+const Checkout = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [isPaystackReady, setIsPaystackReady] = useState(false);
+
+  useEffect(() => {
+    // Dynamically load Paystack script
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    script.onload = () => setIsPaystackReady(true);
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handlePaystackPayment = () => {
+    if (!isPaystackReady || typeof window.PaystackPop === "undefined") {
+      toast.error("Payment system is loading");
+      return;
+    }
+
+    const handler = window.PaystackPop.setup({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      email: session?.user?.email || "example@example.com",
+      amount: 80000, // 800 * 100 kobo
+      currency: "NGN",
+      callback: async (response) => {
+        try {
+          const backendResponse = await myAxios.post(
+            "/payments/paystack/verify",
+            {
+              reference: response.reference,
+              amount: 80000,
+              email: session?.user?.email,
+            }
+          );
+
+          if (backendResponse?.data?.success) {
+            toast.success("Payment successful");
+            router.push("/billings");
+          } else {
+            toast.error("Payment verification failed");
+          }
+        } catch (error) {
+          toast.error("Payment verification error");
+        }
+      },
+      onClose: () => {
+        toast.error("Payment cancelled");
+      },
+    });
+
+    handler.openIframe();
+  };
+
   return (
-    <div className="w-full  py-20 lg:py-40">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-4 gap-8 items-center lg:grid-cols-2">
-          <div className="flex gap-4 flex-col">
-            <div>
-              <Badge variant="outline">We&apos;re live!</Badge>
-            </div>
-            <div className="flex gap-4 flex-col">
-              <h1 className="text-5xl md:text-7xl max-w-lg tracking-tighter text-left font-regular">
-                This is the start of something!
-              </h1>
-              <p className="text-xl leading-relaxed tracking-tight text-muted-foreground max-w-md text-left">
-                Managing a small business today is already tough. Avoid further
-                complications by ditching outdated, tedious trade methods. Our
-                goal is to streamline SMB trade, making it easier and faster
-                than ever.
-              </p>
-            </div>
-            <div className="flex flex-row gap-4">
-              <Button size="lg" className="gap-4" variant="outline">
-                Jump on a call <PhoneCall className="w-4 h-4" />
-              </Button>
-              <Button size="lg" className="gap-4">
-                Sign up here <MoveRight className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-          <div className="bg-muted rounded-md aspect-square">
-            <Image
-              src="/regel.jpeg"
-              alt="regel.png Logo"
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
-          </div>
-        </div>
-      </div>
+    <div>
+      <button onClick={handlePaystackPayment} disabled={!isPaystackReady}>
+        {isPaystackReady ? "Pay Now" : "Loading Payment..."}
+      </button>
     </div>
   );
 };
+
+export default Checkout;
