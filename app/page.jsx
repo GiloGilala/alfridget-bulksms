@@ -22,15 +22,23 @@ import {
   Users,
   RefreshCw,
   UserPlus,
+  BadgeCheck,
+  ChevronsDownIcon,
 } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function Component() {
+export default function HomePage() {
   return (
-    <div className="min-h-screen  px-5 sm:px-10 container mx-auto max-w-[1200px]">
+    <div className="min-h-screen  px-5 sm:px-10 bg-white">
       {/* Navigation */}
 
       <Navbar />
@@ -38,9 +46,11 @@ export default function Component() {
       <WhatWeDo />
       <YourGlobal />
       <HowItWorks />
+      <PricingSection />
+      <Faq />
 
       {/* Pain Points Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
+      {/* <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative h-[500px]">
             <Image
@@ -89,54 +99,10 @@ export default function Component() {
             <p className="text-xl font-medium">Sound familiar?</p>
           </div>
         </div>
-      </section>
-
-      {/* Introduction Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
-        <div className="space-y-12">
-          <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              Introducing
-              <br />
-              The AI Powered Teleprompter
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl">
-              Say goodbye to awkward pauses, stumbling over words, and
-              time-consuming re-takes. Our AI Powered Teleprompter is here to
-              revolutionize the way you create video content, helping you
-              deliver confident, smooth, and engaging performances every time.
-            </p>
-            <p className="text-xl font-medium">
-              Here is how it works <span className="text-2xl">👇</span>
-            </p>
-          </div>
-          <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#E57B63]">
-            <Image
-              src="https://www.dropbox.com/scl/fi/utzqoknpbgn4fm6ykhkhz/video.png?rlkey=udkuuvt8wfmjyjdfg92tylhcw&st=kvejt3jx&raw=1"
-              alt="AI Teleprompter demonstration video thumbnail"
-              fill
-              className="object-cover"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Button
-                size="lg"
-                variant="ghost"
-                className="text-white hover:text-white hover:bg-white/20"
-              >
-                <PlayCircle className="w-20 h-20" />
-                <span className="sr-only">Play video</span>
-              </Button>
-            </div>
-            <div className="absolute bottom-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium">
-              1:20min video
-            </div>
-          </div>
-        </div>
-      </section>
+      </section> */}
 
       {/* Why Us Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
+      {/* <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
         <div className="space-y-12">
           <div className="space-y-4">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
@@ -219,10 +185,10 @@ export default function Component() {
             </Card>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* What You Get Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
+      {/* What You Get Section About*/}
+      {/* <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
         <div className="space-y-12">
           <div className="space-y-4">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
@@ -267,148 +233,9 @@ export default function Component() {
             </Card>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* Pricing Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
-        <div className="space-y-12">
-          <div className="space-y-4 text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              Plans and Pricing
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Ready to revolutionize your video content and deliver confident,
-              smooth, and engaging performances every time? Subscribe today and
-              experience the power of the AI Powered Teleprompter for yourself.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="relative">
-              <CardContent className="p-6 space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold">Basic</h3>
-                  <div className="mt-2 flex items-baseline">
-                    <span className="text-4xl font-bold">$19</span>
-                    <span className="text-gray-600 ml-1">/ month</span>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>AI-powered teleprompting</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>Basic analytics</span>
-                  </li>
-                </ul>
-                <Button className="w-full" variant="outline">
-                  Reduce My Retakes
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="relative border-2 border-[#E57B63]">
-              <CardContent className="p-6 space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold">Pro</h3>
-                  <div className="mt-2 flex items-baseline">
-                    <span className="text-4xl font-bold">$29</span>
-                    <span className="text-gray-600 ml-1">/ month</span>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>AI-powered teleprompting</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>Advanced analytics</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>Priority support</span>
-                  </li>
-                </ul>
-                <Button className="w-full bg-[#E57B63] hover:bg-[#E57B63]/90">
-                  Reduce My Retakes
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="relative">
-              <CardContent className="p-6 space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold">Pro</h3>
-                  <div className="mt-2 flex items-baseline">
-                    <span className="text-4xl font-bold">$149</span>
-                    <span className="text-gray-600 ml-1">/ month</span>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>AI-powered teleprompting</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>Advanced analytics</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>Priority support</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-[#E57B63] rounded-full mr-2" />
-                    <span>1:1 Coach (1 hour)</span>
-                  </li>
-                </ul>
-                <Button className="w-full" variant="outline">
-                  Reduce My Retakes
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
-        <div className="bg-[#E57B63] rounded-2xl overflow-hidden">
-          <div className="container mx-auto max-w-[1200px] px-4 py-12 md:py-16">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-white">
-                  Ready to get Started?
-                </h2>
-                <p className="text-xl text-white/90">
-                  Sign up for the AI Powered Teleprompter today and start
-                  creating high-quality, engaging videos that drive results.
-                </p>
-                <Button
-                  size="lg"
-                  className="bg-white text-gray-900 hover:bg-white/90"
-                >
-                  Get Started and Reduce My Retakes
-                </Button>
-              </div>
-              <div className="relative h-[400px]">
-                <Image
-                  src="https://www.dropbox.com/scl/fi/ba80i7nu7lotbiu7whff7/newsletter.png?rlkey=itxzv0o91o2o36rzb1wnkyens&st=iphfwy63&raw=1"
-                  alt="Content creator with tablet"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+      {/* <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px]">
             <img
@@ -440,8 +267,9 @@ export default function Component() {
             </div>
           </div>
         </div>
-      </section>
-      <section className="w-full py-12 md:py-24 lg:py-32">
+      </section> */}
+
+      {/* <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             <div className="flex flex-col items-center justify-center space-y-2 rounded-lg bg-gray-100 p-6 text-center dark:bg-gray-800">
@@ -475,8 +303,10 @@ export default function Component() {
             </div>
           </div>
         </div>
-      </section>
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+      </section> */}
+      {/* Awards */}
+
+      {/* <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
@@ -530,7 +360,8 @@ export default function Component() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+
       <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
@@ -557,16 +388,16 @@ export default function Component() {
                   <Label htmlFor="message">Message</Label>
                   <Textarea id="message" rows={4} required />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" size="xl">
                   Submit
                 </Button>
               </form>
             </div>
             <img
-              src="/placeholder.svg"
+              src="/regel.jpeg"
+              alt="Regel Technology"
               width="600"
               height="400"
-              alt="Contact"
               className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full"
             />
           </div>
@@ -580,14 +411,20 @@ export default function Component() {
             <div className="space-y-8">
               <Link href="/" className="flex items-center gap-2">
                 <Image
-                  src="https://www.dropbox.com/scl/fi/z46u29l8ebthk2la0i8eu/logo.png?rlkey=euopxjffbafhg1ebd95a1o7mc&st=8wohkarn&raw=1"
-                  alt="AI Teleprompter Logo"
-                  width={40}
-                  height={40}
+                  src="/regel.jpeg"
+                  alt="Regel Technology"
+                  width={50}
+                  height={50}
                   className="rounded-full"
                 />
+                <span className="text-xl font-semibold ">Regel Technology</span>
               </Link>
-              <div className="space-y-4">
+              <p className="block text-secondary-foreground max-w-md">
+                Ready to revolutionize your video content and deliver confident,
+                smooth, and engaging performances every time? Subscribe today
+                and experience the powe
+              </p>
+              {/* <div className="space-y-4">
                 <h3 className="text-2xl font-bold">
                   Want to receive our Newsletter?
                 </h3>
@@ -601,7 +438,7 @@ export default function Component() {
                     Subscribe
                   </Button>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="grid grid-cols-2 gap-8">
               <nav className="space-y-4">
@@ -738,6 +575,8 @@ function PlugIcon(props) {
   );
 }
 
+///////////////////
+
 const Navbar = () => {
   // Array of navigation links
   const navLinks = [
@@ -834,7 +673,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px] py-10">
+    <div className="w-full container mx-auto max-w-[1200px] py-12  lg:py-16">
       {/* First Section */}
       <section className="w-full space-y-2 ">
         <div className="container mx-auto">
@@ -912,7 +751,7 @@ const Hero = () => {
               {heroContent.companyLogos.map((index) => (
                 <div
                   key={index}
-                  className="bg-muted rounded-md  flex items-center justify-center"
+                  className="bg-muted rounded-md flex items-center justify-center"
                 >
                   <Image
                     src={`/regel.jpeg`} // Replace with actual image paths
@@ -973,7 +812,7 @@ const WhatWeDo = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px] py-20">
+    <div className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32">
       {/* First Section */}
       <section className="w-full  ">
         <div className="container mx-auto ">
@@ -988,7 +827,7 @@ const WhatWeDo = () => {
                 </Badge>
               </div>
               <div className="gap-4 py-4">
-                <h1 className="text-5xl tracking-tighter text-left font-regular max-w-xl font-bold">
+                <h1 className="text-5xl tracking-tighter text-left font-regular max-w-xl font-bold bg-gradient-to-r from-primary to-black bg-clip-text text-transparent">
                   {whatWeDoContent.title}
                 </h1>
               </div>
@@ -1063,7 +902,7 @@ const YourGlobal = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px] py-20">
+    <div className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32">
       {/* First Section */}
       <section className="w-full space-y-8">
         <div className="container mx-auto">
@@ -1082,12 +921,12 @@ const YourGlobal = () => {
             </div>
 
             {/* Steps Section */}
-            <div className="flex-col gap-4 col-span-3 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex-col gap-4 col-span-3 ">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
                 {/* Map over steps */}
                 {howItWorksContent.steps.map((step, index) => (
-                  <Card key={index} className="flex flex-col gap-4 pt-6">
-                    <CardContent className="p-6 ">
+                  <Card key={index} className="flex flex-col gap-4 pt-6 ">
+                    <CardContent className="p-6 space-y-6">
                       {/* Render icon */}
                       {step.icon}
                       <CardTitle className="text-2xl font-bold mt-4 text-left">
@@ -1160,15 +999,15 @@ const HowItWorks = () => {
   };
 
   return (
-    <div className="w-full py-20 bg-gradient-to-b from-primary via-black to-primary">
+    <div className="w-full bg-gradient-to-b from-primary via-black to-primary py-12 md:py-24 lg:py-32">
       {/* First Section */}
-      <section className="container mx-auto max-w-[1200px] py-20 space-y-2">
+      <section className="container mx-auto max-w-[1200px]  ">
         <div className="container mx-auto">
           <div className="grid grid-cols-3 gap-8 items-center">
             {/* Hero Content */}
             <div className="gap-4 flex-col col-span-3">
               <div className="gap-4">
-                <h1 className="text-2xl tracking-tighter font-extrabold text-center ">
+                <h1 className="text-2xl tracking-tighter font-extrabold text-center py-5">
                   {howItWorksContent.title}
                 </h1>
               </div>
@@ -1205,3 +1044,206 @@ const HowItWorks = () => {
     </div>
   );
 };
+
+const PricingSection = () => {
+  const plans = [
+    {
+      name: "Basic",
+      price: "4.50",
+      frequency: "/ SMS",
+      features: ["AI-powered teleprompting", "Basic analytics"],
+      buttonVariant: "outline",
+      isHighlighted: false,
+    },
+    {
+      name: "Pro",
+      price: "4.00",
+      frequency: "/ SMS",
+      features: [
+        "AI-powered teleprompting",
+        "Advanced analytics",
+        "Priority support",
+      ],
+      buttonVariant: "default",
+      isHighlighted: true,
+    },
+    {
+      name: "Enterprise",
+      price: "3.80",
+      frequency: "/ SMS",
+      features: [
+        "AI-powered teleprompting",
+        "Advanced analytics",
+        "Priority support",
+        "1:1 Coach (1 hour)",
+      ],
+      buttonVariant: "outline",
+      isHighlighted: false,
+    },
+  ];
+  return (
+    <section className="container mx-auto max-w-[1200px] px-4 py-12 md:py-24 lg:py-32">
+      <div className="space-y-12">
+        {/* Section Header */}
+        <div className="space-y-4 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            Plans and Pricing
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Ready to revolutionize your video content and deliver confident,
+            smooth, and engaging performances every time? Subscribe today and
+            experience the power of the AI Powered Teleprompter for yourself.
+          </p>
+        </div>
+
+        {/* Pricing Cards */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {plans.map((plan, index) => (
+            <Card
+              key={index}
+              className={`relative ${
+                plan.isHighlighted ? "border-2 border-primary-foreground" : ""
+              }`}
+            >
+              <CardContent className="p-6 space-y-6">
+                {/* Plan Title and Price */}
+                <div>
+                  <h3 className="text-xl font-bold">{plan.name}</h3>
+                  <div className="mt-2 flex items-baseline">
+                    <span className="text-4xl font-bold">₦ {plan.price}</span>
+                    <span className="text-gray-600 ml-1">{plan.frequency}</span>
+                  </div>
+                </div>
+
+                {/* Plan Features */}
+                <ul className="space-y-3">
+                  {plan.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center">
+                      <BadgeCheck
+                        className="w-4 h-4 text-primary mr-2"
+                        strokeWidth={2}
+                      />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Call-to-Action Button */}
+                <Button
+                  className={`w-full ${
+                    plan.isHighlighted ? "bg-primary text-white" : ""
+                  }`}
+                  variant={plan.buttonVariant}
+                  size="lg"
+                >
+                  Start Now
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Faq = () => {
+  return (
+    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
+        <div className="space-y-4">
+          <Collapsible>
+            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
+              <h3 className="text-lg font-medium">
+                How do I upload resources to the platform?
+              </h3>
+              <ChevronsDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
+              <p>
+                To upload resources, simply click the "Upload" button on the
+                dashboard and follow the prompts. You can drag and drop files or
+                select them from your local storage. Once uploaded, your
+                resources will be available for others to access.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+          <Collapsible>
+            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
+              <h3 className="text-lg font-medium">
+                How can I find specific resources on the platform?
+              </h3>
+              <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
+              <p>
+                You can use the search bar at the top of the dashboard to find
+                resources by keyword, title, or author. You can also filter
+                resources by category, tags, or file type. If you're having
+                trouble finding a specific resource, feel free to reach out to
+                our support team for assistance.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+          <Collapsible>
+            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
+              <h3 className="text-lg font-medium">
+                How do I manage my favorite resources?
+              </h3>
+              <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
+              <p>
+                To add a resource to your favorites, simply click the heart icon
+                on the resource card. You can view all your favorite resources
+                by clicking the "Favorites" tab on the dashboard. From there,
+                you can organize your favorites into collections, share them
+                with others, or remove them from your list.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+          <Collapsible>
+            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
+              <h3 className="text-lg font-medium">
+                How secure is the data on the platform?
+              </h3>
+              <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
+              <p>
+                We take data security very seriously on our platform. All data
+                is encrypted at rest and in transit, and we have robust access
+                controls and audit logging in place to ensure only authorized
+                users can access sensitive information. We also regularly
+                conduct security audits and penetration testing to identify and
+                address any vulnerabilities. If you have any specific concerns
+                about data security, please don't hesitate to reach out to our
+                team.
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function ChevronDownIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
