@@ -141,7 +141,7 @@ export const BalanceInfo = ({
         </div>
 
         <CardContent className="p-1 w-full ">
-          <CardDescription className="flex mb-1">
+          <div className="flex mb-1">
             <div className="flex items-center w-full">
               <span className="font-medium text-sm mr-auto text-gray-700 flex items-center">
                 {amonut?.toLocaleString()}
@@ -153,7 +153,7 @@ export const BalanceInfo = ({
                 {score} / {maxScore}
               </span>
             </div>
-          </CardDescription>
+          </div>
           <Progress
             value={(score / maxScore) * 100}
             className={`overflow-hidden bg-${progressColor}-50 h-1 rounded-full w-full`}

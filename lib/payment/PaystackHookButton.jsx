@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { usePaystackPayment } from "react-paystack";
@@ -8,7 +10,6 @@ const PaystackHookButton = ({
   buttonText = "Pay Now",
   isLoading = false,
   configPaystackPayment,
-  handlePopup,
 }) => {
   const { email, amount, publicKey } = configPaystackPayment || {};
 

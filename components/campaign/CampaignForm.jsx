@@ -44,12 +44,12 @@ const CampaignForm = ({
   const form = useForm({
     resolver: zodResolver(campaignSchema),
     defaultValues: {
-      title: "Gilo Testing",
-      from: "REGEL",
+      title: "",
+      from: "",
       type: "Bulk SMS",
       unicode: false,
-      message: "Testing from Gilo SMS App",
-      messageToReply: "Message from Alfridget ",
+      message: "",
+      messageToReply: "",
       groupId: "",
       scheduleDate: null,
       recipients: "", // Initialize as a string, not an array
@@ -59,8 +59,10 @@ const CampaignForm = ({
 
   const message = form.watch("message") || "";
   const type = form.watch("type") || "SMS";
-  const recipientsInput = form.watch("recipients") || ""; // Watch as a string
-
+  useEffect(() => {
+    const recipients = form.watch("recipients") || "";
+    setRecipientsInput(recipients.split(",").filter(Boolean)); // Filter out empty strings
+  }, [form.watch("recipients")]); // Only run when recipients change
   const watchedValues = form.watch([
     "message",
     "groupId",
@@ -90,19 +92,14 @@ const CampaignForm = ({
   const onSubmit = async (data) => {
     setIsSubmitting(true);
 
-    const recipientsArray = data.recipients
-      .split(",") // Split by comma
-      .map((phone) => phone.trim()); // Trim any extra spaces
-
-    // Prepare the payload for the API
     const smsData = {
       ...data,
-      recipients: recipientsArray, // Replace the string with the array
+      recipients: data.recipients.split(","),
     };
 
     try {
       // console.log("send :", smsData);
-      await handleSubmit(data);
+      await handleSubmit(smsData);
       setIsSubmitting(false);
     } catch (error) {
       console.error("Form submission error:", error);

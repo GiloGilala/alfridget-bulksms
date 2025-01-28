@@ -22,6 +22,8 @@ import { Progress } from "@/components/ui/progress";
 import { useParams, useRouter } from "next/navigation";
 import { fetchCampaignById, updateCampaign } from "@/actions/campaign";
 import { fetchGroupsByUser } from "@/actions/group";
+import axios from "axios";
+import { getWalletByUserId } from "@/actions/wallet";
 
 const statusCodeMap = [
   { label: "Processed", value: 100 },
@@ -46,7 +48,7 @@ export default function AddCampaign() {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [balance, setBalance] = useState(0);
-  const [credit, setCredit] = useState(session?.user?.credit);
+  const [credit, setCredit] = useState("");
   const [importedContacts, setImportedContacts] = useState([]);
   const [recipientsInput, setRecipientsInput] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,11 +60,6 @@ export default function AddCampaign() {
   const userId = session?.user?.id;
 
   useEffect(() => {
-    if (session?.user?.credit) {
-      setCredit(session?.user?.credit);
-      // setsmsTable(response);
-    }
-
     const fetchCampaign = async () => {
       try {
         const res = await fetchCampaignById(id);
@@ -77,15 +74,29 @@ export default function AddCampaign() {
         const res = await fetchGroupsByUser(userId);
         setGroups(res.groups);
       } catch (error) {
-        console.error("Error fetching contact:", error);
+        console.error("Error fetching contact:", error.message);
+        // toast.error("Failed to fetch contact.");
+      }
+    };
+    const fetchWallet = async () => {
+      try {
+        const res = await getWalletByUserId(userId);
+        setCredit(res.wallet.balance);
+        console.log("res.wallet:", res.wallet);
+
+        setCredit;
+      } catch (error) {
+        console.error("Error fetching contact:", error.message);
         // toast.error("Failed to fetch contact.");
       }
     };
 
-    fetchGroups();
-
     if (id) {
       fetchCampaign();
+    }
+    if (userId) {
+      fetchGroups();
+      fetchWallet();
     }
   }, [userId]);
 
@@ -121,21 +132,31 @@ export default function AddCampaign() {
 
     const smsData = {
       ...data,
-      senderId: session?.user?.id,
+      userId: session?.user?.id,
+    };
+    const smsDataRingo = {
+      recipients: ["2347030904385", "2348035538208"],
+      message: "Hello, this is a test SMS with Ringo.",
+      sender_id: "ALTBANK",
     };
 
     try {
+      // if (credit <= totalSmsCost) {
+      //    toast.error("Insufficient balance");
+      //   }
+
       const res = await myAxios.post("/campaign/sms", smsData);
+      console.log("res F:", res.data);
       // const res = await createCampaignt(smsData);
       if (res.data.success) {
-        toast.success(res.data.message);
-        setBalance(res.data.balance);
-        setCampaign(res.data.campaign);
+        toast.success(res.data?.message);
+        setBalance(res.data?.balance);
+        setCampaign(res.data?.campaign);
         const statusDetails = calculateStatusCounts(
-          res.data.campaign.recipients,
+          res.data?.campaign?.recipients,
           statusCodeMap
         );
-        setsmsTable(res.data.campaign.recipients);
+        setsmsTable(res.data?.campaign?.recipients);
         setStatusDetail(statusDetails);
         setIsOpen(true);
         // router.push("/clients/sms");
@@ -177,7 +198,7 @@ export default function AddCampaign() {
           <div className="col-span-12 lg:col-span-7 space-y-2">
             <BalanceInfo
               title="Credit"
-              amonut={credit?.toLocaleString()}
+              amount={credit?.toLocaleString()}
               score={smstoSend}
               maxScore={availableSms}
               icon={<HelpCircle className="text-blue-500 w-5 h-5" />}
@@ -191,7 +212,7 @@ export default function AddCampaign() {
         <SuccessfulPopup
           details={statusDetail}
           balance={balance}
-          smsCost={campaign.credit}
+          smsCost={campaign?.credit}
           className="col-span-12 "
           isOpen={isOpen}
           onClose={handleClose}
@@ -216,7 +237,7 @@ export const BalanceInfo = ({
   progressColor,
   amount,
 }) => {
-  // console.log("amount :", amount);
+  console.log("amount :", amount);
 
   return (
     <Card className="bg-white shadow-md rounded-lg p-2 w-full ">

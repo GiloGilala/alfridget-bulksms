@@ -187,7 +187,7 @@ export default function Component() {
   );
 }
 
-export const TableComponent = ({ headers, data, sms }) => {
+export const TableComponent = ({ headers, data = [], sms }) => {
   return (
     <Table>
       <TableHeader>
@@ -198,7 +198,7 @@ export const TableComponent = ({ headers, data, sms }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((row, index) => (
+        {data?.map((row, index) => (
           <TableRow key={index}>
             {sms ? (
               <>

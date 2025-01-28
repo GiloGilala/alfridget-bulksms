@@ -36,6 +36,8 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { CurrencyFormatter } from "@/lib/currencyFormatter";
 import dynamic from "next/dynamic";
+import myAxios from "../axiosConfig";
+
 const PaystackHookButton = dynamic(
   () => import("@/lib/payment/PaystackHookButton"),
   { ssr: false }
@@ -232,7 +234,6 @@ export function PaymentCart({ items = [], paymentType }) {
     toast.error("Payment was not completed.");
   };
 
-  console.log("totalItems :", totalItems);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -258,12 +259,9 @@ export function PaymentCart({ items = [], paymentType }) {
                 <span className="ml-2">Regel Technology</span>
               </div>
             </DialogClose>
-            {/* <a href="#" className="flex items-center text-sm font-semibold ">
-              <ArrowLeft className="h-4 w-4" />
-              <span className="ml-2">Regel Technology</span>
-            </a> */}
-            <span className="rounded bg-yellow-200 px-2 py-1 text-xs font-semibold uppercase tracking-wider text-yellow-800">
-              Test Mode
+
+            <span className="rounded bg-primary px-2 py-1 text-xs font-semibold uppercase tracking-wider">
+              Payment
             </span>
           </div>
 
@@ -483,7 +481,7 @@ export const PricingCard = ({ items = [], plan }) => {
             className="mt-6 flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3"
           >
             <div className="flex items-center">
-              <Package className="h-6 w-6 text-yellow-500" />
+              <Package className="h-6 w-6 text-primary" />
               <div className="ml-3">
                 <p className="text-sm font-semibold">{item?.name}</p>
                 <p className="text-xs text-gray-500">{item?.description}</p>
