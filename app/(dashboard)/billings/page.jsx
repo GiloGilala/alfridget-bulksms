@@ -41,6 +41,7 @@ import {
   getWalletByUserId,
 } from "@/actions/wallet";
 import { useRouter } from "next/navigation";
+import { Loading1 } from "@/components/loaders";
 
 const data = [
   {
@@ -254,21 +255,21 @@ export default function Component() {
   useEffect(() => {
     if (id) {
       const fetchData = async () => {
+        setLoading(true); // Set loading to true before fetching data
         try {
           const res = await getWalletAndAllTransactions(id);
-          // console.log("Wallet fetched successfully:", res);
           setWallet(res?.wallet);
           setTransactions(res?.transactions);
         } catch (error) {
           console.error("Error fetching wallet:", error);
         } finally {
-          setLoading(false);
+          setLoading(false); // Reset loading to false after fetch completes
         }
       };
       fetchData();
     } else {
       console.error("No user ID found.");
-      setLoading(false);
+      setLoading(false); // Ensure loading is false if no ID is found
     }
   }, [id]);
 
@@ -302,46 +303,56 @@ export default function Component() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <div className="grid grid-cols-12 gap-4">
-          <CardCTA
-            className="col-span-12 lg:col-span-8 mb-4"
-            title="Are you getting low on criedt!"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex."
-            buttonText="TopUp Now"
-            handleButtonClick={handleTopUp}
-            // modalButton={true}
-            pricingPlans={pricingPlans}
-          />
-          <CardProgress
-            title="Your balance"
-            amount={CurrencyFormatter(wallet.balance, "NGN")}
-            percentage="25%"
-            progressValue={75}
-            Icon={CreditCard}
-            iconColor="text-emerald-500"
-            className=" mb-4 col-span-12 lg:col-span-4"
-          />
+      {loading ? (
+        <Loading1 />
+      ) : (
+        <div className="container mx-auto p-4 sm:p-6 md:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-8 mb-4">
+              <CardCTA
+                title="Are you getting low on credit!"
+                description="Low credit alert!
+Avoid disruptions and top up your account now. Stay ahead with our easy and convenient top-up options."
+                buttonText="TopUp Now"
+                handleButtonClick={handleTopUp}
+                pricingPlans={pricingPlans}
+              />
+            </div>
 
-          <div className="mb-4 col-span-12 ">
-            <TabsWrapper defaultValue="orders" triggers={tabs}>
-              <TabsContent value="orders">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Transactions</CardTitle>
-                    <CardDescription>
-                      Manage your Transactions and view their status.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <DataTable headers={headers} transactions={transactions} />
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </TabsWrapper>
+            <div className="lg:col-span-4 mb-4">
+              <CardProgress
+                title="Your balance"
+                amount={CurrencyFormatter(wallet?.balance, "NGN")}
+                percentage="25%"
+                progressValue={75}
+                Icon={CreditCard}
+                iconColor="text-emerald-500"
+              />
+            </div>
+
+            <div className="lg:col-span-12 mb-4">
+              <TabsWrapper defaultValue="orders" triggers={tabs}>
+                <TabsContent value="orders">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Transactions</CardTitle>
+                      <CardDescription>
+                        Manage your Transactions and view their status.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <DataTable
+                        headers={headers}
+                        transactions={transactions}
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </TabsWrapper>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

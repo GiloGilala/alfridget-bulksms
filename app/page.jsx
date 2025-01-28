@@ -363,7 +363,7 @@ export default function HomePage() {
       </section> */}
 
       <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto max-w-[1200px] py-12 md:py-16">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4">
               <div className="space-y-2">
@@ -398,7 +398,7 @@ export default function HomePage() {
               alt="Regel Technology"
               width="600"
               height="400"
-              className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full"
+              className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-fill sm:w-full"
             />
           </div>
         </div>
@@ -774,36 +774,40 @@ const WhatWeDo = () => {
   // Reusable content for the "What We Do" section
   const whatWeDoContent = {
     badge: "What We Do",
-    title: "An all-in-one communication solution, for people who want more.",
+    title:
+      "An all-in-one communication solution, for businesses that want more.",
     description:
-      "Connect with your customers through SMS, OTP and explore unlimited possibilities across the globe.",
+      "Connect with your customers through SMS, OTP, and explore unlimited possibilities across the globe.",
     stats: [
       {
         value: "Bulk SMS",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Reach thousands of customers instantly with our reliable bulk SMS service. Perfect for marketing campaigns, announcements, and alerts.",
         image: {
           src: "/home/sms2.png",
-          alt: "SMS Transactions",
+          alt: "Bulk SMS",
           width: 350,
           height: 350,
         },
       },
       {
         value: "OTP & Notifications",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Deliver secure one-time passwords (OTPs) and real-time notifications to enhance customer authentication and engagement.",
         image: {
           src: "/home/sms3.png",
-          alt: "SMS Transactions",
+          alt: "OTP & Notifications",
           width: 350,
           height: 350,
         },
       },
       {
-        value: "Global E-sim",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        value: "Global Connectivity",
+        description:
+          "Send messages seamlessly to over 200 countries with our global SMS coverage. Stay connected with customers worldwide.",
         image: {
           src: "/home/sms4.png",
-          alt: "SMS Transactions",
+          alt: "Global Connectivity",
           width: 350,
           height: 350,
         },
@@ -875,27 +879,32 @@ const YourGlobal = () => {
     steps: [
       {
         value: "Mission",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Empower businesses with innovative communication solutions to drive engagement, enhance customer experience, and enable effortless global connectivity through reliable services, seamless technology, and transparent pricing.",
         icon: <MessageCircle size={48} className="text-primary  " />,
       },
       {
         value: "Vision",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "To be the leading provider of integrated communication solutions, bridging global communication gaps with seamless, secure, and instant interactions that transform how businesses connect and engage with customers.",
         icon: <Eye size={48} className="text-primary " />,
       },
       {
         value: "Culture",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "We foster a collaborative, innovative, and inclusive culture that values creativity, transparency, and continuous learning. Our team is empowered to deliver excellence, embrace challenges, and drive meaningful impact for our clients and communities.",
         icon: <Users size={48} className="text-primary" />,
       },
       {
         value: "Retention",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "We prioritize long-term relationships by delivering exceptional service, personalized solutions, and consistent value. Our commitment to understanding and addressing our clients' evolving needs ensures loyalty and trust.",
         icon: <RefreshCw size={48} className="text-primary" />,
       },
       {
         value: "Customer Acquisition",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "We attract businesses by showcasing our innovative communication solutions, proven reliability, and customer-centric approach. Through strategic outreach, tailored offerings, and measurable results, we position ourselves as the partner of choice for seamless global connectivity.",
         icon: <UserPlus size={48} className="text-primary" />,
       },
     ],
@@ -953,11 +962,12 @@ const HowItWorks = () => {
     badge: "We're live!",
     title: "How It Works",
     description:
-      "Connect with your customers through SMS, OTP and explore unlimited possibilities across the globe.",
+      "Connect with your customers through SMS, OTP, and explore unlimited possibilities across the globe.",
     steps: [
       {
         value: "Create a free account",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Sign up in minutes and gain access to a platform trusted by businesses worldwide.",
         image: {
           src: "/home/sms6.png",
           alt: "SMS Transactions",
@@ -967,7 +977,8 @@ const HowItWorks = () => {
       },
       {
         value: "Request for custom sender ID",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Personalize your communication with a unique sender ID to enhance brand recognition.",
         image: {
           src: "/home/sms5.png",
           alt: "SMS Transactions",
@@ -977,7 +988,8 @@ const HowItWorks = () => {
       },
       {
         value: "Fund your wallet with payment",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Easily top up your wallet with secure payment options to start sending messages instantly.",
         image: {
           src: "/home/sms7.png",
           alt: "SMS Transactions",
@@ -987,7 +999,8 @@ const HowItWorks = () => {
       },
       {
         value: "Send message & view instant reports",
-        description: "Over 1 billion SMS transactions processed successfully.",
+        description:
+          "Deliver messages globally and track performance with real-time analytics and insights.",
         image: {
           src: "/home/sms8.png",
           alt: "SMS Transactions",
@@ -1049,19 +1062,24 @@ const PricingSection = () => {
   const plans = [
     {
       name: "Basic",
-      price: "4.50",
+      price: "4.50 - 3.80",
       frequency: "/ SMS",
-      features: ["AI-powered teleprompting", "Basic analytics"],
+      features: [
+        "Up to 1,000 SMS/month",
+        "Basic delivery reports",
+        "24/7 customer support",
+      ],
       buttonVariant: "outline",
       isHighlighted: false,
     },
     {
       name: "Pro",
-      price: "4.00",
+      price: "4.00 - 3.50",
       frequency: "/ SMS",
       features: [
-        "AI-powered teleprompting",
-        "Advanced analytics",
+        "Up to 10,000 SMS/month",
+        "Advanced analytics & insights",
+        "Custom sender ID",
         "Priority support",
       ],
       buttonVariant: "default",
@@ -1069,13 +1087,14 @@ const PricingSection = () => {
     },
     {
       name: "Enterprise",
-      price: "3.80",
+      price: "3.80 - 3.00",
       frequency: "/ SMS",
       features: [
-        "AI-powered teleprompting",
-        "Advanced analytics",
+        "Unlimited SMS volume",
+        "Advanced analytics & insights",
+        "Custom sender ID",
+        "Dedicated account manager",
         "Priority support",
-        "1:1 Coach (1 hour)",
       ],
       buttonVariant: "outline",
       isHighlighted: false,
@@ -1090,9 +1109,13 @@ const PricingSection = () => {
             Plans and Pricing
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to revolutionize your video content and deliver confident,
-            smooth, and engaging performances every time? Subscribe today and
-            experience the power of the AI Powered Teleprompter for yourself.
+            Ready to transform your communication and connect with customers
+            effortlessly? Explore our flexible SMS plans and pricing designed to
+            meet your business needs. Whether you're sending transactional
+            messages, OTPs, or promotional campaigns, our reliable and scalable
+            solutions ensure seamless delivery worldwide. Subscribe today and
+            experience the power of global connectivity with transparent pricing
+            and unmatched reliability.
           </p>
         </div>
 
@@ -1148,81 +1171,55 @@ const PricingSection = () => {
 };
 
 const Faq = () => {
+  const faqs = [
+    {
+      question: "How do I get started with sending SMS?",
+      answer:
+        "To get started, create a free account on our platform. Once registered, you can fund your wallet, request a custom sender ID, and start sending SMS messages instantly. Our intuitive dashboard makes it easy to manage your campaigns and track results.",
+    },
+    {
+      question: "What types of messages can I send?",
+      answer:
+        "You can send a variety of messages, including transactional SMS (e.g., OTPs, alerts), promotional SMS (e.g., marketing campaigns), and bulk SMS. Our platform supports both text and Unicode messages, ensuring compatibility with all languages.",
+    },
+    {
+      question: "How do I track the performance of my SMS campaigns?",
+      answer:
+        "Our platform provides real-time analytics and detailed reports for every SMS campaign. You can track delivery rates, open rates, and customer engagement metrics directly from your dashboard. Advanced analytics are available in our Pro and Enterprise plans.",
+    },
+    {
+      question: "Is my data secure on your platform?",
+      answer:
+        "Yes, we prioritize data security. All messages and customer data are encrypted during transmission and storage. We also comply with global data protection regulations to ensure your information is safe and secure.",
+    },
+    {
+      question: "What happens if my SMS fails to deliver?",
+      answer:
+        "If an SMS fails to deliver, our system automatically retries delivery for a set period. You can also view the status of each message in your dashboard. If delivery issues persist, our support team is available to assist you.",
+    },
+    {
+      question: "Do you offer support for international SMS?",
+      answer:
+        "Yes, we support global SMS delivery to over 200 countries. Our platform ensures seamless connectivity and competitive pricing for international messaging. Check our coverage list for specific country details.",
+    },
+  ];
+
   return (
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
         <div className="space-y-4">
-          <Collapsible>
-            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
-              <h3 className="text-lg font-medium">
-                How do I upload resources to the platform?
-              </h3>
-              <ChevronsDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
-              <p>
-                To upload resources, simply click the "Upload" button on the
-                dashboard and follow the prompts. You can drag and drop files or
-                select them from your local storage. Once uploaded, your
-                resources will be available for others to access.
-              </p>
-            </CollapsibleContent>
-          </Collapsible>
-          <Collapsible>
-            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
-              <h3 className="text-lg font-medium">
-                How can I find specific resources on the platform?
-              </h3>
-              <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
-              <p>
-                You can use the search bar at the top of the dashboard to find
-                resources by keyword, title, or author. You can also filter
-                resources by category, tags, or file type. If you're having
-                trouble finding a specific resource, feel free to reach out to
-                our support team for assistance.
-              </p>
-            </CollapsibleContent>
-          </Collapsible>
-          <Collapsible>
-            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
-              <h3 className="text-lg font-medium">
-                How do I manage my favorite resources?
-              </h3>
-              <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
-              <p>
-                To add a resource to your favorites, simply click the heart icon
-                on the resource card. You can view all your favorite resources
-                by clicking the "Favorites" tab on the dashboard. From there,
-                you can organize your favorites into collections, share them
-                with others, or remove them from your list.
-              </p>
-            </CollapsibleContent>
-          </Collapsible>
-          <Collapsible>
-            <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
-              <h3 className="text-lg font-medium">
-                How secure is the data on the platform?
-              </h3>
-              <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
-              <p>
-                We take data security very seriously on our platform. All data
-                is encrypted at rest and in transit, and we have robust access
-                controls and audit logging in place to ensure only authorized
-                users can access sensitive information. We also regularly
-                conduct security audits and penetration testing to identify and
-                address any vulnerabilities. If you have any specific concerns
-                about data security, please don't hesitate to reach out to our
-                team.
-              </p>
-            </CollapsibleContent>
-          </Collapsible>
+          {faqs.map((faq, index) => (
+            <Collapsible key={index}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full bg-muted rounded-md px-4 py-3 cursor-pointer">
+                <h3 className="text-lg font-medium">{faq.question}</h3>
+                <ChevronDownIcon className="h-5 w-5 text-muted-foreground transition-transform duration-300 [&[data-state=open]]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="bg-background rounded-b-md px-4 py-3 text-muted-foreground">
+                <p>{faq.answer}</p>
+              </CollapsibleContent>
+            </Collapsible>
+          ))}
         </div>
       </div>
     </div>

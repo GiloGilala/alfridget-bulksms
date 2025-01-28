@@ -1,7 +1,19 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import dynamic from "next/dynamic";
+import {
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  Line,
+  Tooltip as RechartsTooltip,
+} from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   Card,
   CardContent,
@@ -10,32 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
-// Dynamically import recharts components
-const LineChart = dynamic(
-  () => import("recharts").then((mod) => mod.LineChart),
-  {
-    ssr: false,
-  }
-);
-const CartesianGrid = dynamic(
-  () => import("recharts").then((mod) => mod.CartesianGrid),
-  {
-    ssr: false,
-  }
-);
-const XAxis = dynamic(() => import("recharts").then((mod) => mod.XAxis), {
-  ssr: false,
-});
-const Line = dynamic(() => import("recharts").then((mod) => mod.Line), {
-  ssr: false,
-});
 
 // Sample data
 const chartData = [
@@ -47,7 +33,6 @@ const chartData = [
   { month: "June", sms: 200, email: 1000, whatsapp: 4500 },
 ];
 
-// Chart configuration
 const chartConfig = {
   sms: {
     label: "SMS",
@@ -68,7 +53,7 @@ export function Chart1() {
     <Card className="w-full h-[500px]">
       <CardHeader>
         <CardTitle>Communication Channels</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>January - June 2025</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="w-full h-[300px]">

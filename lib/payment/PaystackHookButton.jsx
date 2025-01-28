@@ -8,6 +8,7 @@ const PaystackHookButton = ({
   buttonText = "Pay Now",
   isLoading = false,
   configPaystackPayment,
+  handlePopup,
 }) => {
   const { email, amount, publicKey } = configPaystackPayment || {};
 
@@ -26,7 +27,7 @@ const PaystackHookButton = ({
     <Button
       type="button"
       onClick={handleClick}
-      className="w-full mt-4"
+      className="py-3 text-sm font-semibold z-100"
       disabled={isLoading}
       aria-busy={isLoading}
     >
