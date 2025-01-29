@@ -33,6 +33,10 @@ const transactionSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    fees: {
+      type: Number,
+      min: 0,
+    },
     accountBalanceBefore: {
       type: Number,
       default: 0,

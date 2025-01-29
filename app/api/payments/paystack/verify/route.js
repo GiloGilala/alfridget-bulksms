@@ -19,7 +19,6 @@ const headers = {
 export async function POST(request) {
   try {
     const { reference } = await request.json();
-    console.log(" Response :", reference);
 
     if (!reference) {
       return NextResponse.json(
@@ -36,9 +35,10 @@ export async function POST(request) {
     console.log(" verification Response ok:");
 
     const paystackData = verificationRes.data.data;
+    const fees = verificationRes.data.data.fees;
     const amountInNaira = paystackData.amount / 100; // Conversion here
 
-    console.log("Payment Response:", verificationRes.data);
+    // console.log("Payment Response:", verificationRes.data);
     await dbConnect();
     // Find existing transaction
     const transaction = await Transaction.findOne({ reference });
@@ -123,6 +123,7 @@ export async function POST(request) {
       transaction.accountBalanceBefore = wallet.balance;
       transaction.accountBalanceAfter = updatedWallet.balance;
       transaction.paymentGatewayResponse = paystackData;
+      transaction.fees = fees;
       transaction.gatewayTransactionId = paystackData.id;
       await transaction.save();
 

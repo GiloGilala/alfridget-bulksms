@@ -19,7 +19,6 @@ const PaystackPaymentButton = ({
   const amountInKobo = amount * 100;
 
   const createPendingTransaction = useCallback(async () => {
-    console.log("Creating transaction...");
     try {
       const pendingTransaction = await createTransaction({
         userId,
@@ -30,7 +29,7 @@ const PaystackPaymentButton = ({
         gateway: "paystack",
       });
 
-      console.log("Transaction response:", pendingTransaction);
+      // console.log("Transaction response:", pendingTransaction);
 
       if (!pendingTransaction?.successful) {
         throw new Error("Transaction creation failed");
@@ -119,9 +118,11 @@ const PaystackPaymentButton = ({
     }
   };
 
+  const config = { ...configPaystackPayment, amount: amountInKobo };
+
   return (
     <PaystackConsumer
-      {...configPaystackPayment}
+      {...config}
       onSuccess={handlePaystackSuccess}
       onClose={handlePaystackClose}
     >
