@@ -1,4 +1,18 @@
 /** @type {import('next').NextConfig} */
+const cspHeader = `
+    default-src 'self';
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.paystack.co;
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' blob: data:;
+    font-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+    frame-src 'self' https://checkout.paystack.com;
+`
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -23,19 +37,8 @@ const nextConfig = {
         source: "/(.*)",
         headers: [
           {
-            key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; " + // Default policy: allow only resources from the same origin
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.paystack.com; " + // Allow scripts from self, Paystack, and inline scripts
-              "style-src 'self' 'unsafe-inline' https://checkout.paystack.com; " + // Allow styles from self, Paystack, and inline styles
-              "frame-src https://checkout.paystack.com; " + // Allow iframes from Paystack
-              "connect-src 'self' https://checkout.paystack.com; " + // Allow API calls to self and Paystack
-              "font-src 'self' https://checkout.paystack.com; " + // Allow fonts from self and Paystack
-              "img-src 'self' data: https://checkout.paystack.com; " + // Allow images from self, data URIs, and Paystack
-              "object-src 'none'; " + // Disallow plugins like Flash
-              "base-uri 'self'; " + // Restrict base URLs to self
-              "form-action 'self'; " + // Restrict form submissions to self
-              "frame-ancestors 'self';", // Restrict embedding to self
+            key: 'Content-Security-Policy',
+            value: cspHeader.replace(/\n/g, ''),
           },
         ],
       },

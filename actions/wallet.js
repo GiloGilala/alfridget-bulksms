@@ -78,7 +78,9 @@ export const getWalletAndAllTransactions = async (userId) => {
     // Fetch all transactions associated with the wallet
     const transactions = await Transaction.find({
       walletId: wallet._id,
-    }).lean();
+    })
+      .sort({ createdAt: -1 })
+      .limit(20);
 
     // Convert to plain objects (optional, since .lean() already does this)
     const plainWallet = JSON.parse(JSON.stringify(wallet));

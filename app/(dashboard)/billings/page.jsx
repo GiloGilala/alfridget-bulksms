@@ -30,12 +30,13 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { CardCTA, CardProgress } from "@/components/dashboard/StatisticsCard";
+import { CardProgress } from "@/components/dashboard/StatisticsCard";
 import { CreditCard, MailCheck } from "lucide-react";
 import { CurrencyFormatter } from "@/lib/currencyFormatter";
 import { Topup1 } from "@/components/payment/TopUp";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { CardCTA } from "@/components/dashboard/cards/CardCTA";
 import {
   getWalletAndAllTransactions,
   getWalletByUserId,
@@ -311,11 +312,12 @@ export default function Component() {
             <div className="lg:col-span-8 mb-4">
               <CardCTA
                 title="Are you getting low on credit!"
-                description="Low credit alert!
-Avoid disruptions and top up your account now. Stay ahead with our easy and convenient top-up options."
+                description="Low credit alert! Avoid disruptions and top up your account now. Stay ahead with our easy and convenient top-up options."
                 buttonText="TopUp Now"
                 handleButtonClick={handleTopUp}
+                modalButton={true}
                 pricingPlans={pricingPlans}
+                paymentType="card"
               />
             </div>
 

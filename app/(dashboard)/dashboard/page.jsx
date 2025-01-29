@@ -32,6 +32,7 @@ import { Badge } from "@/components/ui/badge";
 import { CardProgress } from "@/components/dashboard/StatisticsCard";
 import { CreditCard, MailCheck } from "lucide-react";
 import { CurrencyFormatter } from "@/lib/currencyFormatter";
+import { PaymentCart } from "@/lib/payment/PaymentCart";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Chart1 } from "@/components/charts/Chart1";

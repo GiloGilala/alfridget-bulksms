@@ -19,6 +19,7 @@ const headers = {
 export async function POST(request) {
   try {
     const { reference } = await request.json();
+    console.log(" Response :", reference);
 
     if (!reference) {
       return NextResponse.json(
@@ -27,25 +28,31 @@ export async function POST(request) {
       );
     }
 
-    await dbConnect();
-
     // Verify with Paystack
-    const verificationResponse = await axios.get(
+    const verificationRes = await axios.get(
       `${PAYSTACK_API_URL}/transaction/verify/${reference}`,
       { headers }
     );
     console.log(" verification Response ok:");
 
-    const paystackData = verificationResponse.data.data;
+    const paystackData = verificationRes.data.data;
     const amountInNaira = paystackData.amount / 100; // Conversion here
 
-    console.log("Payment Response:", verificationResponse.data);
-
+    console.log("Payment Response:", verificationRes.data);
+    await dbConnect();
     // Find existing transaction
     const transaction = await Transaction.findOne({ reference });
-    if (!transaction) {
+    if (
+      transaction.amount !== paystackData.amount &&
+      transaction.currency !== paystackData.currency &&
+      transaction.status !== "pending" &&
+      transaction.paymentGateway !== "paystack"
+    ) {
       throw new Error("Transaction not found");
     }
+    // if (!transaction) {
+    //   throw new Error("Transaction not found");
+    // }
 
     // Find or create wallet
     const wallet = await Wallet.findOneAndUpdate(

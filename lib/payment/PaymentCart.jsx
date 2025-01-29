@@ -10,16 +10,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Card,
   CardHeader,
   CardTitle,
@@ -37,16 +27,19 @@ import { useSession } from "next-auth/react";
 import { CurrencyFormatter } from "@/lib/currencyFormatter";
 import dynamic from "next/dynamic";
 import myAxios from "../axiosConfig";
+import { createTransaction } from "@/actions/transaction";
 
 const PaystackHookButton = dynamic(
   () => import("@/lib/payment/PaystackHookButton"),
   { ssr: false }
 );
-export function PaymentCart({ items = [], paymentType }) {
+
+export function PaymentCart({ items = [], paymentType = "card" }) {
   const { data: session } = useSession();
   const user = session?.user;
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const router = useRouter();
   const userRole = user?.role;
 
@@ -72,9 +65,8 @@ export function PaymentCart({ items = [], paymentType }) {
     }));
   };
 
-  // Function to validate expiration date
   const isValidExpiry = (expiry) => {
-    const regex = /^(0[1-9]|1[0-2])\/(\d{2}|\d{4})$/; // Matches MM/YY or MM/YYYY
+    const regex = /^(0[1-9]|1[0-2])\/(\d{2}|\d{4})$/;
     if (!regex.test(expiry)) return false;
 
     const [month, year] = expiry.split("/");
@@ -89,12 +81,10 @@ export function PaymentCart({ items = [], paymentType }) {
     );
   };
 
-  // Function to validate the amount
   const isValidAmount = (amount) => {
     return !isNaN(amount) && amount > 0;
   };
 
-  // Function to validate and submit the form
   const validateAndSubmit = (form) => {
     const errors = [];
 
@@ -112,14 +102,13 @@ export function PaymentCart({ items = [], paymentType }) {
     if (errors.length > 0) {
       console.error("Validation Errors:", errors);
       alert(errors.join("\n"));
-      return false; // Validation failed
+      return false;
     }
 
     console.log("Form is valid. Submitting data...");
-    return true; // Validation passed
+    return true;
   };
 
-  // Handle submit function
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -142,26 +131,14 @@ export function PaymentCart({ items = [], paymentType }) {
             userId: userRole?._id,
             credit: formData.amount,
             email: "solomongilala@gmail.com" || userRole?.email,
-            // email: formData.email || userRole?.email,
             ...formData,
           };
 
     try {
       if (userRole === "admin") {
         console.log("userData :", userData);
-
-        // const res = await updateCreditByAdmin(userData);
-        // if (res.successful) {
-        //   toast.success(res.message);
-        //   router.push("/adminUsers/users");
-        // }
       } else {
         console.log("userData :", userData);
-        // const res = await updateUserCredit(userData);
-        // if (res.successful) {
-        //   toast.success(res.message);
-        //   router.push("/billings");
-        // }
       }
       console.log("Form submitted successfully");
     } catch (error) {
@@ -172,7 +149,6 @@ export function PaymentCart({ items = [], paymentType }) {
 
   const totalItems = [
     ...items,
-
     {
       name: "Regel Top Up",
       price: parseFloat(formData.amount) || 0,
@@ -180,12 +156,10 @@ export function PaymentCart({ items = [], paymentType }) {
     },
   ];
 
-  const amountInKobo = formData.amount * 100;
-
   const configPaystackPayment = {
     reference: `ref-${Date.now()}`,
     email: "gilogilala@gmail.com" || session?.user?.email,
-    amount: amountInKobo,
+    amount: formData.amount,
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
     currency: "NGN",
     metadata: {
@@ -204,263 +178,209 @@ export function PaymentCart({ items = [], paymentType }) {
     },
   };
 
-  const onSuccess = async (response) => {
-    console.log("Payment successful!", response);
-    toast.success("Payment successful!");
-
-    try {
-      const backendResponse = await myAxios.post("/payments/paystack/verify", {
-        reference: response.reference,
-        status: response.status,
-        transactionId: response.transaction,
-        amount: amountInKobo,
-        email: session?.user?.email || "example@example.com",
-      });
-
-      if (backendResponse?.data?.success) {
-        toast.success(backendResponse?.data?.message);
-        router.push("/billings");
-      } else {
-        toast.error("Payment verification failed.");
-      }
-    } catch (error) {
-      console.error("Error during payment verification:", error);
-      toast.error("An error occurred during payment verification.");
-    }
-  };
-
-  const onClose = () => {
-    console.log("Payment modal closed");
-    toast.error("Payment was not completed.");
-  };
-
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="py-3 text-sm font-semibold text-white">
-          Topup Now
-        </Button>
-      </DialogTrigger>
-
-      <DialogContent className="overflow-y-auto scrollbar-hide max-h-screen md:max-h-md">
-        <DialogHeader>
-          <DialogTitle>Complete Your Payment</DialogTitle>
-          <DialogDescription>
-            Enter your payment details to proceed.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="max-w-lg mx-auto  mt-6">
-          {/* Header Section */}
-          <div className="mb-4 flex items-center justify-between">
-            <DialogClose asChild>
-              <div className="flex items-center text-sm font-semibold ">
-                <ArrowLeft className="h-4 w-4" />
-                <span className="ml-2">Regel Technology</span>
-              </div>
-            </DialogClose>
-
-            <span className="rounded bg-primary px-2 py-1 text-xs font-semibold uppercase tracking-wider">
-              Payment
-            </span>
-          </div>
-
-          {/* Subscription item Details */}
-          <Card className="mb-8">
-            <CardHeader>
-              <h2 className="text-lg font-semibold">Credit</h2>
-            </CardHeader>
-            <PricingCard items={totalItems} />
-          </Card>
-
-          {/* Payment Form */}
-          <Card>
-            <CardContent className="my-4">
-              <Input
-                id="amount"
-                name="amount"
-                type="number"
-                placeholder="amount"
-                value={formData.amount}
-                onChange={handleChange}
-                className="mb-4"
-              />
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Shipping Email"
-                value={userRole?.email || formData.email}
-                onChange={handleChange}
-                className="mb-4"
-              />
-              {["admin", "superAdmin"].includes(userRole) && (
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Your password to approve"
-                  className="mb-4"
-                />
-              )}
-              {userRole === "user" && paymentType !== "card" && (
-                <>
-                  <div className="mb-4">
-                    <div className="mb-2 flex justify-between">
-                      <span className="text-sm font-medium text-gray-700">
-                        Payment method
-                      </span>
-                      <div className="flex space-x-2">
-                        <CreditCard className="h-5 w-5" />
-                        <Banknote className="h-5 w-5" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      {paymentMethods.map((method) => (
-                        <Button
-                          key={method.value}
-                          className="col-span-1 bg-gray-200 py-2 text-sm font-semibold text-gray-700"
-                          onClick={() =>
-                            setFormData({
-                              ...formData,
-                              paymentMethod: method.value,
-                            })
-                          }
-                        >
-                          {method.label}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <Label
-                      htmlFor="card-info"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
-                      Card information
-                    </Label>
-                    <Input
-                      id="cardInformation"
-                      name="cardInformation"
-                      type="number"
-                      placeholder="1234 1234 1234 1234"
-                      value={formData.cardInformation}
-                      onChange={handleChange}
-                      maxLength={19}
-                      className="mb-4"
-                    />
-                  </div>
-                  <div className="mb-4 grid grid-cols-3 gap-4">
-                    <Input
-                      id="expirationDate"
-                      name="expirationDate"
-                      type="text"
-                      placeholder="MM/YY"
-                      value={formData.expirationDate}
-                      onChange={handleChange}
-                      maxLength={5}
-                      className="mb-4"
-                    />
-
-                    <Input
-                      id="cvc"
-                      name="cvc"
-                      type="number"
-                      placeholder="CVC"
-                      value={formData.cvc}
-                      onChange={handleChange}
-                      maxLength={4}
-                      className="mb-4"
-                    />
-
-                    <div className="flex items-center justify-end">
-                      <CreditCard className="h-5 w-auto text-gray-500" />
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <Label
-                      htmlFor="cardholder-name"
-                      className="mb-2 block text-sm font-medium text-gray-700"
-                    >
-                      Cardholder name
-                    </Label>
-                    <Input
-                      id="cardholderName"
-                      name="cardholderName"
-                      type="text"
-                      placeholder="Full name on card"
-                      value={formData.cardholderName}
-                      onChange={handleChange}
-                      className="mb-4"
-                    />
-                  </div>
-                  {/* <div className="mb-4">
-                      <Label
-                        htmlFor="country"
-                        className="mb-2 block text-sm font-medium text-gray-700"
-                      >
-                        Country or region
-                      </Label>
-                      <Select
-        value={formData.country}
-        onValueChange={(value) =>
-          setFormData({ ...formData, country: value })
-        }
+    <>
+      {/* Button to open the modal */}
+      <Button
+        className="py-3 text-sm font-semibold text-white"
+        onClick={() => setIsModalOpen(true)}
       >
-        <SelectTrigger id="country">
-          <SelectValue placeholder="Nigeria" />
-        </SelectTrigger>
-        <SelectContent position="popper">
-          {countries.map((country) => (
-            <SelectItem key={country.value} value={country.value}>
-              {country.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-                    </div> */}
-                </>
-              )}
-            </CardContent>
+        Topup Now
+      </Button>
 
-            <CardFooter className="w-full flex-col">
-              {userRole === "user" ? (
-                // <Button
-                //   className="mb-6 w-full bg-black py-3 text-sm font-semibold text-white"
-                //   onClick={handleSubmit}
-                // >
-                //   Pay
-                // </Button>
-                <DialogClose asChild>
-                  <div className=" z-100">
-                    <PaystackHookButton
-                      onSuccess={onSuccess}
-                      onClose={onClose}
-                      isLoading={loading}
-                      buttonText="Pay with Paystack"
-                      configPaystackPayment={configPaystackPayment}
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-lg overflow-y-auto max-h-screen">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Complete Your Payment</h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="max-w-lg mx-auto mt-6">
+              {/* Header Section */}
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center text-sm font-semibold">
+                  <ArrowLeft className="h-4 w-4" />
+                  <span className="ml-2">Regel Technology</span>
+                </div>
+
+                <span className="rounded bg-primary px-2 py-1 text-white text-xs font-semibold uppercase tracking-wider">
+                  Payment
+                </span>
+              </div>
+
+              {/* Subscription item Details */}
+              <Card className="mb-8">
+                <CardHeader>
+                  <h2 className="text-lg font-semibold">Credit</h2>
+                </CardHeader>
+                <PricingCard items={totalItems} />
+              </Card>
+
+              {/* Payment Form */}
+              <Card>
+                <CardContent className="my-4">
+                  <Input
+                    id="amount"
+                    name="amount"
+                    type="number"
+                    placeholder="amount"
+                    value={formData.amount}
+                    onChange={handleChange}
+                    className="mb-4"
+                  />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Shipping Email"
+                    value={user?.email || formData.email}
+                    onChange={handleChange}
+                    className="mb-4"
+                  />
+                  {["admin", "superAdmin"].includes(userRole) && (
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Your password to approve"
+                      className="mb-4"
                     />
-                  </div>
-                </DialogClose>
-              ) : (
-                <Button
-                  className="mb-6 w-full bg-black py-3 text-sm font-semibold text-white"
-                  onClick={handleSubmit}
-                >
-                  Top Up
-                </Button>
-              )}
+                  )}
+                  {userRole === "user" && paymentType !== "card" && (
+                    <>
+                      <div className="mb-4">
+                        <div className="mb-2 flex justify-between">
+                          <span className="text-sm font-medium text-gray-700">
+                            Payment method
+                          </span>
+                          <div className="flex space-x-2">
+                            <CreditCard className="h-5 w-5" />
+                            <Banknote className="h-5 w-5" />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          {paymentMethods.map((method) => (
+                            <Button
+                              key={method.value}
+                              className="col-span-1 bg-gray-200 py-2 text-sm font-semibold text-gray-700"
+                              onClick={() =>
+                                setFormData({
+                                  ...formData,
+                                  paymentMethod: method.value,
+                                })
+                              }
+                            >
+                              {method.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <Label
+                          htmlFor="card-info"
+                          className="mb-2 block text-sm font-medium text-gray-700"
+                        >
+                          Card information
+                        </Label>
+                        <Input
+                          id="cardInformation"
+                          name="cardInformation"
+                          type="number"
+                          placeholder="1234 1234 1234 1234"
+                          value={formData.cardInformation}
+                          onChange={handleChange}
+                          maxLength={19}
+                          className="mb-4"
+                        />
+                      </div>
+                      <div className="mb-4 grid grid-cols-3 gap-4">
+                        <Input
+                          id="expirationDate"
+                          name="expirationDate"
+                          type="text"
+                          placeholder="MM/YY"
+                          value={formData.expirationDate}
+                          onChange={handleChange}
+                          maxLength={5}
+                          className="mb-4"
+                        />
 
-              <p className="mt-4 w-full text-xs text-gray-500">
-                By confirming your payment, you allow us to charge you.
-              </p>
-            </CardFooter>
-          </Card>
+                        <Input
+                          id="cvc"
+                          name="cvc"
+                          type="number"
+                          placeholder="CVC"
+                          value={formData.cvc}
+                          onChange={handleChange}
+                          maxLength={4}
+                          className="mb-4"
+                        />
+
+                        <div className="flex items-center justify-end">
+                          <CreditCard className="h-5 w-auto text-gray-500" />
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <Label
+                          htmlFor="cardholder-name"
+                          className="mb-2 block text-sm font-medium text-gray-700"
+                        >
+                          Cardholder name
+                        </Label>
+                        <Input
+                          id="cardholderName"
+                          name="cardholderName"
+                          type="text"
+                          placeholder="Full name on card"
+                          value={formData.cardholderName}
+                          onChange={handleChange}
+                          className="mb-4"
+                        />
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+
+                <CardFooter className="w-full flex-col">
+                  {userRole === "user" ? (
+                    <div className="z-100">
+                      <PaystackHookButton
+                        //  onSuccess={(res) => console.log("Success:", res)}
+                        isModalOpen={() => setIsModalOpen(false)}
+                        userId={user?.id}
+                        isLoading={loading}
+                        buttonText="Pay Now"
+                        configPaystackPayment={configPaystackPayment}
+                      />
+                    </div>
+                  ) : (
+                    <Button
+                      className="mb-6 w-full bg-black py-3 text-sm font-semibold text-white"
+                      onClick={handleSubmit}
+                    >
+                      Top Up
+                    </Button>
+                  )}
+
+                  <p className="mt-4 w-full text-xs text-gray-500">
+                    By confirming your payment, you allow us to charge you.
+                  </p>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </>
   );
 }
 

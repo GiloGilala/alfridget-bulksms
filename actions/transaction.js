@@ -51,7 +51,7 @@ export const createTransaction = async (transactionData) => {
     return data;
   } catch (error) {
     console.error("Error creating transaction:", error);
-    throw new Error("Could not create transaction");
+    throw new Error(error.message || "Could not create transaction");
   }
 };
 
@@ -85,6 +85,47 @@ export const updateTransaction = async (transactionId, transactionData) => {
   } catch (error) {
     console.error("Error updating transaction:", error);
     throw new Error("Could not update transaction");
+  }
+};
+
+export const cancelledTransaction = async (userId, reference) => {
+  try {
+    await dbConnect();
+
+    // Check if transaction exists using userId and reference
+    const existingTransaction = await Transaction.findOne({
+      userId,
+      reference,
+    });
+
+    if (!existingTransaction) {
+      return {
+        successful: false,
+        message: `Transaction not found for user: ${userId} and reference: ${reference}`,
+      };
+    }
+
+    // Update transaction status
+    const updatedTransaction = await Transaction.findOneAndUpdate(
+      { userId, reference },
+      { status: "cancelled" },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedTransaction) {
+      return { successful: false, message: "Transaction update failed" };
+    }
+
+    return {
+      successful: true,
+      message: "Transaction cancelled successfully",
+    };
+  } catch (error) {
+    console.error("Error updating transaction:", error);
+    return {
+      successful: false,
+      message: `Could not update transaction: ${error.message}`,
+    };
   }
 };
 
