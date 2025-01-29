@@ -158,7 +158,7 @@ export function PaymentCart({ items = [], paymentType = "card" }) {
 
   const configPaystackPayment = {
     reference: `ref-${Date.now()}`,
-    email: "gilogilala@gmail.com" || session?.user?.email,
+    email: session?.user?.email,
     amount: formData.amount,
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
     currency: "NGN",
