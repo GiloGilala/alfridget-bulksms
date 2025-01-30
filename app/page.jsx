@@ -405,91 +405,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t w-full">
-        <div className="container mx-auto max-w-[1200px] py-12 md:py-16">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <Link href="/" className="flex items-center gap-2">
-                <Image
-                  src="/regel.jpeg"
-                  alt="Regel Technology"
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
-                <span className="text-xl font-semibold ">Regel Technology</span>
-              </Link>
-              <p className="block text-secondary-foreground max-w-md">
-                Ready to revolutionize your video content and deliver confident,
-                smooth, and engaging performances every time? Subscribe today
-                and experience the powe
-              </p>
-              {/* <div className="space-y-4">
-                <h3 className="text-2xl font-bold">
-                  Want to receive our Newsletter?
-                </h3>
-                <div className="flex gap-2">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="max-w-xs"
-                  />
-                  <Button className="bg-[#E57B63] hover:bg-[#E57B63]/90">
-                    Subscribe
-                  </Button>
-                </div>
-              </div> */}
-            </div>
-            <div className="grid grid-cols-2 gap-8">
-              <nav className="space-y-4">
-                <Link
-                  href="/about"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  About us
-                </Link>
-                <Link
-                  href="/how-it-works"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  How it works
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/faqs"
-                  className="block text-gray-600 hover:text-gray-900"
-                >
-                  FAQs
-                </Link>
-              </nav>
-              <div className="space-y-4">
-                <div className="flex gap-4">
-                  <Link href="#" className="text-gray-600 hover:text-gray-900">
-                    <Facebook className="h-6 w-6" />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-gray-900">
-                    <Twitter className="h-6 w-6" />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-gray-900">
-                    <Linkedin className="h-6 w-6" />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-gray-900">
-                    <Youtube className="h-6 w-6" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t text-center text-gray-600">
-            <p>© All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
@@ -1024,7 +940,10 @@ const HowItWorks = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-primary via-black to-primary py-12 md:py-24 lg:py-32">
+    <div
+      id="how-it-works"
+      className="w-full bg-gradient-to-b from-primary via-black to-primary py-12 md:py-24 lg:py-32"
+    >
       {/* First Section */}
       <section className="container mx-auto max-w-[1200px]  ">
         <div className="container mx-auto">
@@ -1220,7 +1139,7 @@ const Faq = () => {
   ];
 
   return (
-    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div id="faqs" className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
         <div className="space-y-4">
@@ -1238,6 +1157,87 @@ const Faq = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const Footer = () => {
+  // Array of navigation links
+  const navLinks = [
+    { href: "#about", text: "About us" },
+    { href: "#how-it-works", text: "How it works" },
+    { href: "#pricing", text: "Pricing" },
+    { href: "#faqs", text: "FAQs" },
+  ];
+
+  // Array of social media links
+  const socialLinks = [
+    { href: "#", icon: <Facebook className="h-6 w-6" /> },
+    { href: "#", icon: <Twitter className="h-6 w-6" /> },
+    { href: "#", icon: <Linkedin className="h-6 w-6" /> },
+    { href: "#", icon: <Youtube className="h-6 w-6" /> },
+  ];
+
+  return (
+    <footer className="bg-white border-t w-full">
+      <div className="container mx-auto max-w-[1200px] py-12 md:py-16">
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Logo and Description Section */}
+          <div className="space-y-8">
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/regel.jpeg"
+                alt="Regel Technology"
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+              <span className="text-xl font-semibold">Regel Technology</span>
+            </Link>
+            <p className="block text-secondary-foreground max-w-md">
+              Ready to revolutionize your video content and deliver confident,
+              smooth, and engaging performances every time? Subscribe today and
+              experience the power.
+            </p>
+          </div>
+
+          {/* Navigation and Social Media Section */}
+          <div className="grid grid-cols-2 gap-8">
+            {/* Navigation Links */}
+            <nav className="space-y-4">
+              {navLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className="block text-gray-600 hover:text-gray-900"
+                >
+                  {link.text}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Social Media Links */}
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                {socialLinks.map((social, index) => (
+                  <Link
+                    key={index}
+                    href={social.href}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    {social.icon}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright Section */}
+        <div className="mt-12 pt-8 border-t text-center text-gray-600">
+          <p>© All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   );
 };
 
