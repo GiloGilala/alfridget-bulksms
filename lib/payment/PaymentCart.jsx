@@ -161,6 +161,7 @@ export function PaymentCart({ items = [], paymentType = "card" }) {
     email: session?.user?.email,
     amount: formData.amount,
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+    // publicKey: process.env.NODE_ENV === production ? process.env.NEXT_PUBLIC_PAYSTACK_SECRET_KEY : process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY_TEST,
     currency: "NGN",
     metadata: {
       custom_fields: [

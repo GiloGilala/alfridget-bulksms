@@ -117,7 +117,7 @@ const PaystackPaymentButton = ({
   };
 
   const config = { ...configPaystackPayment, amount: amountInKobo };
-  console.log("config :", config);
+  // console.log("config :", config);
 
   return (
     <PaystackConsumer

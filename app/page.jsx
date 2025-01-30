@@ -362,7 +362,7 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      <section className="w-full py-12 md:py-24 lg:py-32">
+      <section id="contact" className="w-full py-12 md:py-24 lg:py-32">
         <div className="container mx-auto max-w-[1200px] py-12 md:py-16">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4">
@@ -579,11 +579,18 @@ function PlugIcon(props) {
 
 const Navbar = () => {
   // Array of navigation links
+  // const navLinks = [
+  //   { href: "/features", text: "Features" },
+  //   { href: "/pricing", text: "Pricing" },
+  //   { href: "/about", text: "About" },
+  //   { href: "/contact", text: "Contact" },
+  // ];
+
   const navLinks = [
-    { href: "/features", text: "Features" },
-    { href: "/pricing", text: "Pricing" },
-    { href: "/about", text: "About" },
-    { href: "/contact", text: "Contact" },
+    { href: "#features", text: "Features" }, // Use #section-id
+    { href: "#pricing", text: "Pricing" },
+    { href: "#about", text: "About" },
+    { href: "#contact", text: "Contact" },
   ];
 
   // Array of authentication buttons
@@ -599,7 +606,6 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4">
       <div className="container mx-auto max-w-[1200px] flex items-center justify-between">
-        {" "}
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -816,7 +822,10 @@ const WhatWeDo = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32">
+    <div
+      id="features"
+      className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32"
+    >
       {/* First Section */}
       <section className="w-full  ">
         <div className="container mx-auto ">
@@ -911,7 +920,10 @@ const YourGlobal = () => {
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32">
+    <div
+      id="about"
+      className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32"
+    >
       {/* First Section */}
       <section className="w-full space-y-8">
         <div className="container mx-auto">
@@ -1101,7 +1113,10 @@ const PricingSection = () => {
     },
   ];
   return (
-    <section className="container mx-auto max-w-[1200px] px-4 py-12 md:py-24 lg:py-32">
+    <section
+      id="pricing"
+      className="container mx-auto max-w-[1200px] px-4 py-12 md:py-24 lg:py-32"
+    >
       <div className="space-y-12">
         {/* Section Header */}
         <div className="space-y-4 text-center">
