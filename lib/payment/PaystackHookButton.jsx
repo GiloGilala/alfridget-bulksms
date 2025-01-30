@@ -88,8 +88,6 @@ const PaystackPaymentButton = ({
   };
 
   const handleClick = async (initializePayment) => {
-    console.log("Button clicked");
-
     if (!email || !amount || !publicKey || !userId || !reference) {
       console.error("Missing required fields:", {
         email,
@@ -119,6 +117,7 @@ const PaystackPaymentButton = ({
   };
 
   const config = { ...configPaystackPayment, amount: amountInKobo };
+  console.log("config :", config);
 
   return (
     <PaystackConsumer

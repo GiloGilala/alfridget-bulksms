@@ -168,12 +168,14 @@ const DataTable = ({ headers, transactions }) => {
     {
       content: (
         <Badge
-          variant={
+          className={
             transaction.status === "completed"
-              ? "secondary"
-              : transaction.status === "failed"
-              ? "outline"
-              : "default"
+              ? "bg-green-600 hover:bg-green-700 text-white" // Green for completed
+              : transaction.status === "cancelled"
+              ? "bg-red-600 hover:bg-red-700 text-white" // Red for failed
+              : transaction.status === "pending"
+              ? "bg-yellow-600 hover:bg-yellow-700 text-white" // Yellow for pending
+              : "bg-gray-500 hover:bg-gray-600 text-white" // Default color
           }
         >
           {transaction.status}

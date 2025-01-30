@@ -208,7 +208,7 @@ export const TableComponent = ({ headers, data = [], sms }) => {
                   {row.message}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
-                  {row.createdAt}
+                  {new Date(row.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {row.status}
@@ -226,6 +226,19 @@ export const TableComponent = ({ headers, data = [], sms }) => {
                   {row.currency}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
+                  <Badge
+                    className={
+                      row.status === "completed"
+                        ? "bg-green-600 hover:bg-green-700 text-white" // Green for completed
+                        : row.status === "cancelled"
+                        ? "bg-red-600 hover:bg-red-700 text-white" // Red for failed
+                        : row.status === "pending"
+                        ? "bg-yellow-600 hover:bg-yellow-700 text-white" // Yellow for pending
+                        : "bg-gray-500 hover:bg-gray-600 text-white" // Default color
+                    }
+                  >
+                    {row.status}
+                  </Badge>
                   {row.status}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
