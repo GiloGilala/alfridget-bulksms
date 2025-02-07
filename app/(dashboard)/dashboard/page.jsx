@@ -239,7 +239,6 @@ export const TableComponent = ({ headers, data = [], sms }) => {
                   >
                     {row.status}
                   </Badge>
-                  {row.status}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {new Date(row.createdAt).toLocaleDateString()}
