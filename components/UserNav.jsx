@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,32 +12,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogoutButton } from "./logout";
+import { useSession } from "next-auth/react";
 
 const menuItems = [
   {
     label: "Profile",
     shortcut: "⇧⌘P",
-    action: () => console.log("Go to Profile"),
+    href: "#",
   },
   {
     label: "Billing",
     shortcut: "⌘B",
-    action: () => console.log("Go to Billing"),
-  },
-  {
-    label: "Settings",
-    shortcut: "⌘S",
-    action: () => console.log("Open Settings"),
-  },
-  {
-    label: "New Team",
-    shortcut: null,
-    action: () => console.log("Create New Team"),
+    href: "/billings",
   },
 ];
 
 export function UserNav() {
-  const handleLogout = () => console.log("Logged out");
+  const { data: session } = useSession();
+  const user = session?.user;
 
   return (
     <DropdownMenu>
@@ -49,37 +42,33 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        {/* User Information */}
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
+            <p className="text-sm font-medium leading-none">{user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              m@example.com
+              {user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
 
-        {/* Separator */}
         <DropdownMenuSeparator />
 
-        {/* Main Menu Group */}
         <DropdownMenuGroup>
           {menuItems.map((item, index) => (
-            <DropdownMenuItem key={index}>
-              {item.label}
-              {item.shortcut && (
-                <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
-              )}
-            </DropdownMenuItem>
+            <Link key={index} href={item.href} passHref>
+              <DropdownMenuItem>
+                {item.label}
+                {item.shortcut && (
+                  <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
+                )}
+              </DropdownMenuItem>
+            </Link>
           ))}
         </DropdownMenuGroup>
 
-        {/* Separator */}
         <DropdownMenuSeparator />
 
-        {/* Log Out */}
         <DropdownMenuItem>
-          {/* Log out */}
           <LogoutButton />
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

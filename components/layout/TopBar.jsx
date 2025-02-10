@@ -23,10 +23,10 @@ const Topbar = ({ onToggleSidebar }) => {
         </div>
         <div className="flex items-center space-x-4">
           <UserNav />
-          <ThemeToggle />
-          <Button variant="outline" size="xs" onClick={onToggleSidebar}>
+          {/* <ThemeToggle /> */}
+          {/* <Button variant="outline" size="xs" onClick={onToggleSidebar}>
             <ChevronRightIcon className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </header>
