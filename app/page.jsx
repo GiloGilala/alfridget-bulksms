@@ -24,6 +24,12 @@ import {
   UserPlus,
   BadgeCheck,
   ChevronsDownIcon,
+  Computer,
+  Mail,
+  ChartBar,
+  CreditCard,
+  Globe,
+  Phone,
 } from "lucide-react";
 import {
   Collapsible,
@@ -35,6 +41,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import Carousel from "@/components/Carousel";
 
 export default function HomePage() {
   return (
@@ -47,9 +54,11 @@ export default function HomePage() {
       <YourGlobal />
       <HowItWorks />
       <PricingSection />
+      <PersonalizedMessaging />
       <Faq />
 
       {/* Pain Points Section */}
+
       {/* <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative h-[500px]">
@@ -99,9 +108,10 @@ export default function HomePage() {
             <p className="text-xl font-medium">Sound familiar?</p>
           </div>
         </div>
-      </section> */}
+      </section>  */}
 
       {/* Why Us Section */}
+      
       {/* <section className="container mx-auto max-w-[1200px] px-4 py-24 md:py-32">
         <div className="space-y-12">
           <div className="space-y-4">
@@ -235,39 +245,6 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      {/* <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-            <img
-              src="/placeholder.svg"
-              width="550"
-              height="550"
-              alt="Hero"
-              className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-            />
-            <div className="flex flex-col justify-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Leading Provider of Industrial Equipment
-                </h1>
-                <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Trusted supplier of high-quality machinery, motors, pumps, and
-                  electrical components for industrial applications.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link
-                  href="#"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                  prefetch={false}
-                >
-                  Explore Products
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       {/* <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
@@ -304,65 +281,9 @@ export default function HomePage() {
           </div>
         </div>
       </section> */}
-      {/* Awards */}
 
-      {/* <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                Trusted by Industry Leaders
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Awards, Certifications, and Partnerships
-              </h2>
-              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Our commitment to quality and innovation is recognized by
-                leading industry organizations and partners.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-              <img
-                src="/placeholder.svg"
-                width="140"
-                height="70"
-                alt="Logo"
-                className="aspect-[2/1] overflow-hidden rounded-lg object-contain object-center"
-              />
-              <img
-                src="/placeholder.svg"
-                width="140"
-                height="70"
-                alt="Logo"
-                className="aspect-[2/1] overflow-hidden rounded-lg object-contain object-center"
-              />
-              <img
-                src="/placeholder.svg"
-                width="140"
-                height="70"
-                alt="Logo"
-                className="aspect-[2/1] overflow-hidden rounded-lg object-contain object-center"
-              />
-              <img
-                src="/placeholder.svg"
-                width="140"
-                height="70"
-                alt="Logo"
-                className="aspect-[2/1] overflow-hidden rounded-lg object-contain object-center"
-              />
-              <img
-                src="/placeholder.svg"
-                width="140"
-                height="70"
-                alt="Logo"
-                className="aspect-[2/1] overflow-hidden rounded-lg object-contain object-center"
-              />
-            </div>
-          </div>
-        </div>
-      </section> */}
 
-      <section id="contact" className="w-full py-12 md:py-24 lg:py-32">
+      {/* <section id="contact" className="w-full py-12 md:py-24 lg:py-32">
         <div className="container mx-auto max-w-[1200px] py-12 md:py-16">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4">
@@ -402,7 +323,7 @@ export default function HomePage() {
             />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <Footer />
@@ -568,7 +489,6 @@ const Navbar = () => {
 };
 
 const Hero = () => {
-  // Reusable content for the hero section
   const heroContent = {
     title: "This is the start of something!",
     description:
@@ -591,20 +511,25 @@ const Hero = () => {
       width: 600,
       height: 400,
     },
-    companyLogos: [1, 2, 3, 4, 5, 6, 7], // Replace with actual image paths
+    companyLogos: [
+      { name: "Brand Logo 1", src: "/brands/brandlogo1.png" },
+      { name: "Brand Logo 2", src: "/brands/brandlogo2.png" },
+      { name: "Brand Logo 3", src: "/brands/brandlogo3.png" },
+      { name: "Brand Logo 4", src: "/brands/brandlogo4.png" },
+      { name: "Brand Logo 5", src: "/brands/brandlogo5.png" },
+      { name: "Brand Logo 6", src: "/brands/brandlogo6.png" },
+      { name: "Brand Logo 7", src: "/brands/brandlogo7.png" },
+    ],
   };
 
   return (
-    <div className="w-full container mx-auto max-w-[1200px] py-12  lg:py-16">
+    <div className="w-full container mx-auto max-w-[1200px] py-12 lg:py-16">
       {/* First Section */}
-      <section className="w-full space-y-2 ">
+      <section className="w-full space-y-2">
         <div className="container mx-auto">
           <div className="grid grid-cols-4 gap-8 items-center">
             {/* Hero Content */}
             <div className="gap-4 flex-col col-span-4">
-              <div>
-                <Badge variant="outline">We&apos;re live!</Badge>
-              </div>
               <div className="gap-4 space-y-3">
                 <h1 className="text-6xl tracking-tighter text-left font-semibold">
                   We are your communication solution partner on a global scale.
@@ -615,7 +540,6 @@ const Hero = () => {
                 </p>
               </div>
             </div>
-
             {/* Two Columns Section */}
             <div className="flex-col gap-4 col-span-2 space-y-6">
               <div className="flex justify-between space-x-2">
@@ -624,14 +548,13 @@ const Hero = () => {
                   <h1 className="text-4xl tracking-tighter text-left font-regular">
                     1B +
                   </h1>
-                  <p className="text-xl leading-relaxed tracking-tight text-muted-foreground  text-left">
+                  <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
                     Over 1 billion sms transactions processed successfully.
                   </p>
                 </div>
-
                 {/* Right Column */}
                 <div className="flex flex-col">
-                  <h1 className="text-4xl  tracking-tighter text-left font-regular">
+                  <h1 className="text-4xl tracking-tighter text-left font-regular">
                     100+ Networks
                   </h1>
                   <p className="text-xl leading-relaxed tracking-tight text-muted-foreground text-left">
@@ -639,7 +562,6 @@ const Hero = () => {
                   </p>
                 </div>
               </div>
-
               {/* Buttons */}
               <div className="flex flex-row gap-4">
                 {heroContent.buttons.map((button, index) => (
@@ -654,36 +576,12 @@ const Hero = () => {
                 ))}
               </div>
             </div>
-
-            {/* Image Section */}
-            <div className="flex gap-4 col-span-2 items-center justify-center">
-              <div className="bg-background rounded-md items-center justify-center flex w-full max-h-80">
-                <Image
-                  src={heroContent.image.src}
-                  alt={heroContent.image.alt}
-                  width={heroContent.image.width}
-                  height={heroContent.image.height}
-                  className="rounded-md object-fill "
-                />
-              </div>
-            </div>
-
-            {/* Company Logos */}
-            <div className="flex gap-4 col-span-4 mt-4">
-              {heroContent.companyLogos.map((index) => (
-                <div
-                  key={index}
-                  className="bg-muted rounded-md flex items-center justify-center"
-                >
-                  <Image
-                    src={`/regel.jpeg`} // Replace with actual image paths
-                    alt={`Regel ${index}`}
-                    width={150}
-                    height={150}
-                    className="rounded-md object-cover"
-                  />
-                </div>
-              ))}
+            {/* Company Logos Carousel */}
+            <div className="flex  col-span-4 mt-4 ">
+              <Carousel
+                items={heroContent.companyLogos}
+                name="Trusted by these companies"
+              />
             </div>
           </div>
         </div>
@@ -704,7 +602,7 @@ const WhatWeDo = () => {
       {
         value: "Bulk SMS",
         description:
-          "Reach thousands of customers instantly with our reliable bulk SMS service. Perfect for marketing campaigns, announcements, and alerts.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
         image: {
           src: "/home/sms2.png",
           alt: "Bulk SMS",
@@ -715,7 +613,7 @@ const WhatWeDo = () => {
       {
         value: "OTP & Notifications",
         description:
-          "Deliver secure one-time passwords (OTPs) and real-time notifications to enhance customer authentication and engagement.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
         image: {
           src: "/home/sms3.png",
           alt: "OTP & Notifications",
@@ -726,7 +624,7 @@ const WhatWeDo = () => {
       {
         value: "Global Connectivity",
         description:
-          "Send messages seamlessly to over 200 countries with our global SMS coverage. Stay connected with customers worldwide.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
         image: {
           src: "/home/sms4.png",
           alt: "Global Connectivity",
@@ -800,36 +698,36 @@ const YourGlobal = () => {
     title1: "YOUR GLOBAL",
     title2: "TELECOMMUNICATION PARTNER.",
     description:
-      "At Regel, we are on a mission to reposition how businesses and customers communicate. We strive to ensure that businesses provide the optimal customer satisfaction through our robust and innovative solution.",
+      "At regel, we’re on a mission to reposition how businesses and  customers communicate. We strive to ensure that businesses provide  the optimal customer satisfaction through our robust and innovative  solution.",
     steps: [
       {
         value: "Mission",
         description:
-          "Empower businesses with innovative communication solutions to drive engagement, enhance customer experience, and enable effortless global connectivity through reliable services, seamless technology, and transparent pricing.",
+          "To enable seamless  communication for  businesses globally.",
         icon: <MessageCircle size={48} className="text-primary  " />,
       },
       {
         value: "Vision",
         description:
-          "To be the leading provider of integrated communication solutions, bridging global communication gaps with seamless, secure, and instant interactions that transform how businesses connect and engage with customers.",
+          "To create a cross-border ecosystem that  enables millions of businesses  communicate with customers easily.",
         icon: <Eye size={48} className="text-primary " />,
       },
       {
         value: "Culture",
         description:
-          "We foster a collaborative, innovative, and inclusive culture that values creativity, transparency, and continuous learning. Our team is empowered to deliver excellence, embrace challenges, and drive meaningful impact for our clients and communities.",
+          "We deploy best practice  and redefine simplicity.",
         icon: <Users size={48} className="text-primary" />,
       },
       {
         value: "Retention",
         description:
-          "We prioritize long-term relationships by delivering exceptional service, personalized solutions, and consistent value. Our commitment to understanding and addressing our clients' evolving needs ensures loyalty and trust.",
+          "We’re your partner to  deliver metrics that matter.",
         icon: <RefreshCw size={48} className="text-primary" />,
       },
       {
         value: "Customer Acquisition",
         description:
-          "We attract businesses by showcasing our innovative communication solutions, proven reliability, and customer-centric approach. Through strategic outreach, tailored offerings, and measurable results, we position ourselves as the partner of choice for seamless global connectivity.",
+          "Drive retention with our  message scheduling feature.",
         icon: <UserPlus size={48} className="text-primary" />,
       },
     ],
@@ -849,7 +747,7 @@ const YourGlobal = () => {
               <h1 className="text-6xl tracking-tighter font-extrabold text-left ">
                 {howItWorksContent.title1}
               </h1>
-              <h1 className="text-6xl tracking-tighter font-extrabold text-left bg-gradient-to-r from-primary to-black bg-clip-text text-transparent">
+              <h1 className="text-6xl tracking-tighter font-extrabold text-left bg-gradient-to-r from-blue-700 to-primary bg-clip-text text-transparent">
                 {howItWorksContent.title2}
               </h1>
               <p className="text-xl leading-relaxed tracking-tight text-muted-foreground max-w-3xl  text-left">
@@ -884,6 +782,110 @@ const YourGlobal = () => {
   );
 };
 
+const PersonalizedMessaging = () => {
+  // Reusable content for the "How It Works" section
+  const personalizedContent = {
+    title: "Create a unique & personalized messaging with a trusted global partner.",
+    buttonText: "Sign up to get started today",
+    steps: [
+      {
+      value: "User-Friendly Interface",
+      description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+      icon: <Computer size={48}
+      className="text-primary "
+      
+      />,
+      },
+      {
+      value: "Personalized Messaging",
+      description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+      icon: <Mail size={48} className="text-primary " />,
+      },
+      {
+      value: "Real-Time Reports",
+      description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+      icon: <ChartBar size={48} className="text-primary" />,
+      },
+      {
+      value: "Pay-As-You-Go",
+      description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+      icon: <CreditCard size={48} className="text-primary" />,
+      },
+      {
+      value: "Network Reach",
+      description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+      icon: <Globe size={48} className="text-primary" />,
+      },
+      {
+      value: "Support",
+      description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+      icon: <Phone size={48} className="text-primary" />,
+      },
+      ],
+  };
+
+  return (
+    <div
+      id="about"
+      className="w-full container mx-auto max-w-[1200px] py-12 md:py-24 lg:py-32"
+    >
+      {/* First Section */}
+      <section className="w-full space-y-8">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-3 gap-8 ">
+            {/* Hero Content */}
+            <div className="gap-4 flex-col col-span-3 space-y-4 text-center">
+              <h1 className="text-6xl tracking-tighter font-extrabold text-center mb-8">
+                {personalizedContent.title}
+              </h1>
+             
+              <Button 
+                    size="xl"
+                    className="gap-4 bg-gradient-to-r from-[#2B5EA9] to-[#2BAF75]"
+                    variant="default" 
+                  >
+                   {personalizedContent.buttonText}
+        <MoveRightIcon className="w-6 h-6" />,
+       
+                  </Button>
+              <p className="text-xl leading-relaxed tracking-tight text-muted-foreground max-w-3xl  text-left">
+                {personalizedContent.description}
+              </p>
+            </div>
+
+            {/* Steps Section */}
+            <div className="flex-col gap-4 col-span-3 ">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+                {/* Map over steps */}
+                {personalizedContent.steps.map((step, index) => (
+                  <Card key={index} className="flex flex-col gap-4 pt-6 bg-black">
+                    <CardContent className="p-6 ">
+                      {/* Render icon */}
+                      {step.icon}
+                      <CardTitle className="text-2xl font-bold mt-20 text-left text-white">
+                        {step.value}
+                      </CardTitle>
+                      <CardDescription className="text-lg mt-4 text-left text-white">
+                        {step.description}
+                      </CardDescription>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 const HowItWorks = () => {
   // Reusable content for the "How It Works" section
   const howItWorksContent = {
@@ -895,7 +897,7 @@ const HowItWorks = () => {
       {
         value: "Create a free account",
         description:
-          "Sign up in minutes and gain access to a platform trusted by businesses worldwide.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         image: {
           src: "/home/sms6.png",
           alt: "SMS Transactions",
@@ -906,7 +908,7 @@ const HowItWorks = () => {
       {
         value: "Request for custom sender ID",
         description:
-          "Personalize your communication with a unique sender ID to enhance brand recognition.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         image: {
           src: "/home/sms5.png",
           alt: "SMS Transactions",
@@ -917,7 +919,7 @@ const HowItWorks = () => {
       {
         value: "Fund your wallet with payment",
         description:
-          "Easily top up your wallet with secure payment options to start sending messages instantly.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         image: {
           src: "/home/sms7.png",
           alt: "SMS Transactions",
@@ -928,7 +930,7 @@ const HowItWorks = () => {
       {
         value: "Send message & view instant reports",
         description:
-          "Deliver messages globally and track performance with real-time analytics and insights.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         image: {
           src: "/home/sms8.png",
           alt: "SMS Transactions",
@@ -942,7 +944,7 @@ const HowItWorks = () => {
   return (
     <div
       id="how-it-works"
-      className="w-full bg-gradient-to-b from-primary via-black to-primary py-12 md:py-24 lg:py-32"
+      className="w-full bg-gradient-to-b from-blue-300 via-blue-100 to-blue-300 py-12 md:py-24 lg:py-32"
     >
       {/* First Section */}
       <section className="container mx-auto max-w-[1200px]  ">
@@ -951,7 +953,7 @@ const HowItWorks = () => {
             {/* Hero Content */}
             <div className="gap-4 flex-col col-span-3">
               <div className="gap-4">
-                <h1 className="text-2xl tracking-tighter font-extrabold text-center py-5">
+                <h1 className="text-2xl tracking-tighter font-extrabold text-center py-5 ">
                   {howItWorksContent.title}
                 </h1>
               </div>
@@ -962,7 +964,7 @@ const HowItWorks = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {/* Map over steps */}
                 {howItWorksContent.steps.map((step, index) => (
-                  <Card key={index} className="flex flex-col gap-4">
+                  <Card key={index} className="flex flex-col gap-4 bg-black">
                     <CardContent className="p-6">
                       <Image
                         src={step.image.src}
@@ -971,10 +973,10 @@ const HowItWorks = () => {
                         height={step.image.height}
                         className="rounded-md object-cover"
                       />
-                      <CardTitle className="text-2xl font-bold mt-4">
+                      <CardTitle className="text-2xl font-bold mt-8 text-white">
                         {step.value}
                       </CardTitle>
-                      <CardDescription className="text-lg mt-2">
+                      <CardDescription className="text-md mt-3 text-white">
                         {step.description}
                       </CardDescription>
                     </CardContent>
@@ -990,6 +992,121 @@ const HowItWorks = () => {
 };
 
 const PricingSection = () => {
+  const plans = {
+    basic: {
+      name: "Basic",
+      price: "3",
+      frequency: "/ SMS",
+      features: [
+        "Feature text goes here",
+        "Feature text goes here",
+        "Feature text goes here",
+        "Feature text goes here",
+       
+      ],
+      buttonVariant: "outline",
+      isHighlighted: false,
+    },
+    custom: {
+      value: "Pricing plan",
+      description1:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+      description2:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+      image: {
+        src: "/home/sms9.png",
+        alt: "SMS Transactions",
+        width: 318,
+        height: 318,
+      },
+    },
+  };
+
+  return (
+    <section
+      id="pricing"
+      className="container mx-auto max-w-[1200px] px-4 py-12 md:py-24 lg:py-32"
+    >
+      <div className="space-y-12">
+       
+
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-2 gap-8">
+          <div className="md:col-span-1 col-span-2 gap-8">
+            <Card className="flex flex-col gap-4 ">
+              <CardContent className="p-6">
+                <CardTitle className="text-4xl font-bold mt-8 text-black">
+                  {plans.custom.value}
+                </CardTitle>
+                <CardDescription className="text-md mt-3 text-black">
+                  {plans.custom.description1}
+                </CardDescription>
+                <Image
+                  src={plans.custom.image.src}
+                  alt={plans.custom.image.alt}
+                  width={plans.custom.image.width}
+                  height={plans.custom.image.height}
+                  className="rounded-md object-cover"
+                />
+                <CardDescription className="text-md mt-3 text-black">
+                  {plans.custom.description2}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="md:col-span-1 col-span-2 gap-8">
+            <Card
+              className={"relative border-2 border-primary-foreground  bg-black" }
+            >
+              <CardContent className="p-6 space-y-6">
+                {/* Plan Title and Price */}
+                <div>
+                <BadgeCheck
+                        className="w-4 h-4 text-white mr-2"
+                        strokeWidth={2}
+                      />
+                  <h3 className="text-xl font-bold text-white">{plans.basic.name}</h3>
+                  <div className="mt-2 flex items-baseline">
+                    <span className="text-4xl font-bold text-white">₦ {plans.basic.price}</span>
+                    <span className=" ml-1 text-white">{plans.basic.frequency}</span>
+                  </div>
+                    <p className=" ml-1 text-white">
+                    or ₦200,000 yearly
+                      </p>
+                </div>
+
+                {/* Plan Features */}
+                <ul className="space-y-3">
+                  {plans.basic.features.map((feature, index) => (
+                    <li key={index} className="flex items-center">
+                      <BadgeCheck
+                        className="w-4 h-4 text-white mr-2"
+                        strokeWidth={2}
+                      />
+                      <span className=" text-white ">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Call-to-Action Button */}
+                <Button
+                  className={"w-full bg-gradient-to-r from-[#2B5EA9] to-[#2BAF75] text-white" }
+                  variant={plans.basic.buttonVariant}
+                  size="lg"
+                >
+                  Start Now
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const PricingSection1 = () => {
   const plans = [
     {
       name: "Basic",
@@ -1233,8 +1350,16 @@ const Footer = () => {
         </div>
 
         {/* Copyright Section */}
-        <div className="mt-12 pt-8 border-t text-center text-gray-600">
+        <div className="flex mt-12 pt-8 border-t text-center justify-between text-gray-600">
+          <div>
+            
           <p>© All rights reserved.</p>
+          </div>
+          <div className="flex space-x-2 ">
+            
+          <p>Privacy Policy</p>
+          <p>Terms of Service</p>
+          </div>
         </div>
       </div>
     </footer>
@@ -1259,3 +1384,7 @@ function ChevronDownIcon(props) {
     </svg>
   );
 }
+
+
+
+

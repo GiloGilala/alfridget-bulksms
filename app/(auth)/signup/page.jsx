@@ -152,14 +152,15 @@ const SignUp = () => {
         <div
           className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"
           style={{
-            backgroundImage: `url('/bgLogin.png')`,
+            backgroundImage: `url('/regel.jpeg')`,
             backgroundSize: "100% 100%",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
           }}
         >
           <div className="absolute inset-0 bg-zinc-900/30" />
-          <div className="relative z-20 flex items-center text-2xl font-medium">
+          <Link  href="/"
+           className="relative z-20 flex items-center text-2xl font-medium">
             <Image
               src="/regel.jpeg"
               alt="Regel company logo"
@@ -167,8 +168,8 @@ const SignUp = () => {
               height={100}
               className="mr-2 h-10 w-10"
             />
-            Regel
-          </div>
+            Regel Technology
+          </Link>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <q className="text-lg font-medium italic">
