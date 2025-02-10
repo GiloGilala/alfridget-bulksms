@@ -30,6 +30,11 @@ import {
   CreditCard,
   Globe,
   Phone,
+  Award,
+  Check,
+  Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import {
   Collapsible,
@@ -42,6 +47,7 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Carousel from "@/components/Carousel";
+import { Separator } from "@/components/ui/separator";
 
 export default function HomePage() {
   return (
@@ -54,6 +60,7 @@ export default function HomePage() {
       <YourGlobal />
       <HowItWorks />
       <PricingSection />
+      <Testimonial />
       <PersonalizedMessaging />
       <Faq />
 
@@ -792,7 +799,7 @@ const PersonalizedMessaging = () => {
       value: "User-Friendly Interface",
       description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-      icon: <Computer size={48}
+      icon: <Computer size={40}
       className="text-primary "
       
       />,
@@ -801,31 +808,31 @@ const PersonalizedMessaging = () => {
       value: "Personalized Messaging",
       description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-      icon: <Mail size={48} className="text-primary " />,
+      icon: <Mail size={40} className="text-primary " />,
       },
       {
       value: "Real-Time Reports",
       description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-      icon: <ChartBar size={48} className="text-primary" />,
+      icon: <ChartBar size={40} className="text-primary" />,
       },
       {
       value: "Pay-As-You-Go",
       description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-      icon: <CreditCard size={48} className="text-primary" />,
+      icon: <CreditCard size={40} className="text-primary" />,
       },
       {
       value: "Network Reach",
       description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-      icon: <Globe size={48} className="text-primary" />,
+      icon: <Globe size={40} className="text-primary" />,
       },
       {
       value: "Support",
       description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-      icon: <Phone size={48} className="text-primary" />,
+      icon: <Phone size={40} className="text-primary" />,
       },
       ],
   };
@@ -994,7 +1001,7 @@ const HowItWorks = () => {
 const PricingSection = () => {
   const plans = {
     basic: {
-      name: "Basic",
+      name: "Basic plan",
       price: "3",
       frequency: "/ SMS",
       features: [
@@ -1012,7 +1019,7 @@ const PricingSection = () => {
       description1:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
       description2:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+        "Regel offers the best prices",
       image: {
         src: "/home/sms9.png",
         alt: "SMS Transactions",
@@ -1062,27 +1069,28 @@ const PricingSection = () => {
               <CardContent className="p-6 space-y-6">
                 {/* Plan Title and Price */}
                 <div>
-                <BadgeCheck
-                        className="w-4 h-4 text-white mr-2"
-                        strokeWidth={2}
+                <Award
+                        className="w-6 h-6 text-white mr-2 my-4 justify-self-end"
+                       
                       />
                   <h3 className="text-xl font-bold text-white">{plans.basic.name}</h3>
                   <div className="mt-2 flex items-baseline">
                     <span className="text-4xl font-bold text-white">₦ {plans.basic.price}</span>
                     <span className=" ml-1 text-white">{plans.basic.frequency}</span>
                   </div>
-                    <p className=" ml-1 text-white">
+                    <p className=" ml-1 text-white my-4">
                     or ₦200,000 yearly
                       </p>
+                      <Separator className="  my-8"/>
                 </div>
 
                 {/* Plan Features */}
                 <ul className="space-y-3">
                   {plans.basic.features.map((feature, index) => (
                     <li key={index} className="flex items-center">
-                      <BadgeCheck
+                      <Check
                         className="w-4 h-4 text-white mr-2"
-                        strokeWidth={2}
+                        strokeWidth={4}
                       />
                       <span className=" text-white ">{feature}</span>
                     </li>
@@ -1215,6 +1223,84 @@ const PricingSection1 = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Testimonial = () => {
+  return (
+    <section id="testimonial" className="bg-[#C3F3DE] relative pb-16">
+      <div className="flex flex-wrap justify-center items-center container mx-auto max-w-[1200px] px-4 py-12 md:py-24 lg:py-32">
+        {/* Left Column: Image */}
+        <div className="w-full md:w-1/2 px-4 mb-4 md:mb-0">
+          <Image
+            src="/regel.jpeg"
+            alt="Testimonial image"
+            className="rounded-md object-cover"
+            width={600}
+            height={600}
+            priority
+          />
+        </div>
+
+        {/* Right Column: Testimonial Content */}
+        <div className="w-full md:w-1/2 px-4">
+          <div className="flex items-center mb-4">
+            {[...Array(5)].map((_, index) => (
+              <Star key={index} className="w-5 h-5 text-yellow-500" />
+            ))}
+          </div>
+
+          <p className="text-gray-600 text-lg font-bold mb-4">
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex."
+          </p>
+
+          {/* User Info & Image */}
+          <div className="flex items-center gap-4">
+            <div>
+              <p className="text-lg font-bold">
+                John Doe <br />
+                <span className="text-gray-500 text-sm">CEO of Example Inc.</span>
+              </p>
+            </div>
+
+            <Separator className="h-12 w-px bg-gray-600" />
+
+            <Image
+              src="/regel.jpeg"
+              alt="John Doe"
+              width={100}
+              height={70}
+              className="rounded-md object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Navigation and Indicators */}
+      <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-8">
+        {/* Indicator (Bottom Left) */}
+        <div className="flex gap-2">
+          {[...Array(3)].map((_, index) => (
+            <span
+              key={index}
+              className={`w-3 h-3 rounded-full ${
+                index === 0 ? "bg-gray-800" : "bg-gray-400"
+              }`}
+            ></span>
+          ))}
+        </div>
+
+        {/* Navigation Arrows (Bottom Right) */}
+        <div className="flex gap-2">
+          <button className="w-10 h-10 flex items-center justify-center rounded-full border border-black text-black hover:bg-gray-900 hover:text-white transition">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button className="w-10 h-10 flex items-center justify-center rounded-full border border-black text-black hover:bg-gray-900 transition hover:text-white">
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </section>

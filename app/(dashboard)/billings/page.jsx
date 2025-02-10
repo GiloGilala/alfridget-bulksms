@@ -44,43 +44,17 @@ import {
 import { useRouter } from "next/navigation";
 import { Loading1 } from "@/components/loaders";
 
-const data = [
-  {
-    title: "This Week",
-    amount: "$1,329",
-    percentage: "+25%",
-    progressValue: 25,
-  },
-  {
-    title: "This Month",
-    amount: "$5,329",
-    percentage: "+10%",
-    progressValue: 12,
-  },
-  {
-    title: "New Customers",
-    amount: "+250",
-    percentage: "+15%",
-    progressValue: 15,
-  },
-  {
-    title: "Returning Customers",
-    amount: "+150",
-    percentage: "+8%",
-    progressValue: 8,
-  },
-];
 
 const tabs = [
   { value: "orders", label: "Orders" },
-  { value: "products", label: "Products" },
-  { value: "customers", label: "Customers" },
+  // { value: "products", label: "Products" },
+  // { value: "customers", label: "Customers" },
 ];
 
 const filterOptions = [
-  { label: "Fulfilled", checked: true },
-  { label: "Declined", checked: false },
-  { label: "Refunded", checked: false },
+  { label: "pending", checked: true },
+  { label: "completed", checked: false },
+  { label: "cancelled", checked: false },
 ];
 
 const headers = [
@@ -219,31 +193,6 @@ const DataTable = ({ headers, transactions }) => {
   );
 };
 
-// const CardComponent = ({ className }) => {
-//   return (
-//     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-//       {data.map((item, index) => (
-//         <Card key={index}>
-//           <CardHeader className="pb-2">
-//             <CardDescription>{item.title}</CardDescription>
-//             <CardTitle className="text-4xl">{item.amount}</CardTitle>
-//           </CardHeader>
-//           <CardContent>
-//             <div className="text-xs text-muted-foreground">
-//               {item.percentage} from last month
-//             </div>
-//           </CardContent>
-//           <CardFooter>
-//             <Progress
-//               value={item.progressValue}
-//               aria-label={`${item.progressValue}% increase`}
-//             />
-//           </CardFooter>
-//         </Card>
-//       ))}
-//     </div>
-//   );
-// };
 
 export default function Component() {
   const [isOpen, setIsOpen] = useState(false);
@@ -295,13 +244,7 @@ export default function Component() {
     //   description: "Regel to grow more",
     //   quantity: "Qty 1 • Billed monthly",
     // },
-    // {
-    //   id: 3,
-    //   name: "Regel Enterprise",
-    //   price: 5550.0,
-    //   description: "Regel enterprise plan to scale up",
-    //   quantity: "Qty 1 • Billed monthly",
-    // },
+    
   ];
 
   return (

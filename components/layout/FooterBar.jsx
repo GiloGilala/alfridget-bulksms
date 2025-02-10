@@ -7,15 +7,15 @@ const FooterBar = () => {
     <div className="bg-gray-800 text-white p-4 md:p-6 lg:p-8">
       <div className="container mx-auto flex justify-between flex-wrap md:flex-nowrap">
         {/* About Us */}
-        <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-0">
+        {/* <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-0">
           <h5 className="text-lg font-bold mb-2">About Us</h5>
           <p className="text-sm">
           Regel Technology is a messaging platform designed to simplify communication.
           </p>
-        </div>
+        </div> */}
 
         {/* Quick Links */}
-        <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-0">
+        {/* <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4 md:mb-0">
           <h5 className="text-lg font-bold mb-2">Quick Links</h5>
           <ul>
             <li>
@@ -43,10 +43,10 @@ const FooterBar = () => {
               </a>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Stay Connected */}
-        <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+        {/* <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
           <h5 className="text-lg font-bold mb-2">Stay Connected</h5>
           <div className="flex mb-2">
             <a
@@ -80,6 +80,18 @@ const FooterBar = () => {
           <p className="text-sm">
             &copy; {currentYear} Regel Technology. All rights reserved.
           </p>
+        </div> */}
+
+<div className="flex mt-12 pt-8 border-t text-center justify-between text-gray-600">
+          <div>
+            
+          <p>© All rights reserved.</p>
+          </div>
+          <div className="flex space-x-2 ">
+            
+          <p>Privacy Policy</p>
+          <p>Terms of Service</p>
+          </div>
         </div>
       </div>
     </div>

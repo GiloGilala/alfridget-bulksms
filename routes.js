@@ -83,11 +83,11 @@ export const SideNavItem = [
         href: "/clients/contacts/groups/add",
         visible: ["superAdmin", "admin", "user"],
       }, // Updated for uniqueness
-      {
-        title: "Import Contacts",
-        href: "/clients/contacts/import",
-        visible: ["superAdmin", "admin", "user"],
-      },
+      // {
+      //   title: "Import Contacts",
+      //   href: "/clients/contacts/import",
+      //   visible: ["superAdmin", "admin", "user"],
+      // },
     ],
   },
   // {
@@ -171,21 +171,21 @@ export const SideNavItem = [
   //     { title: "Campaign Settings", href: "/campaigns/settings" },
   //   ],
   // },
-  {
-    title: "Plans",
-    href: "#",
-    icon: DollarSign,
-    visible: ["superAdmin", "admin", "user"],
-    submenu: true,
-    subMenuItems: [
-      {
-        title: "Plans",
-        href: "/clients/plan",
-        visible: ["superAdmin", "admin", "user"],
-      },
-      // { title: "Add Plan", href: "/plans/add" },
-    ],
-  },
+  // {
+  //   title: "Plans",
+  //   href: "#",
+  //   icon: DollarSign,
+  //   visible: ["superAdmin", "admin", "user"],
+  //   submenu: true,
+  //   subMenuItems: [
+  //     {
+  //       title: "Plans",
+  //       href: "/clients/plan",
+  //       visible: ["superAdmin", "admin", "user"],
+  //     },
+  //     // { title: "Add Plan", href: "/plans/add" },
+  //   ],
+  // },
   {
     title: "Billing",
     href: "#",
@@ -195,21 +195,17 @@ export const SideNavItem = [
     // label: "43",
     submenu: true,
     subMenuItems: [
-      {
-        title: "Topup",
-        href: "/billings/topup",
-        visible: ["superAdmin", "admin", "user"],
-      },
+      
       {
         title: "Billing History",
         href: "/billings",
         visible: ["superAdmin", "admin", "user"],
       },
-      {
-        title: "Checkout",
-        href: "/billings/checkout",
-        visible: ["superAdmin", "admin", "user"],
-      },
+      // {
+      //   title: "Checkout",
+      //   href: "/billings/checkout",
+      //   visible: ["superAdmin", "admin", "user"],
+      // },
       // { title: "Active", href: "/users/active",visible: ["superAdmin", "admin"] },
       // { title: "Inactive", href: "/users/inactive" },
     ],
@@ -218,18 +214,18 @@ export const SideNavItem = [
     title: "Settings",
     href: "#",
     icon: Settings,
-    visible: ["superAdmin", "admin", "user"],
+    visible: ["superAdmin", "admin"],
     submenu: true,
     subMenuItems: [
       {
         title: "Account",
         href: "/settings/account",
-        visible: ["superAdmin", "admin", "user"],
+        visible: ["superAdmin", "admin"],
       },
       {
         title: "Service Providers",
         href: "/admin/providers",
-        visible: ["superAdmin", "admin", "user"],
+        visible: ["superAdmin", "admin"],
       },
       {
         title: "Add Provider",
@@ -239,7 +235,7 @@ export const SideNavItem = [
       {
         title: "Privacy",
         href: "/settings/privacy",
-        visible: ["superAdmin", "admin", "user"],
+        visible: ["superAdmin", "admin"],
       },
       // {
       //   title: "Security",
@@ -249,13 +245,13 @@ export const SideNavItem = [
     ],
   },
 
-  {
-    title: "Help",
-    href: "/help",
-    icon: HelpCircle,
-    submenu: false,
-    visible: ["superAdmin", "admin", "user"],
-  },
+  // {
+  //   title: "Help",
+  //   href: "/help",
+  //   icon: HelpCircle,
+  //   submenu: false,
+  //   visible: ["superAdmin", "admin", "user"],
+  // },
 ];
 
 export const DEFAULT_LOGIN_REDIRECT = "/clients/users";

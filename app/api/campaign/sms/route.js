@@ -52,13 +52,13 @@ export const POST = async (req, res) => {
     await dbConnect();
 
     // Check if user has sufficient balance
-    // let wallet = await Wallet.findOne({ userId });
-    // if (wallet.balance < totalSmsCost) {
-    //   return NextResponse.json(
-    //     { error: "Insufficient balance" },
-    //     { status: 400 }
-    //   );
-    // }
+    let wallet = await Wallet.findOne({ userId });
+    if (wallet.balance < totalSmsCost) {
+      return NextResponse.json(
+        { error: "Insufficient balance" },
+        { status: 400 }
+      );
+    }
 
     // Fetch contacts if groupId is provided
     if (groupId) {
@@ -108,6 +108,16 @@ export const POST = async (req, res) => {
 
       const { SMSMessageData } = smsResponse;
       const { Message, Recipients } = SMSMessageData;
+
+     // Check if there are no recipients
+  if (!Recipients || Recipients.length < 1) {
+    console.log("No recipients found:", Message);
+    return NextResponse.json(
+      { error: Message || "No recipients found." }, 
+      { status: 400 } 
+    );
+  }
+
       smsMessage = Message;
 
       // Process recipient details
