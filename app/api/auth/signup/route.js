@@ -4,7 +4,6 @@ import dbConnect from "@/lib/dbConn";
 import User from "@/app/modals/User";
 
 export const POST = async (req) => {
-  await dbConnect();
 
   const { firstName, lastName, email, phone, password, username, terms } =
     await req.json();
@@ -60,6 +59,8 @@ export const POST = async (req) => {
 
   // Check if email or phone already exists
   try {
+    await dbConnect();
+
     const existingUser = await User.findOne({
       $or: [{ email }, { phone }],
     });
@@ -89,12 +90,13 @@ export const POST = async (req) => {
     await newUser.save();
 
     return NextResponse.json(
-      { message: "User registered successfully", success: true },
+      { message: "User registered Successfully", success: true },
       { status: 201 }
     );
   } catch (error) {
     console.error("Error during registration:", error);
     return NextResponse.json(
+      { error: error.message || "Internal server error" },
       { message: "Internal server error", success: false },
       { status: 500 }
     );

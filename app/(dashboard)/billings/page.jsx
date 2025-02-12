@@ -126,6 +126,7 @@ const ButtonWithIcon = ({ icon: Icon, label, ...props }) => (
 );
 
 const DataTable = ({ headers, transactions }) => {
+
   const rows = transactions?.map((transaction) => [
     {
       content: (

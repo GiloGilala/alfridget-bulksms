@@ -18,6 +18,8 @@ import myAxios from "@/lib/axiosConfig";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { resetPassword, sendPasswordResetEmail } from "@/actions/user";
+import { Icons } from "@/components/Icons";
+
 
 const ResetPassword = () => {
   const [formData, setFormData] = useState({
@@ -101,7 +103,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="container relative hidden h-svh flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="container relative h-svh flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
         href="/login"
         className={cn(
@@ -143,96 +145,105 @@ const ResetPassword = () => {
           </blockquote>
         </div>
       </div>
-      <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl">
-                {showResetForm ? "Reset Password" : "Forgot Password"}
-              </CardTitle>
-              <CardDescription>
-                {showResetForm
-                  ? "Enter your new password and the token you received."
-                  : "Enter your email to reset your password."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              {!showResetForm ? (
-                // Step 1: Request Reset Token
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="me@example.com"
-                  />
-                </div>
-              ) : (
-                // Step 2: Reset Password with Token
-                <>
-                  <div className="grid gap-2">
-                    <Label htmlFor="password">New Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter new password"
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirm new password"
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="token">Reset Token</Label>
-                    <Input
-                      id="token"
-                      name="token"
-                      type="text"
-                      value={token}
-                      onChange={(e) => setToken(e.target.value)}
-                      placeholder="Enter reset token"
-                    />
-                  </div>
-                </>
-              )}
-            </CardContent>
-            <CardFooter>
-              <Button
-                onClick={showResetForm ? handleResetPassword : handleSubmit}
+      <div className="h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+  <div className="w-full max-w-md p-4 sm:w-[360px] md:w-[400px] lg:w-[500px] space-y-6">
+    <Card>
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl text-center sm:text-left">
+          {showResetForm ? "Reset Password" : "Forgot Password"}
+        </CardTitle>
+        <CardDescription className="text-center sm:text-left">
+          {showResetForm
+            ? "Enter your new password and the token you received."
+            : "Enter your email to reset your password."}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        {!showResetForm ? (
+          // Step 1: Request Reset Token
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="me@example.com"
+              className="w-full"
+            />
+          </div>
+        ) : (
+          // Step 2: Reset Password with Token
+          <>
+            <div className="grid gap-2">
+              <Label htmlFor="password">New Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter new password"
                 className="w-full"
-                disabled={loading}
-              >
-                {loading
-                  ? "Processing..."
-                  : showResetForm
-                  ? "Reset Password"
-                  : "Send Reset Link"}
-              </Button>
-            </CardFooter>
-            <CardFooter className="flex-col">
-              <p className="text-center text-sm mt-4">
-                Remember your password?{" "}
-                <Link href="/login" className="text-blue-600 hover:underline">
-                  Login
-                </Link>
-              </p>
-            </CardFooter>
-          </Card>
-        </div>
-      </div>
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm new password"
+                className="w-full"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="token">Reset Token</Label>
+              <Input
+                id="token"
+                name="token"
+                type="text"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                placeholder="Enter reset token"
+                className="w-full"
+              />
+            </div>
+          </>
+        )}
+      </CardContent>
+      <CardFooter>
+        <Button
+          onClick={showResetForm ? handleResetPassword : handleSubmit}
+          className="w-full"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
+          ) : showResetForm ? (
+            "Reset Password"
+          ) : (
+            "Send Reset Link"
+          )}
+        </Button>
+      </CardFooter>
+      <CardFooter className="flex-col">
+        <p className="text-center text-sm mt-4">
+          Remember your password?{" "}
+          <Link href="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
+  </div>
+</div>
     </div>
   );
 };

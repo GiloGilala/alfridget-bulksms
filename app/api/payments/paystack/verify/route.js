@@ -120,8 +120,8 @@ export async function POST(request) {
 
       // Update transaction
       transaction.status = "completed";
-      transaction.accountBalanceBefore = wallet.balance;
-      transaction.accountBalanceAfter = updatedWallet.balance;
+      transaction.accountBalanceBefore = wallet.balance.toFixed(2);
+      transaction.accountBalanceAfter = updatedWallet.balance.toFixed(2);
       transaction.paymentGatewayResponse = paystackData;
       transaction.fees = fees;
       transaction.gatewayTransactionId = paystackData.id;

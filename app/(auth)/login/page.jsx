@@ -27,7 +27,6 @@ const Login = () => {
     rememberMe: false,
   });
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -41,14 +40,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const res = await signIn("credentials", {
         redirect: false,
         email: formData.email,
         password: formData.password,
       });
-
       if (res?.error) {
         toast.error("Invalid email or password.");
       } else if (res?.ok) {
@@ -65,7 +62,9 @@ const Login = () => {
 
   return (
     <>
-      <div className="container relative hidden h-svh flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      {/* Outer Container */}
+      <div className="container relative h-screen flex items-center justify-center md:grid lg:max-w-none lg:grid-cols-2">
+        {/* Signup Link */}
         <Link
           href="/signup"
           className={cn(
@@ -75,6 +74,8 @@ const Login = () => {
         >
           Signup
         </Link>
+
+        {/* Left Side (Background/Image) */}
         <div
           className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"
           style={{
@@ -84,8 +85,10 @@ const Login = () => {
           }}
         >
           <div className="absolute inset-0 bg-zinc-900/30" />
-          <Link  href="/"
-           className="relative z-20 flex items-center text-2xl font-medium">
+          <Link
+            href="/"
+            className="relative z-20 flex items-center text-2xl font-medium"
+          >
             <Image
               src="/regel.jpeg"
               alt="Regel company logo"
@@ -95,7 +98,6 @@ const Login = () => {
             />
             Regel Technology
           </Link>
-  
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <q className="text-lg font-medium italic">
@@ -107,99 +109,96 @@ const Login = () => {
             </blockquote>
           </div>
         </div>
-        <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
-            <Card>
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl">Login</CardTitle>
-                <CardDescription>
-                  Enter your email and password to log in.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="me@example.com"
+
+        {/* Right Side (Form) */}
+        <div className="lg:p-8 w-full max-w-md mx-auto">
+          <Card>
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardDescription>
+                Enter your email and password to log in.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="me@example.com"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="rememberMe"
+                    checked={formData.rememberMe}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, rememberMe: checked })
+                    }
+                    aria-label="Remember me"
                   />
+                  <Label htmlFor="rememberMe">Remember Me</Label>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="rememberMe"
-                      checked={formData.rememberMe}
-                      onCheckedChange={(checked) =>
-                        setFormData({ ...formData, rememberMe: checked })
-                      }
-                      aria-label="Remember me"
-                    />
-                    <Label htmlFor="rememberMe">Remember Me</Label>
-                  </div>
-                  <Link
-                    href="/resetPassword"
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    Forgot Password?
-                  </Link>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  onClick={handleSubmit}
-                  className="w-full"
-                  disabled={loading}
+                <Link
+                  href="/resetPassword"
+                  className="text-sm text-blue-600 hover:underline"
                 >
-                  {loading ? (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  ) : null}
-                  Login
-                </Button>
-              </CardFooter>
-              <CardFooter className="flex-col">
-                <p className="px-8 text-center text-sm text-muted-foreground">
-                  By clicking continue, you agree to our{" "}
-                  <Link
-                    href="/terms"
-                    className="underline underline-offset-4 hover:text-primary"
-                  >
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/privacy"
-                    className="underline underline-offset-4 hover:text-primary"
-                  >
-                    Privacy Policy
-                  </Link>
-                  .
-                </p>
-                <p className="text-center text-sm mt-4">
-                  Don&apos;t have an account?{" "}
-                  <Link
-                    href="/signup"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Sign Up
-                  </Link>
-                </p>
-              </CardFooter>
-            </Card>
-          </div>
+                  Forgot Password?
+                </Link>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={handleSubmit}
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}
+                Login
+              </Button>
+            </CardFooter>
+            <CardFooter className="flex-col">
+              <p className="px-8 text-center text-sm text-muted-foreground">
+                By clicking continue, you agree to our{" "}
+                <Link
+                  href="/terms"
+                  className="underline underline-offset-4 hover:text-primary"
+                >
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="underline underline-offset-4 hover:text-primary"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+              <p className="text-center text-sm mt-4">
+                Don&apos;t have an account?{" "}
+                <Link href="/signup" className="text-blue-600 hover:underline">
+                  Sign Up
+                </Link>
+              </p>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </>

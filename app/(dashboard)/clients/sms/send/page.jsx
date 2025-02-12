@@ -141,9 +141,9 @@ export default function AddCampaign() {
     };
 
     try {
-      // if (credit <= totalSmsCost) {
-      //    toast.error("Insufficient balance");
-      //   }
+      if (credit <= totalSmsCost) {
+         toast.error("Insufficient balance");
+        }
       // +2347030904385,+2348080741116
 
       const res = await myAxios.post("/campaign/sms", smsData);

@@ -609,7 +609,7 @@ const WhatWeDo = () => {
       {
         value: "Bulk SMS",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+          "Send unlimited messages to your customers at the click of a button.",
         image: {
           src: "/home/sms2.png",
           alt: "Bulk SMS",
@@ -620,7 +620,7 @@ const WhatWeDo = () => {
       {
         value: "OTP & Notifications",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+          "Enable verification by sending secure one-time passcodes.",
         image: {
           src: "/home/sms3.png",
           alt: "OTP & Notifications",
@@ -629,12 +629,12 @@ const WhatWeDo = () => {
         },
       },
       {
-        value: "Global Connectivity",
+        value: "International Airtime & E-sim",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
+          "Recharge mobile phones and manage e-sim globally, hassle-free",
         image: {
           src: "/home/sms4.png",
-          alt: "Global Connectivity",
+          alt: "International Airtime & E-sim",
           width: 350,
           height: 350,
         },
@@ -705,37 +705,37 @@ const YourGlobal = () => {
     title1: "YOUR GLOBAL",
     title2: "TELECOMMUNICATION PARTNER.",
     description:
-      "At regel, we’re on a mission to reposition how businesses and  customers communicate. We strive to ensure that businesses provide  the optimal customer satisfaction through our robust and innovative  solution.",
+      "At regel, we’re on a mission to reposition how businesses and customers communicate. We strive to ensure that businesses provide the optimal customer satisfaction through our robust and innovative solution.",
     steps: [
       {
         value: "Mission",
         description:
           "To enable seamless  communication for  businesses globally.",
-        icon: <MessageCircle size={48} className="text-primary  " />,
+        icon: <MessageCircle size={45} className="text-primary  " />,
       },
       {
         value: "Vision",
         description:
           "To create a cross-border ecosystem that  enables millions of businesses  communicate with customers easily.",
-        icon: <Eye size={48} className="text-primary " />,
+        icon: <Eye size={45} className="text-primary " />,
       },
       {
         value: "Culture",
         description:
           "We deploy best practice  and redefine simplicity.",
-        icon: <Users size={48} className="text-primary" />,
+        icon: <Users size={45} className="text-primary" />,
       },
       {
         value: "Retention",
         description:
           "We’re your partner to  deliver metrics that matter.",
-        icon: <RefreshCw size={48} className="text-primary" />,
+        icon: <RefreshCw size={45} className="text-primary" />,
       },
       {
         value: "Customer Acquisition",
         description:
           "Drive retention with our  message scheduling feature.",
-        icon: <UserPlus size={48} className="text-primary" />,
+        icon: <UserPlus size={45} className="text-primary" />,
       },
     ],
   };
@@ -983,9 +983,9 @@ const HowItWorks = () => {
                       <CardTitle className="text-2xl font-bold mt-8 text-white">
                         {step.value}
                       </CardTitle>
-                      <CardDescription className="text-md mt-3 text-white">
+                      {/* <CardDescription className="text-md mt-3 text-white">
                         {step.description}
-                      </CardDescription>
+                      </CardDescription> */}
                     </CardContent>
                   </Card>
                 ))}
