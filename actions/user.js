@@ -248,6 +248,39 @@ export const updateUser = async (userId, userData) => {
   }
 };
 
+export const updateProfileImage = async (userId, image) => {
+
+  if (!userId || !image) {
+    throw new Error("Invalid input data: userId or profileImage is missing");
+  }
+
+  try {
+    await dbConnect();
+    console.log("Database connected successfully");
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { profileImage: image } },
+      { new: true, runValidators: true }
+    ).lean();
+
+    if (!updatedUser) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+    const plainUser = JSON.parse(JSON.stringify(updatedUser));
+
+    const data = {
+      message: "User updated successfully",
+      user: plainUser,
+      successful: true,
+    };
+    return data;
+  } catch (error) {
+    console.error("Error updating user:", error.message);
+    throw new Error(error.message || "Could not update user");
+  }
+};
+
 export const deleteUser = async (userId) => {
   // Validate input data
   if (!userId) {

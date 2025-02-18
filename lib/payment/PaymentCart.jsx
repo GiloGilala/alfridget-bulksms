@@ -125,12 +125,12 @@ export function PaymentCart({ items = [], paymentType = "card" }) {
             adminPassword: formData.password,
             userId: userRole?._id,
             credit: formData.amount,
-            email: "solomongilala@gmail.com" || userRole?.email,
+            email:  userRole?.email,
           }
         : {
             userId: userRole?._id,
             credit: formData.amount,
-            email: "solomongilala@gmail.com" || userRole?.email,
+            email:  userRole?.email,
             ...formData,
           };
 

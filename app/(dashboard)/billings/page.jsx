@@ -137,7 +137,7 @@ const DataTable = ({ headers, transactions }) => {
       className: "font-medium",
     },
     {
-      content: transaction.userId?.name || "N/A", // Assuming `userId` has a `name` field
+      content: `${transaction.userId?.firstName} ${transaction.userId?.lastName}` || "N/A",
       className: "hidden sm:table-cell",
     },
     {
@@ -163,7 +163,7 @@ const DataTable = ({ headers, transactions }) => {
       className: "hidden md:table-cell",
     },
     {
-      content: `${transaction.amount} ${transaction.currency}`,
+      content: `₦${transaction.amount} `,
       className: "text-right",
     },
   ]);
@@ -229,6 +229,7 @@ export default function Component() {
   const handleTopUp = () => {
     router.push("/billings/checkout");
   };
+
 
   const pricingPlans = [
     {

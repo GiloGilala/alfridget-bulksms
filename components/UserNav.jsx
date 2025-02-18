@@ -18,7 +18,7 @@ const menuItems = [
   {
     label: "Profile",
     shortcut: "⇧⌘P",
-    href: "#",
+    href: "/clients/profile/edit",
   },
   {
     label: "Billing",
@@ -34,12 +34,18 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/user1.png" alt="Me" />
-            <AvatarFallback>SC</AvatarFallback>
-          </Avatar>
-        </Button>
+      {user && (
+  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+    <Avatar className="h-8 w-8">
+      <AvatarImage 
+        src={user.profileImage || "/user1.png"} 
+        alt="Me" 
+        onError={(event) => console.error('Error loading image:', event)}
+      />
+      <AvatarFallback>SC</AvatarFallback>
+    </Avatar>
+  </Button>
+)}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">

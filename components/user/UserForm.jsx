@@ -37,6 +37,9 @@ const UserForm = ({
     values: user,
   });
 
+  const userRole = user?.role;
+
+
   const onSubmit = async (data) => {
     // console.log("Updated user:", data);
 
@@ -163,71 +166,61 @@ const UserForm = ({
                 </Select>
               )}
             />
-
-            {/* Active Status */}
-            <FormFieldWrapper
-              className="lg:col-span-2 flex flex-col space-y-4"
-              control={form.control}
-              name="isActive"
-              label="Active Status"
-              renderInput={(field) => (
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={(value) => field.onChange(value)}
-                />
+  {["admin", "superAdmin"].includes(userRole) && (
+              
+   
+    <><FormFieldWrapper
+                className="lg:col-span-2 flex flex-col space-y-4"
+                control={form.control}
+                name="isActive"
+                label="Active Status"
+                renderInput={(field) => (
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={(value) => field.onChange(value)} />
+                )}
+                description="Enable or disable this contact" /><FormFieldWrapper
+                  className="lg:col-span-2 flex flex-col space-y-4"
+                  control={form.control}
+                  name="verified"
+                  label="Verified"
+                  renderInput={(field) => (
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={(value) => field.onChange(value)} />
+                  )}
+                  description="Enable or disable this Verified" /><FormFieldWrapper
+                  className="lg:col-span-2 flex flex-col space-y-4"
+                  control={form.control}
+                  name="isDisabled"
+                  label="Disabled"
+                  renderInput={(field) => (
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={(value) => field.onChange(value)} />
+                  )}
+                  description="Enable or disable this Disabled" /><FormFieldWrapper
+                  className="lg:col-span-3"
+                  control={form.control}
+                  name="role"
+                  label="Role"
+                  renderInput={(field) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="user">User</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="superAdmin">Super Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )} /></>
+              
               )}
-              description="Enable or disable this contact"
-            />
-
-            <FormFieldWrapper
-              className="lg:col-span-2 flex flex-col space-y-4"
-              control={form.control}
-              name="verified"
-              label="Verified"
-              renderInput={(field) => (
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={(value) => field.onChange(value)}
-                />
-              )}
-              description="Enable or disable this Verified"
-            />
-
-            <FormFieldWrapper
-              className="lg:col-span-2 flex flex-col space-y-4"
-              control={form.control}
-              name="isDisabled"
-              label="Disabled"
-              renderInput={(field) => (
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={(value) => field.onChange(value)}
-                />
-              )}
-              description="Enable or disable this Disabled"
-            />
-
-            <FormFieldWrapper
-              className="lg:col-span-3"
-              control={form.control}
-              name="role"
-              label="Role"
-              renderInput={(field) => (
-                <Select
-                  value={field.value}
-                  onValueChange={(value) => field.onChange(value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">User</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="superAdmin">Super Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
 
             <CardHeader className="col-span-6">
               <CardTitle className="text-2xl font-bold">

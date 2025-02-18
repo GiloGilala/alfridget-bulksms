@@ -166,7 +166,7 @@ export const UsersColumns = ({ handleEdit, handleDelete }) => [
             onOpenChange={setShowEditTaskDialog}
           /> */}
           {/* <Link href={`/contacts/add?id=${row.original._id}`}> */}
-          <Link href={`/adminUsers/${row.original._id}/edit`}>
+          <Link href={`/clients/${row.original._id}/edit`}>
             <Button
               size={"xs"}
               // onClick={() => handleEdit(row.original)}

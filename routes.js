@@ -24,6 +24,14 @@ export const SideNavItem = [
     submenu: false,
   },
   {
+    title: "Profile",
+    href: "/clients/profile/edit",
+    icon: LayoutDashboard,
+    visible: ["superAdmin","admin","user"],
+    variant: "default",
+    submenu: false,
+  },
+  {
     title: "Admin Dashboard",
     href: "/adminUsers",
     icon: LayoutDashboard,

@@ -64,25 +64,23 @@ export const getWalletAndAllTransactions = async (userId) => {
 
     // Fetch the wallet
     const wallet = await Wallet.findOne({ userId }).lean();
-
     if (!wallet) {
-      const data = {
+      return {
         message: `No wallet found for user ID ${userId}`,
         wallet: null,
         transactions: [],
         successful: false,
       };
-      return data;
     }
 
-    // Fetch all transactions associated with the wallet
-    const transactions = await Transaction.find({
-      walletId: wallet._id,
-    })
+    // Fetch only required transaction fields
+    const transactions = await Transaction.find({ walletId: wallet._id })
       .sort({ createdAt: -1 })
-      .limit(20);
+      .limit(20)
+      .select("_id reference userId status createdAt amount currency") // Only fetch required fields
+      .populate("userId", "firstName lastName"); // Populate userId field with only the name
 
-    // Convert to plain objects (optional, since .lean() already does this)
+    // Convert to plain objects
     const plainWallet = JSON.parse(JSON.stringify(wallet));
     const plainTransactions = JSON.parse(JSON.stringify(transactions));
 
@@ -99,6 +97,7 @@ export const getWalletAndAllTransactions = async (userId) => {
     throw new Error(error.message || "Could not fetch wallet and transactions");
   }
 };
+
 
 export const getWalletTransDashboard = async (userId) => {
   try {
@@ -118,16 +117,16 @@ export const getWalletTransDashboard = async (userId) => {
     }
 
     // Fetch all transactions associated with the wallet
-    const transactions = await Transaction.find({
-      walletId: wallet._id,
-    })
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .lean();
+    const transactions = await Transaction.find({ walletId: wallet._id })
+    .sort({ createdAt: -1 })
+    .limit(10)
+    .select("_id reference amount currency status createdAt") // Only fetch required fields
+    .lean();
 
-    const campaigns = await Campaign.find({ senderId: userId })
+      const campaigns = await Campaign.find({ senderId: userId })
       .sort({ createdAt: -1 })
       .limit(10)
+      .select("_id title message createdAt status") // Only fetch required fields
       .lean();
 
     // Convert to plain objects (optional, since .lean() already does this)

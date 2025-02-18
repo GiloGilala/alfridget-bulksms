@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -9,137 +9,160 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
+import { updateProfileImage } from "@/actions/user";
+import { CldUploadWidget, CldDeleteByPublicId } from "next-cloudinary";
 
-export default function ImageUpload({
-  user,
-  isSubmitting,
-  onSubmit,
-  uploadedImage,
-  setUploadedImage,
-}) {
-  const { handleSubmit, reset, register } = useForm();
-  const placeholderImage = "/user1.png"; // Add your placeholder image path here
+export default function ImageUpload({ user }) {
+  const { reset } = useForm();
+  const placeholderImage = "/user1.png"; // Ensure this path exists
+  const [resource, setResource] = useState(null); // Initialize as null
   const [imagePreview, setImagePreview] = useState(
-    uploadedImage || user?.profileImage || placeholderImage
+    placeholderImage
   );
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleImageSubmit = async (data) => {
-    const file = data.file[0]; // Access the file from the form data
-    if (!file) {
-      toast.error("Please select an image to upload.");
+  const handleUpload = async () => {
+    if (!resource?.secure_url) {
+      toast.error("Upload failed. Please try again.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary or API-specific preset
+    const imageUrl = resource.secure_url;
+    const userId = user._id;
 
+    setIsUploading(true);
     try {
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Image upload failed. Please try again.");
-      }
-
-      const result = await response.json();
-      const imageUrl = result.secure_url;
-
-      setUploadedImage(imageUrl);
-      onSubmit({ profileImage: imageUrl });
-
+      await updateProfileImage(userId, imageUrl);
+      setImagePreview(imageUrl); // Update the image preview
       toast.success("Image uploaded successfully!");
     } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error(
-        error.message || "An error occurred while uploading the image."
-      );
+      console.error("Error updating profile image:", error.message);
+      toast.error("An error occurred while saving the image.");
     } finally {
-      reset();
+      setIsUploading(false);
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file)); // Set preview URL for the image
-      setUploadedImage(file); // Update the uploadedImage state for upload submission
-    }
-  };
+  const handleReset = async () => {
+    // if (resource?.public_id) {
+    //   // Delete the uploaded image from Cloudinary
+    //   try {
+    //     await CldDeleteByPublicId(resource.public_id);
+    //     console.log("Image deleted from Cloudinary.");
+    //   } catch (error) {
+    //     console.error("Error deleting image from Cloudinary:", error.message);
+    //     toast.error("Failed to delete the uploaded image.");
+    //   }
+    // }
 
-  const handleReset = () => {
+    // Reset form state
     reset();
-    setImagePreview(placeholderImage); // Reset to placeholder image
-    // Clear the file input
-    const fileInput = document.querySelector('input[type="file"]');
-    if (fileInput) {
-      fileInput.value = "";
-    }
+    setImagePreview(placeholderImage);
+    setResource(null); // Clear the resource state
   };
 
   return (
-    <Card>
+    <Card className="w-full max-w-md mx-auto shadow-lg">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Image Upload</CardTitle>
-        <CardDescription className="text-muted-foreground">
-          Upload an image in formats like JPG or PNG.
+        <CardTitle className="text-2xl font-bold text-center">
+          Upload Your Profile Picture
+        </CardTitle>
+        <CardDescription className="text-center text-muted-foreground">
+          Choose a high-quality image in JPG or PNG format.
         </CardDescription>
-        <Separator className="my-4" />
       </CardHeader>
-      <form onSubmit={handleSubmit(handleImageSubmit)} className="space-y-4">
-        <CardContent className="grid grid-cols-4 gap-6">
-          <div>
-            <Image
-              src={imagePreview || placeholderImage}
-              alt="Profile Preview"
-              width={100}
-              height={100}
-              className="mb-4 rounded-md"
-            />
-            <Input
-              type="file"
-              accept="image/*"
-              className="mt-2"
-              {...register("file")} // Register the file input
-              onChange={handleFileChange}
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-end space-x-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleReset}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button className="w-32" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Saving...
-              </>
-            ) : user?._id ? (
-              "Update Upload"
-            ) : (
-              "Upload"
-            )}
-          </Button>
-        </CardFooter>
-      </form>
+      <CardContent className="flex flex-col items-center justify-center space-y-4">
+        {/* Image Preview */}
+        <div className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-primary">
+          <Image
+            src={user?.profileImage  || "/user1.png"}
+            alt="Profile Preview"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        {/* Cloudinary Upload Widget */}
+        <CldUploadWidget
+          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
+          cloudName={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+          onSuccess={(result, widget) => {
+            if (result?.info?.secure_url && result.info.public_id) {
+              setResource(result.info); // Set the resource object
+              setImagePreview(result.info.secure_url); // Update preview immediately
+            } else {
+              toast.error("Upload failed. No secure URL found.");
+            }
+            widget.close(); // Close the widget after upload
+          }}
+        >
+          {({ open }) => {
+            const handleOnClick = () => {
+              if (typeof open === "function") {
+                open();
+              } else {
+                console.error("Open function is not available.");
+                toast.error("Failed to open upload widget.");
+              }
+            };
+
+            return (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleOnClick}
+                disabled={isUploading}
+                aria-label="Upload Profile Image"
+                className="w-full"
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  "Upload Image"
+                )}
+              </Button>
+            );
+          }}
+        </CldUploadWidget>
+      </CardContent>
+      <CardFooter className="flex justify-between space-x-2">
+        {/* Save Button */}
+        <Button
+          type="button"
+          onClick={handleUpload}
+          disabled={!resource?.secure_url  || isUploading}
+          aria-label="Save Uploaded Image"
+          className="w-full"
+        >
+          {isUploading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            "Save"
+          )}
+        </Button>
+
+        {/* Cancel Button */}
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleReset}
+          disabled={ isUploading}
+          aria-label="Cancel Upload"
+          className="w-full"
+        >
+          Cancel
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

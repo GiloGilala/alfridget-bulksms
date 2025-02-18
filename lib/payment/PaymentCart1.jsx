@@ -187,7 +187,7 @@ export function PaymentCart({ items = [], paymentType }) {
 
   const configPaystackPayment = {
     reference: `ref-${Date.now()}`,
-    email: "gilogilala@gmail.com" || session?.user?.email,
+    email: session?.user?.email,
     amount: amountInKobo,
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
     currency: "NGN",
@@ -239,7 +239,7 @@ export function PaymentCart({ items = [], paymentType }) {
         status: response.status,
         transactionId: response.transaction,
         amount: amountInKobo,
-        email: session?.user?.email || "example@example.com",
+        email: session?.user?.email ,
       });
 
       if (backendResponse?.data?.success) {

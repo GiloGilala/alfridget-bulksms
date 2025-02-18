@@ -93,8 +93,6 @@ export default function Component() {
     router.push("/billings/checkout");
   };
 
-  // console.log("transaction :", transactions);
-  // console.log("sms :", sms);
 
   const pricingPlans = [
     {
@@ -141,7 +139,7 @@ export default function Component() {
             <div className="mb-4 col-span-12 lg:col-span-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Credit Wallet Transactions</CardTitle>
+                  <CardTitle>Credit Transactions</CardTitle>
                   <CardDescription>View all transactions</CardDescription>
                 </CardHeader>
                 <CardContent>

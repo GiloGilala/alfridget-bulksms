@@ -434,7 +434,7 @@ const Navbar = () => {
     { href: "#features", text: "Features" }, // Use #section-id
     { href: "#pricing", text: "Pricing" },
     { href: "#about", text: "About" },
-    { href: "#contact", text: "Contact" },
+    // { href: "#contact", text: "Contact" },
   ];
 
   // Array of authentication buttons
@@ -710,31 +710,31 @@ const YourGlobal = () => {
       {
         value: "Mission",
         description:
-          "To enable seamless  communication for  businesses globally.",
+          "To enable seamless communication for businesses globally.",
         icon: <MessageCircle size={45} className="text-primary  " />,
       },
       {
         value: "Vision",
         description:
-          "To create a cross-border ecosystem that  enables millions of businesses  communicate with customers easily.",
+          "To create a cross-border ecosystem that enables millions of businesses  communicate with customers easily.",
         icon: <Eye size={45} className="text-primary " />,
       },
       {
         value: "Culture",
         description:
-          "We deploy best practice  and redefine simplicity.",
+          "We deploy best practice and redefine simplicity.",
         icon: <Users size={45} className="text-primary" />,
       },
       {
         value: "Retention",
         description:
-          "We’re your partner to  deliver metrics that matter.",
+          "We’re your partner to deliver metrics that matter.",
         icon: <RefreshCw size={45} className="text-primary" />,
       },
       {
         value: "Customer Acquisition",
         description:
-          "Drive retention with our  message scheduling feature.",
+          "Drive retention with our message scheduling feature.",
         icon: <UserPlus size={45} className="text-primary" />,
       },
     ],
