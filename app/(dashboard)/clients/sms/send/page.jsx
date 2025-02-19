@@ -82,7 +82,7 @@ export default function AddCampaign() {
       try {
         const res = await getWalletByUserId(userId);
         setCredit(res.wallet.balance);
-        console.log("res.wallet:", res.wallet);
+        // console.log("res.wallet:", res.wallet);
 
         setCredit;
       } catch (error) {
@@ -140,14 +140,18 @@ export default function AddCampaign() {
       sender_id: "ALTBANK",
     };
 
+    const totalSmsCost = perSms * smstoSend;
+
     try {
       if (credit <= totalSmsCost) {
-         toast.error("Insufficient balance");
-        }
+        toast.error("Insufficient balance");
+        setIsSubmitting(false);
+        return;
+      }
       // +2347030904385,+2348080741116
 
       const res = await myAxios.post("/campaign/sms", smsData);
-      console.log("res F:", res.data);
+      // console.log("res F:", res.data);
       // const res = await createCampaignt(smsData);
       if (res.data.success) {
         toast.success(res.data?.message);
