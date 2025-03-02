@@ -262,37 +262,26 @@ export const SideNavItem = [
   // },
 ];
 
-export const DEFAULT_LOGIN_REDIRECT = "/clients/users";
+export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
 
 // Centralized Route Configuration
 export const ROUTES = {
-  DEFAULT: {
-    LOGIN_REDIRECT: process.env.DEFAULT_LOGIN_REDIRECT || "/clients/users",
-  },
   API: {
-    PREFIX: "/api",
+    API_AUTH_PREFIX: "/api/auth",
     AUTH_REQUIRED: [
-      "/api/contact/add",
-      "/api/group/add",
-      "/api/users/add",
+      "/api/contacts/add",
+      "/api/groups/add",
+      "/api/users",
+      "/api/users/[id]",
       "/api/campaign/sms",
+
+      "/api/payment/paystack",
+      "/api/payment/paystack/verify",
     ],
-    PUBLIC: ["/api/services", "/api/plan", "/api/payment"],
-    ADMIN: ["/api/users/delete", "/api/users/add", "/api/staff"],
+    PUBLIC: ["/api/services", "/api/plan"],
+    ADMIN: ["/api/users/delete", "/api/users/add"],
   },
-  PUBLIC: ["/", "/new-verification", "/reset", "/error", "/help"],
-  AUTH: ["/login", "/signup", "/error"],
+  PUBLIC: ["/",],
+  AUTH: ["/login", "/signup", "/error", "/resetPassword"],
 };
 
-// Role-based Route Permissions
-export const ROLE_ROUTE_PERMISSIONS = {
-  superAdmin: ["*"], // Full access
-  admin: ["/clients", "/admin", "/settings"],
-  user: [
-    "/clients/users",
-    "/clients/contacts",
-    "/settings/account",
-    "/clients/sms/send",
-  ],
-  guest: [],
-};
